@@ -1,0 +1,110 @@
+{
+  "name": "bridalapp-ui",
+  "version": "0.1.0",
+  "description": "BridalApp User Interface",
+  "main": "dist/bridalapp-ui.umd.js",
+  "dist": {
+    "umd": "bridalapp-ui.umd.js",
+    "min": "bridalapp-ui.min.js",
+    "map": "bridalapp-ui.min.js.map"
+  },
+  "build": "../bridalapp/src/main/webapp",
+  "directories": {
+    "src": "./src",
+    "dist": "./dist"
+  },
+  "extensions": [
+    ".js",
+    ".jsx"
+  ],
+  "entries": [
+    "index.jsx"
+  ],
+  "exports": [
+    "BridalAppUI"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/download/bridalapp-client.git"
+  },
+  "author": {
+    "name": "Stijn de Witt",
+    "email": "StijnDeWitt@hotmail.com",
+    "url": "http://StijnDeWitt.com"
+  },
+  "contributors": [],
+  "copyright": "Copyright 2015 by [Stijn de Witt](http://StijnDeWitt.com). Some rights reserved.",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "scripts": {
+    "build": "gulp"
+  },
+  "browser": {
+    "react": "react",
+    "immutable": "immutable"
+  },
+  "browserify": {
+    "basedir": "src",
+    "extensions": [
+      ".jsx"
+    ],
+    "entry": [
+      "src/server.jsx"
+    ],
+    "transform": [
+      "babelify",
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
+    "react": "global:React",
+    "react-dom": {
+      "exports": "global:ReactDOM",
+      "depends": [
+        "react:React"
+      ]
+    },
+    "react-dom/server": {
+      "exports": "global:ReactDOMServer",
+      "depends": [
+        "react:React",
+        "react-dom:ReactDOM"
+      ]
+    },
+    "history": {
+      "exports": "global:History"
+    },
+    "react-router": {
+      "exports": "global:ReactRouter",
+      "depends": [
+        "react:React"
+      ]
+    }
+  },
+  "devDependencies": {
+    "babelify": "^6.4.0",
+    "browserify": "^12.0.1",
+    "browserify-shim": "^3.8.11",
+    "gulp": "^3.9.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.5.1",
+    "streamify": "^0.2.5",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.6.0"
+  },
+  "dependencies": {
+    "classnames": "^2.2.1",
+    "es6-symbol": "^3.0.1",
+    "history": "^1.13.0",
+    "material-ui": "^0.13.3",
+    "picolog": "^0.7.0",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.2",
+    "react-mdl": "^1.0.1",
+    "react-router": "^1.0.0",
+    "react-tap-event-plugin": "^0.2.1",
+    "ws.suid": "^0.10.0"
+  }
+}
