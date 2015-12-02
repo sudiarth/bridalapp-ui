@@ -1,11 +1,12 @@
 import log from 'picolog';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
-import { match, RoutingContext, Router } from 'react-router'
+import { match, RoutingContext, Router } from 'react-router';
 import routes from './routes';
 
 if (typeof window != 'undefined') {
-	var createHistory = require('history/lib/createBrowserHistory');
+	const apphistory = require('./apphistory');
 
 	//Needed for onTouchTap
 	//Can go away when react 1.0 release
@@ -15,39 +16,45 @@ if (typeof window != 'undefined') {
 
 	document.addEventListener('DOMContentLoaded', function(){
 		ReactDOM.render(
-			<Router history={createHistory()}>{routes}</Router>
+			<Router history={apphistory}>{routes}</Router>
 			, 
 			document.getElementById('bridalapp-ui')
 		);
 	});
 }
 else if (typeof global != undefined) {
-//	require('es6-symbol/implement'); // polyfill for ES6 'Symbol' class
-	global.console = log;
-	global.renderer = {
-		route: function(path) {
-			log.trace('Determining route for path [' + path + ']');
-			var result = {};
-			match({routes, location:path}, function(error, redirect, props){
-				log.trace('matched: error=' + error + ', redirect=' + redirect + ', props=' + props);
-				result.error = error;
-				result.redirect = redirect;
-				result.props = props;
-			});
-			log.debug('Determined route for path [' + path + ']: ' +	
-				(result.error ? 'error: ' + result.error : 
-				(result.redirect ? 'redirect: ' + result.redirect : 
-				(result.props ? 'render: ' + result.props : 'not found')))
-			);
-			return result;
-		}
-		,
-		render: function(props) {
-			return ReactDOMServer.renderToString(<RoutingContext {...props} />);
-		}
+	//global.console = log; // polyfill the console object for Nashorn
+	/**
+	 * Determines the route for the given path and renders the markup for it if possible.
+	 * 
+	 * The resulting string consists of two parts, separated by a colon. The first part 
+	 * indicates the type of result and can be one of 'MARKUP', 'REDIRECT', 'NOTFOUND' or 'ERROR'.
+	 * The second part contains detail data for the result: HTML in case of 'MARKUP', the
+	 * URL to redirect to in case of 'REDIRECT', the original path in case of 'NOTFOUND' 
+	 * or an error message in case of 'ERROR'.
+	 * <code><pre>
+	 * 'MARKUP:<div>Some markup to render</div>'  
+	 * 'REDIRECT:/new/route'
+	 * 'NOTFOUND:/some/path'  
+	 * 'ERROR:Oops something went wrong.'
+	 * </pre></code>  
+	 * 
+	 * 
+	 * @param path The path to render
+	 * @returns A String consisting of a result identifier and result data, separated by a colon.
+	 */
+	global.render = function render(path) {
+		var result;
+		match({routes, location:path}, function(error, redirect, props){
+			if (redirect) {result = 'REDIRECT:' + redirect.pathname + redirect.search;}
+			else if (props) {result = 'MARKUP:' + ReactDOMServer.renderToString(<RoutingContext {...props} />);}
+			else if (error) {result = 'ERROR:' + error.message}
+			else {result = 'NOTFOUND:' + path;}
+		});
+		return result;
 	};
 	global.log = log;
 }
 else {
-	log.error("No `global` context found. If running in Nashorn, please define `var global = this;` before loading this bundle.");
+	log.error("No `global` context found. If running in Nashorn, please eval `var global = this;` before loading this bundle.");
 }

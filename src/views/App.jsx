@@ -41,7 +41,7 @@ export default class App extends React.Component {
 						<Link to="/brands">Brands</Link>
 					</Navigation>
 				</Drawer>
-				<Content>
+				<Content className="main">
 					{this.props.children}
 				</Content>
 				<div className={'mdl-layout__obfuscator ' + (this.state.rightDrawerOpen ? 'is-visible' : '')} onClick={this.rightDrawerToggle}></div>
@@ -49,7 +49,8 @@ export default class App extends React.Component {
 		);
 	}
 }
-
+/*
 App.contextTypes = {
 	history: React.PropTypes.object
 };
+*/

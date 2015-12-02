@@ -4292,6 +4292,286 @@ module.exports = exports['default'];
 (function (global){
 'use strict';
 
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
+
+var _createClass = (function () {
+	function defineProperties(target, props) {
+		for (var i = 0; i < props.length; i++) {
+			var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ('value' in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+		}
+	}return function (Constructor, protoProps, staticProps) {
+		if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+	};
+})();
+
+var _get = function get(_x, _x2, _x3) {
+	var _again = true;_function: while (_again) {
+		var object = _x,
+		    property = _x2,
+		    receiver = _x3;_again = false;if (object === null) object = Function.prototype;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
+			var parent = Object.getPrototypeOf(object);if (parent === null) {
+				return undefined;
+			} else {
+				_x = parent;_x2 = property;_x3 = receiver;_again = true;desc = parent = undefined;continue _function;
+			}
+		} else if ('value' in desc) {
+			return desc.value;
+		} else {
+			var getter = desc.get;if (getter === undefined) {
+				return undefined;
+			}return getter.call(receiver);
+		}
+	}
+};
+
+function _interopRequireDefault(obj) {
+	return obj && obj.__esModule ? obj : { 'default': obj };
+}
+
+function _classCallCheck(instance, Constructor) {
+	if (!(instance instanceof Constructor)) {
+		throw new TypeError('Cannot call a class as a function');
+	}
+}
+
+function _inherits(subClass, superClass) {
+	if (typeof superClass !== 'function' && superClass !== null) {
+		throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass);
+	}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = (typeof window !== "undefined" ? window['ReactDOM'] : typeof global !== "undefined" ? global['ReactDOM'] : null);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var Scroller = (function (_React$Component) {
+	_inherits(Scroller, _React$Component);
+
+	function Scroller(props) {
+		_classCallCheck(this, Scroller);
+
+		_get(Object.getPrototypeOf(Scroller.prototype), 'constructor', this).call(this, props); // direction, itemCount, items, itemSize, itemsPer
+		this.state = this.getState(props);
+		this.onScroll = this.onScroll.bind(this);
+	}
+
+	_createClass(Scroller, [{
+		key: 'getState',
+		value: function getState(props) {
+			// default values
+			var state = {
+				renderedItems: [],
+				firstRenderedItemIndex: 0,
+				lastRenderedItemIndex: Math.min(99, props.items.length - 1),
+				size: 0,
+				sizeBefore: 0,
+				sizeItems: 0,
+				sizeAfter: props.items.length * props.itemSize
+			};
+
+			// early return if nothing to render
+			if (props.itemCount == 0 || props.items.length == 0 || props.itemSize <= 0) return state;
+			var scrollerStart = 0;
+			var scrollerSize = (state.lastRenderedItemIndex + 1) * props.itemSize;
+			var scrollOffset = 0;
+			if (this.mounted) {
+				var scroller = _reactDom2['default'].findDOMNode(this);
+				var slider = this.refs.slider;
+				scrollerStart = getScrollPos(this.props.direction, scroller);
+				scrollerSize = getSize(this.props.direction, scroller);
+				scrollOffset = posDifference(this.props.direction, slider, scroller);
+			}
+			var renderStats = Scroller.getItems(scrollerStart, scrollerSize, scrollOffset, props.itemSize, props.items.length, props.itemBuffer || 1);
+			state.size = scrollerSize;
+			if (renderStats.itemsInView.length === 0) return state;
+			state.renderedItems = props.items.slice(renderStats.firstItemIndex, renderStats.lastItemIndex + 1);
+			state.firstRenderedItemIndex = renderStats.firstItemIndex;
+			state.lastRenderedItemIndex = renderStats.lastItemIndex;
+			state.sizeBefore = renderStats.firstItemIndex * props.itemSize;
+			state.sizeItems = state.renderedItems.length * props.itemSize;
+			state.sizeAfter = props.items.length * props.itemSize - state.sizeBefore - state.sizeItems;
+			return state;
+		}
+	}, {
+		key: 'shouldComponentUpdate',
+		value: function shouldComponentUpdate(nextProps, nextState) {
+			if (this.state.size !== nextState.size) return true;
+			if (this.state.sizeBefore !== nextState.sizeBefore) return true;
+			if (this.state.sizeAfter !== nextState.sizeAfter) return true;
+			if (!arraysEqual(this.state.renderedItems, nextState.renderedItems)) return true;
+			return false;
+		}
+	}, {
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(nextProps) {
+			var state = this.getState(nextProps);
+			this.setState(state);
+		}
+	}, {
+		key: 'componentWillMount',
+		value: function componentWillMount() {
+			this.onScrollDebounced = debounce(this.onScroll, this.props.scrollDelay, false);
+		}
+	}, {
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.mounted = true;
+			this.setState(this.getState(this.props));
+			_reactDom2['default'].findDOMNode(this).addEventListener('scroll', this.onScrollDebounced);
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			_reactDom2['default'].findDOMNode(this).removeEventListener('scroll', this.onScrollDebounced);
+			this.mounted = false;
+		}
+	}, {
+		key: 'onScroll',
+		value: function onScroll() {
+			this.setState(this.getState(this.props));
+		}
+	}, {
+		key: 'renderedItems',
+		value: function renderedItems() {
+			return this.state.renderedItems;
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			if (this.state.sizeBefore) var styleBefore = this.props.direction === 'horizontal' ? { width: this.state.sizeBefore + 'px' } : { height: this.state.sizeBefore + 'px' };
+			var styleAfter = this.props.direction === 'horizontal' ? { width: this.state.sizeAfter + 'px' } : { height: this.state.sizeAfter + 'px' };
+			return _react2['default'].createElement('div', { className: 'Scroller' + this.props.direction }, _react2['default'].createElement('div', { className: 'ScrollSlider', ref: 'slider' }, _react2['default'].createElement('div', { className: 'ScrollSpacer ScrollSpacerBefore', ref: 'spacerBefore', style: styleBefore }), this.state.renderedItems.map(this.props.renderItem), _react2['default'].createElement('div', { className: 'ScrollSpacer ScrollSpacerAfter', ref: 'spacerAfter', style: styleAfter })));
+		}
+	}]);
+
+	return Scroller;
+})(_react2['default'].Component);
+
+exports['default'] = Scroller;
+
+Scroller.propTypes = {
+	itemCount: _react2['default'].PropTypes.number.isRequired,
+	items: _react2['default'].PropTypes.array.isRequired,
+	itemSize: _react2['default'].PropTypes.number.isRequired,
+	renderItem: _react2['default'].PropTypes.func.isRequired,
+	itemsPer: _react2['default'].PropTypes.number,
+	itemBuffer: _react2['default'].PropTypes.number,
+	scrollDelay: _react2['default'].PropTypes.number,
+	direction: _react2['default'].PropTypes.string
+};
+
+Scroller.getBox = function (view, list) {
+	list.size = list.size || list.end - list.start;
+	return {
+		start: Math.max(0, Math.min(view.start - list.start)),
+		end: Math.max(0, Math.min(list.size, view.end - list.start))
+	};
+};
+
+Scroller.getItems = function (viewStart, viewSize, itemStart, itemSize, itemCount, itemBuffer) {
+	var result = { itemsInView: 0 };
+	if (itemCount === 0 || itemSize === 0) {
+		return result;
+	}
+
+	var listSize = itemSize * itemCount,
+	    bufferSize = itemBuffer * itemSize;
+	viewStart -= bufferSize;
+	viewSize += bufferSize * 2;
+	// list is outside of viewport
+	if (viewStart + viewSize < itemStart || viewStart > viewStart + viewSize) {
+		return result;
+	}
+
+	var listBox = {
+		start: itemStart,
+		size: listSize,
+		end: itemStart + listSize
+	},
+	    viewBox = {
+		start: viewStart,
+		end: viewStart + viewSize
+	},
+	    listViewBox = Scroller.getBox(viewBox, listBox);
+
+	result.firstItemIndex = Math.max(0, Math.floor(listViewBox.start / itemSize));
+	result.lastItemIndex = Math.ceil(listViewBox.end / itemSize) - 1;
+	result.itemsInView = result.lastItemIndex - result.firstItemIndex + 1;
+	return result;
+};
+
+function arraysEqual(a, b) {
+	if (!a || !b) return false;
+	if (a.length != b.length) return false;
+	for (var i = 0, length = a.length; i < length; i++) {
+		if (a[i] != b[i]) return false;
+	}
+	return true;
+}
+
+function posFromWindow(direction, element) {
+	var dir = direction === 'horizontal' ? 'Left' : 'Top';
+	if (!element || element === window) return 0;
+	return element['offset' + dir] + posFromWindow(direction, element.offsetParent);
+}
+
+function posDifference(direction, element, container) {
+	return posFromWindow(direction, element) - posFromWindow(direction, container);
+}
+
+function getSize(direction, element) {
+	var dir = direction === 'horizontal' ? 'Width' : 'Height';
+	return typeof element['inner' + dir] != 'undefined' ? element['inner' + dir] : element['client' + dir];
+}
+
+function getScrollPos(direction, element) {
+	var res,
+	    axis = 'Y',
+	    dir = 'Top';
+	if (direction === 'horizontal') {
+		axis = 'X';dir = 'Left';
+	}
+	if (element === window) {
+		res = window['page' + axis + 'Offset'];
+		if (res == null) res = document.documentElement['scroll' + dir];
+		if (res == null) res = document.body['scroll' + dir];
+	} else {
+		res = element['scroll' + axis];
+		if (res == null) res = element['scroll' + dir];
+	}
+	return res == null ? 0 : res;
+}
+
+function debounce(func, wait, immediate) {
+	if (!wait) return func;
+	var timeout;
+	return function () {
+		var context = this,
+		    args = arguments;
+		var later = function later() {
+			timeout = null;
+
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+}
+module.exports = exports['default'];
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],62:[function(require,module,exports){
+(function (global){
+'use strict';
+
 function _interopRequireDefault(obj) {
 	return obj && obj.__esModule ? obj : { 'default': obj };
 }
@@ -4303,6 +4583,10 @@ var _picolog2 = _interopRequireDefault(_picolog);
 var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = (typeof window !== "undefined" ? window['ReactDOM'] : typeof global !== "undefined" ? global['ReactDOM'] : null);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactDomServer = (typeof window !== "undefined" ? window['ReactDOMServer'] : typeof global !== "undefined" ? global['ReactDOMServer'] : null);
 
@@ -4324,7 +4608,7 @@ if (typeof window != 'undefined') {
 	require("react-tap-event-plugin")();
 
 	document.addEventListener('DOMContentLoaded', function () {
-		ReactDOM.render(_react2['default'].createElement(_reactRouter.Router, { history: createHistory() }, _routes2['default']), document.getElementById('bridalapp-ui'));
+		_reactDom2['default'].render(_react2['default'].createElement(_reactRouter.Router, { history: createHistory() }, _routes2['default']), document.getElementById('bridalapp-ui'));
 	});
 } else if (typeof global != undefined) {
 	//	require('es6-symbol/implement'); // polyfill for ES6 'Symbol' class
@@ -4353,7 +4637,7 @@ if (typeof window != 'undefined') {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./routes":62,"history/lib/createBrowserHistory":8,"picolog":21,"react-tap-event-plugin":41}],62:[function(require,module,exports){
+},{"./routes":63,"history/lib/createBrowserHistory":8,"picolog":21,"react-tap-event-plugin":41}],63:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4403,7 +4687,7 @@ exports['default'] = _react2['default'].createElement(_reactRouter.Route, { comp
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./views/App":63,"./views/Brands":64,"./views/Home":65,"./views/Products":66,"./views/Stores":67,"picolog":21}],63:[function(require,module,exports){
+},{"./views/App":64,"./views/Brands":65,"./views/Home":66,"./views/Products":67,"./views/Stores":68,"picolog":21}],64:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4507,7 +4791,7 @@ App.contextTypes = {
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../components/RightDrawer":60,"react-mdl/lib/Layout":30}],64:[function(require,module,exports){
+},{"../components/RightDrawer":60,"react-mdl/lib/Layout":30}],65:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4588,7 +4872,7 @@ exports['default'] = Brands;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],65:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4669,7 +4953,7 @@ exports['default'] = Home;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],66:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4727,19 +5011,38 @@ var _react = (typeof window !== "undefined" ? window['React'] : typeof global !=
 
 var _react2 = _interopRequireDefault(_react);
 
+var _componentsScroller = require('../components/Scroller');
+
+var _componentsScroller2 = _interopRequireDefault(_componentsScroller);
+
 var Products = (function (_React$Component) {
 	_inherits(Products, _React$Component);
 
 	function Products() {
 		_classCallCheck(this, Products);
 
-		_get(Object.getPrototypeOf(Products.prototype), 'constructor', this).apply(this, arguments);
+		_get(Object.getPrototypeOf(Products.prototype), 'constructor', this).call(this);
+		this.state = {
+			items: []
+		};
+		var names = ['Anafi', 'Aura', 'Baku', 'Ceos', 'Delos', 'Ella', 'Hada', 'Hawaii'];
+		for (var i = 0; i < 1000; i++) {
+			var nameIdx = i % 8;
+			this.state.items.push({ id: i, name: names[nameIdx], description: 'This is product number ' + i + '.', brandId: 'j4' });
+		}
 	}
 
 	_createClass(Products, [{
 		key: 'render',
 		value: function render() {
-			return _react2['default'].createElement('div', null, _react2['default'].createElement('h1', null, 'Products'), _react2['default'].createElement('p', null, 'Here you should be able to browse and rate products stocked nearby.'));
+			return _react2['default'].createElement('div', null, _react2['default'].createElement(_componentsScroller2['default'], { direction: 'vertical',
+				itemCount: 1000,
+				itemSize: 100,
+				itemsPer: 1,
+				items: this.state.items,
+				renderItem: function renderItem(item) {
+					return _react2['default'].createElement('div', { key: item.id, style: { height: '100px' } }, _react2['default'].createElement('h2', null, item.name), _react2['default'].createElement('p', null, item.description));
+				} }));
 		}
 	}]);
 
@@ -4750,7 +5053,7 @@ exports['default'] = Products;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],67:[function(require,module,exports){
+},{"../components/Scroller":61}],68:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4831,6 +5134,6 @@ exports['default'] = Stores;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[61]);
+},{}]},{},[62]);
 
 //# sourceMappingURL=bridalapp-ui.umd.js.map
