@@ -10,3 +10,13 @@ export default class Stores extends React.Component {
 		);
 	}
 }
+
+class StoresActionBar extends React.Component {
+	render() {
+		return (
+			<div className="ActionBar StoresActionBar">StoresActionBar</div>
+		);
+	}
+}
+
+Stores.StoresActionBar = StoresActionBar;

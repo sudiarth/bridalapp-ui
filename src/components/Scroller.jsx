@@ -11,38 +11,41 @@ export default class Scroller extends React.Component {
 
 	getState(props) {
 		// default values
-		var state = {
-			renderedItems: [],
-			firstRenderedItemIndex: 0,
-			lastRenderedItemIndex: Math.min(99, props.items.length - 1),
-			size: 0,
-			sizeBefore: 0,
-			sizeItems: 0,
-			sizeAfter: props.items.length * props.itemSize
-		};
-
-		// early return if nothing to render
-		if (props.itemCount == 0 || props.items.length == 0 || props.itemSize <= 0) return state;
-		let scrollerStart = 0;
-		let scrollerSize = (state.lastRenderedItemIndex+1) * props.itemSize;
-		let scrollOffset = 0;
-		if (this.mounted) {
-			let scroller = ReactDOM.findDOMNode(this);
-			let slider = this.refs.slider;
-			scrollerStart = getScrollPos(this.props.direction, scroller);
-			scrollerSize = getSize(this.props.direction, scroller);
-			scrollOffset = posDifference(this.props.direction, slider, scroller);
+		let items = props.items instanceof Array ? {0: props.items} : props.items;
+		let itemCount = props.itemCount !== undefined ? props.itemCount : items && items.length || 0;
+		let itemSize = props.itemSize;
+		let renderedItems = [];
+		let dir = props.direction;
+		let bufferBefore = props.bufferBefore;
+		let bufferAfter = props.bufferAfter;
+		let bufBeforeSize = bufferBefore * itemSize;
+		let bufAfterSize = bufferAfter * itemSize;
+		let scroller = this.mounted ? ReactDOM.findDOMNode(this) : undefined;
+		let slider = this.refs.slider;
+		let scrollerSize = scroller ? getSize(dir, scroller) : Math.min(100, itemCount) * itemSize;
+		let itemStart = scroller ? posDifference(dir, slider, scroller) : 0;
+		let viewStart = (scroller ? getScrollPos(dir, scroller) : 0) - bufBeforeSize;
+		let viewEnd = viewStart + bufBeforeSize + scrollerSize + bufAfterSize;
+		let listStart = Math.max(0, Math.min(viewStart - itemStart));
+		let listEnd = Math.max(0, Math.min(itemCount * itemSize, viewEnd - itemStart))
+		let firstIdx = Math.max(0,  Math.floor(listStart / itemSize));
+		let lastIdx = Math.ceil(listEnd / itemSize) - 1;
+		for (let i=firstIdx; i<=lastIdx; i++) {
+			let item = items[0][i] || null;
+			renderedItems.push(item);
 		}
-		let renderStats = Scroller.getItems(scrollerStart, scrollerSize, scrollOffset, props.itemSize, props.items.length, props.itemBuffer || 1);
-		state.size = scrollerSize;
-		if (renderStats.itemsInView.length === 0) return state;
-		state.renderedItems = props.items.slice(renderStats.firstItemIndex, renderStats.lastItemIndex + 1);
-		state.firstRenderedItemIndex = renderStats.firstItemIndex;
-		state.lastRenderedItemIndex = renderStats.lastItemIndex;
-		state.sizeBefore = renderStats.firstItemIndex * props.itemSize;
-		state.sizeItems = state.renderedItems.length * props.itemSize;
-		state.sizeAfter = props.items.length * props.itemSize - state.sizeBefore - state.sizeItems;
-		return state;
+		let sizeBefore = firstIdx * itemSize;
+		let sizeItems = renderedItems.length * itemSize;
+		let sizeAfter = itemCount * itemSize - sizeBefore - sizeItems;
+		return {
+			renderedItems: renderedItems,
+			firstRenderedItemIndex: firstIdx,
+			lastRenderedItemIndex: lastIdx,
+			size: scrollerSize,
+			sizeBefore: sizeBefore,
+			sizeItems: sizeItems,
+			sizeAfter: sizeAfter,
+		};
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -54,22 +57,21 @@ export default class Scroller extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		var state = this.getState(nextProps);
-		this.setState(state);
+		this.setState(this.getState(nextProps));
 	}
 
 	componentWillMount() {
-		this.onScrollDebounced = debounce(this.onScroll, this.props.scrollDelay, false);
+		this.onScrollDebounced = debounce(this.onScroll, this.props.scrollDebounce, false);
 	}
 
 	componentDidMount() {
 		this.mounted = true;
 		this.setState(this.getState(this.props));
-//		ReactDOM.findDOMNode(this).addEventListener('scroll', this.onScrollDebounced);
+		ReactDOM.findDOMNode(this).addEventListener('scroll', this.onScrollDebounced);
 	}
 
 	componentWillUnmount() {
-//		ReactDOM.findDOMNode(this).removeEventListener('scroll', this.onScrollDebounced);
+		ReactDOM.findDOMNode(this).removeEventListener('scroll', this.onScrollDebounced);
 		this.mounted = false;
 	}
 
@@ -77,72 +79,188 @@ export default class Scroller extends React.Component {
 		this.setState(this.getState(this.props));
 	}
 
-	renderedItems() {
-		return this.state.renderedItems;
-	}
-
 	render() {
-		var styleBefore = this.props.direction === 'horizontal' ? {width:this.state.sizeBefore + 'px'} : {height:this.state.sizeBefore + 'px'};
-		var styleAfter = this.props.direction === 'horizontal' ? {width:this.state.sizeAfter + 'px'} : {height:this.state.sizeAfter + 'px'};
+		let slider={}, before={}, items={}, after={}, itm={}, dir = this.props.direction; 
+		let dim = (dir == 'horizontal' ? 'width' : 'height'); 
+		slider[dim] = this.state.sizeBefore + this.state.sizeItems + this.state.sizeAfter;
+		before[dim] = this.state.sizeBefore;
+		items[dim] = this.state.sizeItems;
+		itm[dim] = this.props.itemSize;
+		after[dim] = this.state.sizeAfter;
 		return (
-			<div className={'Scroller ' + this.props.direction} onScroll={this.onScroll}>
-				<div className="ScrollSlider" ref="slider">
-					<div className="ScrollSpacer ScrollSpacerBefore" ref="spacerBefore" style={styleBefore} />
-					{this.state.renderedItems.map(this.props.renderItem)}
-					<div className="ScrollSpacer ScrollSpacerAfter" ref="spacerAfter" style={styleAfter} />
-				</div>
-			</div>
+			<div className={'Scroller ' + dir}>
+				<div className="ScrollSlider" ref="slider" style={slider}
+					><div className="ScrollSpacer ScrollSpacerBefore" ref="spacerBefore" style={before}></div 
+					><div className="ScrollItems" style={items}>{
+						this.state.renderedItems.map((item, idx) => {
+							let key = this.props.keyForItem ? this.props.keyForItem(item, idx) : 'item' + idx;
+							let renderItem = this.props.renderItem; 
+							if (item === null) {
+								if (this.props.renderLoadingItem) {renderItem = this.props.renderLoadingItem;}
+								else {item = {};}
+							}
+							return(
+								<div className="ScrollItem" key={key} style={itm}>
+									{renderItem(item, idx)}
+								</div>
+							);
+						})
+					}</div
+					><div className="ScrollSpacer ScrollSpacerAfter" ref="spacerAfter" style={after}></div
+				></div
+			></div>
 		);
 	}
 }
 
 Scroller.propTypes = {
-	itemCount: React.PropTypes.number.isRequired,
-	items: React.PropTypes.array.isRequired,
+	/** 
+	 * Total number of items available in the virtual scroller.
+	 * Defaults to `items[0].length`;
+	 * For a query with 9,287 results, set this to 9287. 
+	 */
+	itemCount: React.PropTypes.number,
+
+	/**
+	 * The items to be scrolled over.
+	 * Defaults to `{0:[]}`.
+	 * An object mapping page indexes to arrays of items for those pages 
+	 * that will be used as the initial data to load into the page buffer.
+	 * When paging is not used or only a single page is provided as initial
+	 * data, one can supply an array as shorthand for assigning an object
+	 * with only page 0 set:
+	 * 
+	 * items = {[{..}, {..}, ..]}
+	 * 
+	 * is equivalent to
+	 * 
+	 * items = {{0: [{..}, {..}, ..]}}
+	 */
+	items: React.PropTypes.oneOfType([
+		React.PropTypes.object,
+		React.PropTypes.array,
+	]),
+
+	/** 
+	 * Size of an item in the scroll direction, in pixels.
+	 * Defaults to 300;
+	 * For a vertical scroller, set this to the height of each
+	 * item, for a horizontal scroller, use the width. 
+	 */ 
 	itemSize: React.PropTypes.number.isRequired,
-	renderItem: React.PropTypes.func.isRequired,
+	
+	/** 
+	 * The number of items per page. 
+	 * Defaults to `items[0].length` (just one page with all items).
+	 */
+	pageSize: React.PropTypes.number,
+	
+	/** 
+	 * The number of pages to buffer. 
+	 * Defaults to 5 when `pageSize` is set, otherwise to 1.
+	 * 
+	 * When the user scrolls to pages that are not in the buffer,
+	 * `pageFetch` will be called and it's results will be added
+	 * to the buffer. When the number of pages exceeds the number
+	 * of pages specified by this setting, those pages furthest 
+	 * away from the user's current scroll position will be removed 
+	 * from the buffer until this number is no longer exceeded.
+	 */
+	pageBufferSize: React.PropTypes.number,
+	
+
+	/**
+	 * Render function accepting an item and it's index and returning
+	 * the markup for that item. This function should accept empty
+	 * objects for it's item parameter and return valid markup either way.
+	 */
+	renderItem: React.PropTypes.func.isRequired, // function(item, index)
+
+	/**
+	 * Render function accepting an item index and returning markup 
+	 * indicating that the item is still loading.
+	 * This function is called when the item to be rendered is not
+	 * (yet) available. If this function is not provided. the system
+	 * will fall back to calling `renderItem` and providing an empty
+	 * object as item parameter. 
+	 */
+	renderLoadingItem: React.PropTypes.func, // function(index)
+
+	/**
+	 * Function accepting an item and it's index and returning
+	 * an identifying key for that item. The key is used for technical 
+	 * purposes. This function should accept null for it's item parameter 
+	 * and return a valid key either way. If this function is not provided, 
+	 * the key will default to `'item' + index`.
+	 */
+	keyForItem: React.PropTypes.func, // function(item, index)
+
+	/**
+	 * Function accepting an item and it's index and returning
+	 * an identifying handle for that item. The handle is used for 
+	 * bookmarking etc, so should preferably be human-friendly. 
+	 * This function should accept null for it's item parameter 
+	 * and return a valid handle either way. If this function is not provided, 
+	 * the key will default to `'item' + index`.
+	 */
+	handleForItem: React.PropTypes.func, // function(item, index)
+
+	/** 
+	 * Number of items shown per row/column. 
+	 * Defaults to 1.
+	 * For a vertical scroller, set this if there are multiple items per row,
+	 * for a horizontal scroller, if there are multiple items per column. You
+	 * must ensure that this setting corresponds with the actual situation.
+	 * If this setting differs from what is really happening, the scroll
+	 * calculations will be off and the behavior will break down.
+	 */ 
 	itemsPer: React.PropTypes.number,
-	itemBuffer: React.PropTypes.number,
-	scrollDelay: React.PropTypes.number,
-	direction: React.PropTypes.oneOf(['vertical','horizontal'])
+	
+	/**
+	 * Time, in ms, to capture scroll events before processing them.
+	 * Defaults to 10.
+	 */
+	scrollDebounce: React.PropTypes.number,
+
+	/**
+	 * The direction to scroll in, either 'vertical' or 'horizontal'.
+	 * Defaults to 'vertical'.
+	 */
+	direction: React.PropTypes.oneOf(['vertical','horizontal']),
+
+	/**
+	 * Size of buffer before the first visible item, defaults to 1.
+	 * Enables smoother scrolling by pre-rendering some items into a buffer area
+	 * just outside the visible viewport, causing images to be pre-loaded.
+	 * The number of items rendered before the first visible item will be
+	 * the value of this property, multiplied by `itemsPer`.
+	 */
+	bufferBefore: React.PropTypes.number,
+
+	/**
+	 * Size of buffer after the last visible item, defaults to 1.
+	 * Enables smoother scrolling by pre-rendering some items into a buffer area
+	 * just outside the visible viewport, causing images to be pre-loaded.
+	 * The number of items rendered after the last visible item will be
+	 * the value of this property, multiplied by `itemsPer`.
+	 */
+	bufferAfter: React.PropTypes.number,
+
+	/**
+	 * Whether to snap items to grid when scrolling comes to an end.
+	 */
+	snap: React.PropTypes.bool,
 };
 
-Scroller.getBox = function(view, list) {
-	list.size = list.size || list.end - list.start;
-	return {
-		start: Math.max(0, Math.min(view.start - list.start)),
-		end: Math.max(0, Math.min(list.size, view.end - list.start))
-	};
-};
-
-Scroller.getItems = function(viewStart, viewSize, itemStart, itemSize, itemCount, itemBuffer) {
-	var result = {itemsInView: 0};
-	if (itemCount === 0 || itemSize === 0) {return result;}
-	
-	var 
-	listSize = itemSize * itemCount,
-	bufferSize = itemBuffer * itemSize;
-	viewStart -= bufferSize;
-	viewSize += bufferSize * 2;
-	// list is outside of viewport
-	if ((viewStart + viewSize < itemStart) || (viewStart > viewStart + viewSize)) {return result;}
-
-	var 
-	listBox = {
-		start: itemStart,
-		size: listSize,
-		end: itemStart + listSize
-	},
-	viewBox = {
-		start: viewStart,
-		end: viewStart + viewSize
-	},
-	listViewBox = Scroller.getBox(viewBox, listBox);
-	
-	result.firstItemIndex = Math.max(0,  Math.floor(listViewBox.start / itemSize));
-	result.lastItemIndex = Math.ceil(listViewBox.end / itemSize) - 1;
-	result.itemsInView = result.lastItemIndex - result.firstItemIndex + 1;
-	return result;
+Scroller.defaultProps = {
+	items: {0: []},
+	itemSize: 300,
+	itemsPer: 1,
+	bufferBefore: 1,
+	bufferAfter: 1,
+	scrollDebounce: 10,
+	direction: 'vertical',
+	snap: false,
 };
 
 function arraysEqual(a, b) {

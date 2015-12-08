@@ -10,3 +10,13 @@ export default class Home extends React.Component {
 		);
 	}
 }
+
+class HomeActionBar extends React.Component {
+	render() {
+		return (
+			<div className="ActionBar HomeActionBar">HomeActionBar</div>
+		);
+	}
+}
+
+Home.HomeActionBar = HomeActionBar;

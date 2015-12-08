@@ -7,7 +7,7 @@ import routes from './routes';
 
 if (typeof window != 'undefined') {
 	const apphistory = require('./apphistory');
-
+	
 	//Needed for onTouchTap
 	//Can go away when react 1.0 release
 	//Check this repo:
@@ -23,7 +23,8 @@ if (typeof window != 'undefined') {
 	});
 }
 else if (typeof global != undefined) {
-	//global.console = log; // polyfill the console object for Nashorn
+	log.level = log.DEBUG;
+
 	/**
 	 * Determines the route for the given path and renders the markup for it if possible.
 	 * 
@@ -43,11 +44,21 @@ else if (typeof global != undefined) {
 	 * @param path The path to render
 	 * @returns A String consisting of a result identifier and result data, separated by a colon.
 	 */
-	global.render = function render(path) {
+	global.render = function render(path, initialDataJSON) {
 		var result;
 		match({routes, location:path}, function(error, redirect, props){
-			if (redirect) {result = 'REDIRECT:' + redirect.pathname + redirect.search;}
-			else if (props) {result = 'MARKUP:' + ReactDOMServer.renderToString(<RoutingContext {...props} />);}
+			log.debug('match result for location [' + path + ']: props=' + props + ', redirect=' + redirect + ', error=' + error);
+			if (redirect) {
+				log.debug('redirecting to [' + redirect.pathname + redirect.search + ']...');
+				result = 'REDIRECT:' + redirect.pathname + redirect.search;
+			}
+			else if (props) {
+				log.debug('initialDataJSON=' + initialDataJSON);
+				global.initialData = JSON.parse(initialDataJSON);
+				log.debug('initialData=' + global.initialData);
+				
+				result = 'MARKUP:' + ReactDOMServer.renderToString(<RoutingContext {...props} />);
+			}
 			else if (error) {result = 'ERROR:' + error.message}
 			else {result = 'NOTFOUND:' + path;}
 		});

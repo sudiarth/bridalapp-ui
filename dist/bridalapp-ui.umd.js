@@ -4174,6 +4174,25 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = warning;
 }).call(this,require('_process'))
 },{"./emptyFunction":56,"_process":1}],60:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { 'default': obj };
+}
+
+var _historyLibCreateBrowserHistory = require('history/lib/createBrowserHistory');
+
+var _historyLibCreateBrowserHistory2 = _interopRequireDefault(_historyLibCreateBrowserHistory);
+
+var apphistory = (0, _historyLibCreateBrowserHistory2['default'])();
+exports['default'] = apphistory;
+module.exports = exports['default'];
+
+},{"history/lib/createBrowserHistory":8}],61:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4288,7 +4307,7 @@ RightDrawer.propTypes = {
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"classnames":2}],61:[function(require,module,exports){
+},{"classnames":2}],62:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4342,6 +4361,10 @@ function _inherits(subClass, superClass) {
 	}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 }
 
+var _picolog = require('picolog');
+
+var _picolog2 = _interopRequireDefault(_picolog);
+
 var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
 
 var _react2 = _interopRequireDefault(_react);
@@ -4365,38 +4388,41 @@ var Scroller = (function (_React$Component) {
 		key: 'getState',
 		value: function getState(props) {
 			// default values
-			var state = {
-				renderedItems: [],
-				firstRenderedItemIndex: 0,
-				lastRenderedItemIndex: Math.min(99, props.items.length - 1),
-				size: 0,
-				sizeBefore: 0,
-				sizeItems: 0,
-				sizeAfter: props.items.length * props.itemSize
-			};
-
-			// early return if nothing to render
-			if (props.itemCount == 0 || props.items.length == 0 || props.itemSize <= 0) return state;
-			var scrollerStart = 0;
-			var scrollerSize = (state.lastRenderedItemIndex + 1) * props.itemSize;
-			var scrollOffset = 0;
-			if (this.mounted) {
-				var scroller = _reactDom2['default'].findDOMNode(this);
-				var slider = this.refs.slider;
-				scrollerStart = getScrollPos(this.props.direction, scroller);
-				scrollerSize = getSize(this.props.direction, scroller);
-				scrollOffset = posDifference(this.props.direction, slider, scroller);
+			var items = props.items instanceof Array ? { 0: props.items } : props.items;
+			var itemCount = props.itemCount !== undefined ? props.itemCount : items && items.length || 0;
+			var itemSize = props.itemSize;
+			var renderedItems = [];
+			var dir = props.direction;
+			var bufferBefore = props.bufferBefore;
+			var bufferAfter = props.bufferAfter;
+			var bufBeforeSize = bufferBefore * itemSize;
+			var bufAfterSize = bufferAfter * itemSize;
+			var scroller = this.mounted ? _reactDom2['default'].findDOMNode(this) : undefined;
+			var slider = this.refs.slider;
+			var scrollerSize = scroller ? getSize(dir, scroller) : Math.min(100, itemCount) * itemSize;
+			var itemStart = scroller ? posDifference(dir, slider, scroller) : 0;
+			var viewStart = (scroller ? getScrollPos(dir, scroller) : 0) - bufBeforeSize;
+			var viewEnd = viewStart + bufBeforeSize + scrollerSize + bufAfterSize;
+			var listStart = Math.max(0, Math.min(viewStart - itemStart));
+			var listEnd = Math.max(0, Math.min(itemCount * itemSize, viewEnd - itemStart));
+			var firstIdx = Math.max(0, Math.floor(listStart / itemSize));
+			var lastIdx = Math.ceil(listEnd / itemSize) - 1;
+			for (var i = firstIdx; i <= lastIdx; i++) {
+				var item = items[0][i] || null;
+				renderedItems.push(item);
 			}
-			var renderStats = Scroller.getItems(scrollerStart, scrollerSize, scrollOffset, props.itemSize, props.items.length, props.itemBuffer || 1);
-			state.size = scrollerSize;
-			if (renderStats.itemsInView.length === 0) return state;
-			state.renderedItems = props.items.slice(renderStats.firstItemIndex, renderStats.lastItemIndex + 1);
-			state.firstRenderedItemIndex = renderStats.firstItemIndex;
-			state.lastRenderedItemIndex = renderStats.lastItemIndex;
-			state.sizeBefore = renderStats.firstItemIndex * props.itemSize;
-			state.sizeItems = state.renderedItems.length * props.itemSize;
-			state.sizeAfter = props.items.length * props.itemSize - state.sizeBefore - state.sizeItems;
-			return state;
+			var sizeBefore = firstIdx * itemSize;
+			var sizeItems = renderedItems.length * itemSize;
+			var sizeAfter = itemCount * itemSize - sizeBefore - sizeItems;
+			return {
+				renderedItems: renderedItems,
+				firstRenderedItemIndex: firstIdx,
+				lastRenderedItemIndex: lastIdx,
+				size: scrollerSize,
+				sizeBefore: sizeBefore,
+				sizeItems: sizeItems,
+				sizeAfter: sizeAfter
+			};
 		}
 	}, {
 		key: 'shouldComponentUpdate',
@@ -4410,13 +4436,12 @@ var Scroller = (function (_React$Component) {
 	}, {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
-			var state = this.getState(nextProps);
-			this.setState(state);
+			this.setState(this.getState(nextProps));
 		}
 	}, {
 		key: 'componentWillMount',
 		value: function componentWillMount() {
-			this.onScrollDebounced = debounce(this.onScroll, this.props.scrollDelay, false);
+			this.onScrollDebounced = debounce(this.onScroll, this.props.scrollDebounce, false);
 		}
 	}, {
 		key: 'componentDidMount',
@@ -4437,16 +4462,35 @@ var Scroller = (function (_React$Component) {
 			this.setState(this.getState(this.props));
 		}
 	}, {
-		key: 'renderedItems',
-		value: function renderedItems() {
-			return this.state.renderedItems;
-		}
-	}, {
 		key: 'render',
 		value: function render() {
-			if (this.state.sizeBefore) var styleBefore = this.props.direction === 'horizontal' ? { width: this.state.sizeBefore + 'px' } : { height: this.state.sizeBefore + 'px' };
-			var styleAfter = this.props.direction === 'horizontal' ? { width: this.state.sizeAfter + 'px' } : { height: this.state.sizeAfter + 'px' };
-			return _react2['default'].createElement('div', { className: 'Scroller' + this.props.direction }, _react2['default'].createElement('div', { className: 'ScrollSlider', ref: 'slider' }, _react2['default'].createElement('div', { className: 'ScrollSpacer ScrollSpacerBefore', ref: 'spacerBefore', style: styleBefore }), this.state.renderedItems.map(this.props.renderItem), _react2['default'].createElement('div', { className: 'ScrollSpacer ScrollSpacerAfter', ref: 'spacerAfter', style: styleAfter })));
+			var _this = this;
+
+			var slider = {},
+			    before = {},
+			    items = {},
+			    after = {},
+			    itm = {},
+			    dir = this.props.direction;
+			var dim = dir == 'horizontal' ? 'width' : 'height';
+			slider[dim] = this.state.sizeBefore + this.state.sizeItems + this.state.sizeAfter;
+			before[dim] = this.state.sizeBefore;
+			items[dim] = this.state.sizeItems;
+			itm[dim] = this.props.itemSize;
+			after[dim] = this.state.sizeAfter;
+			return _react2['default'].createElement('div', { className: 'Scroller ' + dir }, _react2['default'].createElement('div', { className: 'ScrollSlider', ref: 'slider', style: slider
+			}, _react2['default'].createElement('div', { className: 'ScrollSpacer ScrollSpacerBefore', ref: 'spacerBefore', style: before }), _react2['default'].createElement('div', { className: 'ScrollItems', style: items }, this.state.renderedItems.map(function (item, idx) {
+				var key = _this.props.keyForItem ? _this.props.keyForItem(item, idx) : 'item' + idx;
+				var renderItem = _this.props.renderItem;
+				if (item === null) {
+					if (_this.props.renderLoadingItem) {
+						renderItem = _this.props.renderLoadingItem;
+					} else {
+						item = {};
+					}
+				}
+				return _react2['default'].createElement('div', { className: 'ScrollItem', key: key, style: itm }, renderItem(item, idx));
+			})), _react2['default'].createElement('div', { className: 'ScrollSpacer ScrollSpacerAfter', ref: 'spacerAfter', style: after })));
 		}
 	}]);
 
@@ -4456,54 +4500,149 @@ var Scroller = (function (_React$Component) {
 exports['default'] = Scroller;
 
 Scroller.propTypes = {
-	itemCount: _react2['default'].PropTypes.number.isRequired,
-	items: _react2['default'].PropTypes.array.isRequired,
+	/** 
+  * Total number of items available in the virtual scroller.
+  * Defaults to `items[0].length`;
+  * For a query with 9,287 results, set this to 9287. 
+  */
+	itemCount: _react2['default'].PropTypes.number,
+
+	/**
+  * The items to be scrolled over.
+  * Defaults to `{0:[]}`.
+  * An object mapping page indexes to arrays of items for those pages 
+  * that will be used as the initial data to load into the page buffer.
+  * When paging is not used or only a single page is provided as initial
+  * data, one can supply an array as shorthand for assigning an object
+  * with only page 0 set:
+  * 
+  * items = {[{..}, {..}, ..]}
+  * 
+  * is equivalent to
+  * 
+  * items = {{0: [{..}, {..}, ..]}}
+  */
+	items: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.object, _react2['default'].PropTypes.array]),
+
+	/** 
+  * Size of an item in the scroll direction, in pixels.
+  * Defaults to 300;
+  * For a vertical scroller, set this to the height of each
+  * item, for a horizontal scroller, use the width. 
+  */
 	itemSize: _react2['default'].PropTypes.number.isRequired,
-	renderItem: _react2['default'].PropTypes.func.isRequired,
+
+	/** 
+  * The number of items per page. 
+  * Defaults to `items[0].length` (just one page with all items).
+  */
+	pageSize: _react2['default'].PropTypes.number,
+
+	/** 
+  * The number of pages to buffer. 
+  * Defaults to 5 when `pageSize` is set, otherwise to 1.
+  * 
+  * When the user scrolls to pages that are not in the buffer,
+  * `pageFetch` will be called and it's results will be added
+  * to the buffer. When the number of pages exceeds the number
+  * of pages specified by this setting, those pages furthest 
+  * away from the user's current scroll position will be removed 
+  * from the buffer until this number is no longer exceeded.
+  */
+	pageBufferSize: _react2['default'].PropTypes.number,
+
+	/**
+  * Render function accepting an item and it's index and returning
+  * the markup for that item. This function should accept empty
+  * objects for it's item parameter and return valid markup either way.
+  */
+	renderItem: _react2['default'].PropTypes.func.isRequired, // function(item, index)
+
+	/**
+  * Render function accepting an item index and returning markup 
+  * indicating that the item is still loading.
+  * This function is called when the item to be rendered is not
+  * (yet) available. If this function is not provided. the system
+  * will fall back to calling `renderItem` and providing an empty
+  * object as item parameter. 
+  */
+	renderLoadingItem: _react2['default'].PropTypes.func, // function(index)
+
+	/**
+  * Function accepting an item and it's index and returning
+  * an identifying key for that item. The key is used for technical 
+  * purposes. This function should accept null for it's item parameter 
+  * and return a valid key either way. If this function is not provided, 
+  * the key will default to `'item' + index`.
+  */
+	keyForItem: _react2['default'].PropTypes.func, // function(item, index)
+
+	/**
+  * Function accepting an item and it's index and returning
+  * an identifying handle for that item. The handle is used for 
+  * bookmarking etc, so should preferably be human-friendly. 
+  * This function should accept null for it's item parameter 
+  * and return a valid handle either way. If this function is not provided, 
+  * the key will default to `'item' + index`.
+  */
+	handleForItem: _react2['default'].PropTypes.func, // function(item, index)
+
+	/** 
+  * Number of items shown per row/column. 
+  * Defaults to 1.
+  * For a vertical scroller, set this if there are multiple items per row,
+  * for a horizontal scroller, if there are multiple items per column. You
+  * must ensure that this setting corresponds with the actual situation.
+  * If this setting differs from what is really happening, the scroll
+  * calculations will be off and the behavior will break down.
+  */
 	itemsPer: _react2['default'].PropTypes.number,
-	itemBuffer: _react2['default'].PropTypes.number,
-	scrollDelay: _react2['default'].PropTypes.number,
-	direction: _react2['default'].PropTypes.string
+
+	/**
+  * Time, in ms, to capture scroll events before processing them.
+  * Defaults to 10.
+  */
+	scrollDebounce: _react2['default'].PropTypes.number,
+
+	/**
+  * The direction to scroll in, either 'vertical' or 'horizontal'.
+  * Defaults to 'vertical'.
+  */
+	direction: _react2['default'].PropTypes.oneOf(['vertical', 'horizontal']),
+
+	/**
+  * Size of buffer before the first visible item, defaults to 1.
+  * Enables smoother scrolling by pre-rendering some items into a buffer area
+  * just outside the visible viewport, causing images to be pre-loaded.
+  * The number of items rendered before the first visible item will be
+  * the value of this property, multiplied by `itemsPer`.
+  */
+	bufferBefore: _react2['default'].PropTypes.number,
+
+	/**
+  * Size of buffer after the last visible item, defaults to 1.
+  * Enables smoother scrolling by pre-rendering some items into a buffer area
+  * just outside the visible viewport, causing images to be pre-loaded.
+  * The number of items rendered after the last visible item will be
+  * the value of this property, multiplied by `itemsPer`.
+  */
+	bufferAfter: _react2['default'].PropTypes.number,
+
+	/**
+  * Whether to snap items to grid when scrolling comes to an end.
+  */
+	snap: _react2['default'].PropTypes.bool
 };
 
-Scroller.getBox = function (view, list) {
-	list.size = list.size || list.end - list.start;
-	return {
-		start: Math.max(0, Math.min(view.start - list.start)),
-		end: Math.max(0, Math.min(list.size, view.end - list.start))
-	};
-};
-
-Scroller.getItems = function (viewStart, viewSize, itemStart, itemSize, itemCount, itemBuffer) {
-	var result = { itemsInView: 0 };
-	if (itemCount === 0 || itemSize === 0) {
-		return result;
-	}
-
-	var listSize = itemSize * itemCount,
-	    bufferSize = itemBuffer * itemSize;
-	viewStart -= bufferSize;
-	viewSize += bufferSize * 2;
-	// list is outside of viewport
-	if (viewStart + viewSize < itemStart || viewStart > viewStart + viewSize) {
-		return result;
-	}
-
-	var listBox = {
-		start: itemStart,
-		size: listSize,
-		end: itemStart + listSize
-	},
-	    viewBox = {
-		start: viewStart,
-		end: viewStart + viewSize
-	},
-	    listViewBox = Scroller.getBox(viewBox, listBox);
-
-	result.firstItemIndex = Math.max(0, Math.floor(listViewBox.start / itemSize));
-	result.lastItemIndex = Math.ceil(listViewBox.end / itemSize) - 1;
-	result.itemsInView = result.lastItemIndex - result.firstItemIndex + 1;
-	return result;
+Scroller.defaultProps = {
+	items: { 0: [] },
+	itemSize: 300,
+	itemsPer: 1,
+	bufferBefore: 1,
+	bufferAfter: 1,
+	scrollDebounce: 10,
+	direction: 'vertical',
+	snap: false
 };
 
 function arraysEqual(a, b) {
@@ -4568,7 +4707,7 @@ function debounce(func, wait, immediate) {
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],62:[function(require,module,exports){
+},{"picolog":21}],63:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4599,45 +4738,69 @@ var _routes = require('./routes');
 var _routes2 = _interopRequireDefault(_routes);
 
 if (typeof window != 'undefined') {
-	var createHistory = require('history/lib/createBrowserHistory');
+	(function () {
+		var apphistory = require('./apphistory');
 
-	//Needed for onTouchTap
-	//Can go away when react 1.0 release
-	//Check this repo:
-	//https://github.com/zilverline/react-tap-event-plugin
-	require("react-tap-event-plugin")();
+		//Needed for onTouchTap
+		//Can go away when react 1.0 release
+		//Check this repo:
+		//https://github.com/zilverline/react-tap-event-plugin
+		require("react-tap-event-plugin")();
 
-	document.addEventListener('DOMContentLoaded', function () {
-		_reactDom2['default'].render(_react2['default'].createElement(_reactRouter.Router, { history: createHistory() }, _routes2['default']), document.getElementById('bridalapp-ui'));
-	});
+		document.addEventListener('DOMContentLoaded', function () {
+			_reactDom2['default'].render(_react2['default'].createElement(_reactRouter.Router, { history: apphistory }, _routes2['default']), document.getElementById('bridalapp-ui'));
+		});
+	})();
 } else if (typeof global != undefined) {
-	//	require('es6-symbol/implement'); // polyfill for ES6 'Symbol' class
-	global.console = _picolog2['default'];
-	global.renderer = {
-		route: function route(path) {
-			_picolog2['default'].trace('Determining route for path [' + path + ']');
-			var result = {};
-			(0, _reactRouter.match)({ routes: _routes2['default'], location: path }, function (error, redirect, props) {
-				_picolog2['default'].trace('matched: error=' + error + ', redirect=' + redirect + ', props=' + props);
-				result.error = error;
-				result.redirect = redirect;
-				result.props = props;
-			});
-			_picolog2['default'].debug('Determined route for path [' + path + ']: ' + (result.error ? 'error: ' + result.error : result.redirect ? 'redirect: ' + result.redirect : result.props ? 'render: ' + result.props : 'not found'));
-			return result;
-		},
+	_picolog2['default'].level = _picolog2['default'].DEBUG;
 
-		render: function render(props) {
-			return _reactDomServer2['default'].renderToString(_react2['default'].createElement(_reactRouter.RoutingContext, props));
-		}
+	/**
+  * Determines the route for the given path and renders the markup for it if possible.
+  * 
+  * The resulting string consists of two parts, separated by a colon. The first part 
+  * indicates the type of result and can be one of 'MARKUP', 'REDIRECT', 'NOTFOUND' or 'ERROR'.
+  * The second part contains detail data for the result: HTML in case of 'MARKUP', the
+  * URL to redirect to in case of 'REDIRECT', the original path in case of 'NOTFOUND' 
+  * or an error message in case of 'ERROR'.
+  * <code><pre>
+  * 'MARKUP:<div>Some markup to render</div>'  
+  * 'REDIRECT:/new/route'
+  * 'NOTFOUND:/some/path'  
+  * 'ERROR:Oops something went wrong.'
+  * </pre></code>  
+  * 
+  * 
+  * @param path The path to render
+  * @returns A String consisting of a result identifier and result data, separated by a colon.
+  */
+	global.render = function render(path, initialDataJSON) {
+		var result;
+		(0, _reactRouter.match)({ routes: _routes2['default'], location: path }, function (error, redirect, props) {
+			_picolog2['default'].debug('match result for location [' + path + ']: props=' + props + ', redirect=' + redirect + ', error=' + error);
+			if (redirect) {
+				_picolog2['default'].debug('redirecting to [' + redirect.pathname + redirect.search + ']...');
+				result = 'REDIRECT:' + redirect.pathname + redirect.search;
+			} else if (props) {
+				_picolog2['default'].debug('initialDataJSON=' + initialDataJSON);
+				global.initialData = JSON.parse(initialDataJSON);
+				_picolog2['default'].debug('initialData=' + global.initialData);
+
+				result = 'MARKUP:' + _reactDomServer2['default'].renderToString(_react2['default'].createElement(_reactRouter.RoutingContext, props));
+			} else if (error) {
+				result = 'ERROR:' + error.message;
+			} else {
+				result = 'NOTFOUND:' + path;
+			}
+		});
+		return result;
 	};
 	global.log = _picolog2['default'];
 } else {
-	_picolog2['default'].error("No `global` context found. If running in Nashorn, please define `var global = this;` before loading this bundle.");
+	_picolog2['default'].error("No `global` context found. If running in Nashorn, please eval `var global = this;` before loading this bundle.");
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./routes":63,"history/lib/createBrowserHistory":8,"picolog":21,"react-tap-event-plugin":41}],63:[function(require,module,exports){
+},{"./apphistory":60,"./routes":64,"picolog":21,"react-tap-event-plugin":41}],64:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4671,6 +4834,10 @@ var _viewsProducts = require('./views/Products');
 
 var _viewsProducts2 = _interopRequireDefault(_viewsProducts);
 
+var _viewsProductSearch = require('./views/ProductSearch');
+
+var _viewsProductSearch2 = _interopRequireDefault(_viewsProductSearch);
+
 var _viewsStores = require('./views/Stores');
 
 var _viewsStores2 = _interopRequireDefault(_viewsStores);
@@ -4679,15 +4846,11 @@ var _viewsBrands = require('./views/Brands');
 
 var _viewsBrands2 = _interopRequireDefault(_viewsBrands);
 
-_picolog2['default'].debug('Loading...');
-
-_picolog2['default'].debug('Loaded. React=' + _react2['default'] + ', Router=' + _reactRouter.Router + ', RouteHandler=' + _reactRouter.RouteHandler + ', Route=' + _reactRouter.Route + ', IndexRoute=' + _reactRouter.IndexRoute + ', Link=' + _reactRouter.Link);
-
-exports['default'] = _react2['default'].createElement(_reactRouter.Route, { component: _viewsApp2['default'] }, _react2['default'].createElement(_reactRouter.Route, { path: '/', component: _viewsHome2['default'] }), _react2['default'].createElement(_reactRouter.Route, { path: '/products', component: _viewsProducts2['default'] }), _react2['default'].createElement(_reactRouter.Route, { path: '/stores', component: _viewsStores2['default'] }), _react2['default'].createElement(_reactRouter.Route, { path: '/brands', component: _viewsBrands2['default'] }));
+exports['default'] = _react2['default'].createElement(_reactRouter.Route, { component: _viewsApp2['default'] }, _react2['default'].createElement(_reactRouter.Route, { path: '/', components: { main: _viewsHome2['default'], appbar: _viewsHome.HomeActionBar } }), _react2['default'].createElement(_reactRouter.Route, { path: '/products', components: { main: _viewsProducts2['default'], appbar: _viewsProductSearch.ProductSearchActionBar } }, _react2['default'].createElement(_reactRouter.IndexRedirect, { to: '/products/search/Wedding+Dresses' }), _react2['default'].createElement(_reactRouter.Route, { path: 'search/:category', component: _viewsProductSearch2['default'] })), _react2['default'].createElement(_reactRouter.Route, { path: '/stores', components: { main: _viewsStores2['default'], appbar: _viewsStores.StoresActionBar } }), _react2['default'].createElement(_reactRouter.Route, { path: '/brands', components: { main: _viewsBrands2['default'], appbar: _viewsBrands.BrandsActionBar } }));
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./views/App":64,"./views/Brands":65,"./views/Home":66,"./views/Products":67,"./views/Stores":68,"picolog":21}],64:[function(require,module,exports){
+},{"./views/App":65,"./views/Brands":66,"./views/Home":67,"./views/ProductSearch":69,"./views/Products":70,"./views/Stores":71,"picolog":21}],65:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4740,6 +4903,10 @@ function _inherits(subClass, superClass) {
 		throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass);
 	}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 }
+
+var _picolog = require('picolog');
+
+var _picolog2 = _interopRequireDefault(_picolog);
 
 var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
 
@@ -4766,6 +4933,12 @@ var App = (function (_React$Component) {
 		this.rightDrawerToggle = this.rightDrawerToggle.bind(this);
 	}
 
+	/*
+ App.contextTypes = {
+ 	history: React.PropTypes.object
+ };
+ */
+
 	_createClass(App, [{
 		key: 'rightDrawerToggle',
 		value: function rightDrawerToggle() {
@@ -4776,7 +4949,12 @@ var App = (function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			return _react2['default'].createElement(_reactMdlLibLayout.Layout, { fixedHeader: true, fixedDrawer: true }, _react2['default'].createElement(_reactMdlLibLayout.Header, { title: 'Title' }, _react2['default'].createElement('img', { className: 'logo', src: 'https://cdn.rawgit.com/download/bridalapp-static/0.9.14/bridalapp/logo-bridalapp.png' }), _react2['default'].createElement(_reactMdlLibLayout.Navigation, null, _react2['default'].createElement('i', { className: 'material-icons', onClick: this.rightDrawerToggle }, 'account_circle'))), _react2['default'].createElement(_componentsRightDrawer2['default'], { title: 'Right!', className: this.state.rightDrawerOpen ? 'is-visible' : '' }, _react2['default'].createElement(_reactMdlLibLayout.Navigation, null, _react2['default'].createElement(_reactRouter.Link, { to: '/' }, 'Home'), _react2['default'].createElement(_reactRouter.Link, { to: '/products' }, 'Products'), _react2['default'].createElement(_reactRouter.Link, { to: '/stores' }, 'Stores'), _react2['default'].createElement(_reactRouter.Link, { to: '/brands' }, 'Brands'))), _react2['default'].createElement(_reactMdlLibLayout.Drawer, { title: 'Title' }, _react2['default'].createElement(_reactMdlLibLayout.Navigation, null, _react2['default'].createElement(_reactRouter.Link, { to: '/' }, 'Home'), _react2['default'].createElement(_reactRouter.Link, { to: '/products' }, 'Products'), _react2['default'].createElement(_reactRouter.Link, { to: '/stores' }, 'Stores'), _react2['default'].createElement(_reactRouter.Link, { to: '/brands' }, 'Brands'))), _react2['default'].createElement(_reactMdlLibLayout.Content, null, this.props.children), _react2['default'].createElement('div', { className: 'mdl-layout__obfuscator ' + (this.state.rightDrawerOpen ? 'is-visible' : ''), onClick: this.rightDrawerToggle }));
+			_picolog2['default'].warn("appbar=" + this.props.appbar);
+			_picolog2['default'].warn("main=" + this.props.main);
+			//		let main = React.cloneElement(this.props.children, {
+			//            initialData: this.props.initialData
+			//        })
+			return _react2['default'].createElement(_reactMdlLibLayout.Layout, { fixedHeader: true, fixedDrawer: true }, _react2['default'].createElement(_reactMdlLibLayout.Header, { title: 'Title' }, _react2['default'].createElement('img', { className: 'logo', src: 'https://cdn.rawgit.com/download/bridalapp-static/0.9.14/bridalapp/logo-bridalapp.png' }), _react2['default'].createElement(_reactMdlLibLayout.Navigation, { className: 'ActionBar' }, this.props.appbar), _react2['default'].createElement(_reactMdlLibLayout.Navigation, null, _react2['default'].createElement('i', { className: 'material-icons', onClick: this.rightDrawerToggle }, 'account_circle'))), _react2['default'].createElement(_componentsRightDrawer2['default'], { title: 'Right!', className: this.state.rightDrawerOpen ? 'is-visible' : '' }, _react2['default'].createElement(_reactMdlLibLayout.Navigation, null, _react2['default'].createElement(_reactRouter.Link, { to: '/' }, 'Home'), _react2['default'].createElement(_reactRouter.Link, { to: '/products' }, 'Products'), _react2['default'].createElement(_reactRouter.Link, { to: '/stores' }, 'Stores'), _react2['default'].createElement(_reactRouter.Link, { to: '/brands' }, 'Brands'))), _react2['default'].createElement(_reactMdlLibLayout.Drawer, { title: 'Title' }, _react2['default'].createElement(_reactMdlLibLayout.Navigation, null, _react2['default'].createElement(_reactRouter.Link, { to: '/' }, 'Home'), _react2['default'].createElement(_reactRouter.Link, { to: '/products' }, 'Products'), _react2['default'].createElement(_reactRouter.Link, { to: '/stores' }, 'Stores'), _react2['default'].createElement(_reactRouter.Link, { to: '/brands' }, 'Brands'))), _react2['default'].createElement(_reactMdlLibLayout.Content, { className: 'main' }, this.props.main), _react2['default'].createElement('div', { className: 'mdl-layout__obfuscator ' + (this.state.rightDrawerOpen ? 'is-visible' : ''), onClick: this.rightDrawerToggle }));
 		}
 	}]);
 
@@ -4784,25 +4962,21 @@ var App = (function (_React$Component) {
 })(_react2['default'].Component);
 
 exports['default'] = App;
-
-App.contextTypes = {
-	history: _react2['default'].PropTypes.object
-};
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../components/RightDrawer":60,"react-mdl/lib/Layout":30}],65:[function(require,module,exports){
+},{"../components/RightDrawer":61,"picolog":21,"react-mdl/lib/Layout":30}],66:[function(require,module,exports){
 (function (global){
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
 var _createClass = (function () {
 	function defineProperties(target, props) {
 		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ('value' in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+			var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
 		}
 	}return function (Constructor, protoProps, staticProps) {
 		if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
@@ -4819,7 +4993,7 @@ var _get = function get(_x, _x2, _x3) {
 			} else {
 				_x = parent;_x2 = property;_x3 = receiver;_again = true;desc = parent = undefined;continue _function;
 			}
-		} else if ('value' in desc) {
+		} else if ("value" in desc) {
 			return desc.value;
 		} else {
 			var getter = desc.get;if (getter === undefined) {
@@ -4830,18 +5004,18 @@ var _get = function get(_x, _x2, _x3) {
 };
 
 function _interopRequireDefault(obj) {
-	return obj && obj.__esModule ? obj : { 'default': obj };
+	return obj && obj.__esModule ? obj : { "default": obj };
 }
 
 function _classCallCheck(instance, Constructor) {
 	if (!(instance instanceof Constructor)) {
-		throw new TypeError('Cannot call a class as a function');
+		throw new TypeError("Cannot call a class as a function");
 	}
 }
 
 function _inherits(subClass, superClass) {
-	if (typeof superClass !== 'function' && superClass !== null) {
-		throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass);
+	if (typeof superClass !== "function" && superClass !== null) {
+		throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
 	}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 }
 
@@ -4855,24 +5029,45 @@ var Brands = (function (_React$Component) {
 	function Brands() {
 		_classCallCheck(this, Brands);
 
-		_get(Object.getPrototypeOf(Brands.prototype), 'constructor', this).apply(this, arguments);
+		_get(Object.getPrototypeOf(Brands.prototype), "constructor", this).apply(this, arguments);
 	}
 
 	_createClass(Brands, [{
-		key: 'render',
+		key: "render",
 		value: function render() {
-			return _react2['default'].createElement('div', null, _react2['default'].createElement('h1', null, 'Brands'), _react2['default'].createElement('p', null, 'Here you should be able to browse through all brands.'));
+			return _react2["default"].createElement("div", null, _react2["default"].createElement("h1", null, "Brands"), _react2["default"].createElement("p", null, "Here you should be able to browse through all brands."));
 		}
 	}]);
 
 	return Brands;
-})(_react2['default'].Component);
+})(_react2["default"].Component);
 
-exports['default'] = Brands;
-module.exports = exports['default'];
+exports["default"] = Brands;
+
+var BrandsActionBar = (function (_React$Component2) {
+	_inherits(BrandsActionBar, _React$Component2);
+
+	function BrandsActionBar() {
+		_classCallCheck(this, BrandsActionBar);
+
+		_get(Object.getPrototypeOf(BrandsActionBar.prototype), "constructor", this).apply(this, arguments);
+	}
+
+	_createClass(BrandsActionBar, [{
+		key: "render",
+		value: function render() {
+			return _react2["default"].createElement("div", { className: "ActionBar BrandsActionBar" }, "BrandsActionBar");
+		}
+	}]);
+
+	return BrandsActionBar;
+})(_react2["default"].Component);
+
+Brands.BrandsActionBar = BrandsActionBar;
+module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],66:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4942,7 +5137,7 @@ var Home = (function (_React$Component) {
 	_createClass(Home, [{
 		key: 'render',
 		value: function render() {
-			return _react2['default'].createElement('div', null, _react2['default'].createElement('h1', null, 'Home'), _react2['default'].createElement('p', null, 'Top-level product categories, news, featured products etc.'));
+			return _react2['default'].createElement('div', { style: { backgroundColor: 'green', color: 'white' } }, _react2['default'].createElement('h1', null, 'Home'), _react2['default'].createElement('p', null, 'Top-level product categories, news, featured products etc.'));
 		}
 	}]);
 
@@ -4950,10 +5145,31 @@ var Home = (function (_React$Component) {
 })(_react2['default'].Component);
 
 exports['default'] = Home;
+
+var HomeActionBar = (function (_React$Component2) {
+	_inherits(HomeActionBar, _React$Component2);
+
+	function HomeActionBar() {
+		_classCallCheck(this, HomeActionBar);
+
+		_get(Object.getPrototypeOf(HomeActionBar.prototype), 'constructor', this).apply(this, arguments);
+	}
+
+	_createClass(HomeActionBar, [{
+		key: 'render',
+		value: function render() {
+			return _react2['default'].createElement('div', { className: 'ActionBar HomeActionBar' }, 'HomeActionBar');
+		}
+	}]);
+
+	return HomeActionBar;
+})(_react2['default'].Component);
+
+Home.HomeActionBar = HomeActionBar;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],67:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -5007,6 +5223,10 @@ function _inherits(subClass, superClass) {
 	}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 }
 
+var _picolog = require('picolog');
+
+var _picolog2 = _interopRequireDefault(_picolog);
+
 var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
 
 var _react2 = _interopRequireDefault(_react);
@@ -5015,45 +5235,94 @@ var _componentsScroller = require('../components/Scroller');
 
 var _componentsScroller2 = _interopRequireDefault(_componentsScroller);
 
-var Products = (function (_React$Component) {
-	_inherits(Products, _React$Component);
+var ProductBrowser = (function (_React$Component) {
+	_inherits(ProductBrowser, _React$Component);
 
-	function Products() {
-		_classCallCheck(this, Products);
+	function ProductBrowser(props) {
+		_classCallCheck(this, ProductBrowser);
 
-		_get(Object.getPrototypeOf(Products.prototype), 'constructor', this).call(this);
-		this.state = {
-			items: []
-		};
-		var names = ['Anafi', 'Aura', 'Baku', 'Ceos', 'Delos', 'Ella', 'Hada', 'Hawaii'];
-		for (var i = 0; i < 1000; i++) {
-			var nameIdx = i % 8;
-			this.state.items.push({ id: i, name: names[nameIdx], description: 'This is product number ' + i + '.', brandId: 'j4' });
-		}
+		_get(Object.getPrototypeOf(ProductBrowser.prototype), 'constructor', this).call(this, props);
+		this.state = this.getState(props);
 	}
 
-	_createClass(Products, [{
+	_createClass(ProductBrowser, [{
+		key: 'getState',
+		value: function getState(props) {
+			var items = this.state && this.state.items;
+			var itemCount = this.state && this.state.itemCount;
+			if (!items) {
+				var initialData = typeof window != 'undefined' ? window.initialData : global.initialData;
+				if (initialData && initialData.searchResults) {
+					if (initialData.searchResults instanceof Array) {
+						items = initialData.searchResults;
+					} else {
+						// TODO paging
+						itemCount = initialData.searchResults.itemCount;
+						items = initialData.searchResults.resultPages;
+					}
+				}
+			}
+
+			return {
+				items: items || [],
+				itemCount: itemCount || items && items.length || 0
+			};
+		}
+	}, {
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(nextProps) {
+			this.setState(this.getState(nextProps));
+		}
+	}, {
+		key: 'componentWillMount',
+		value: function componentWillMount() {}
+	}, {
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.mounted = true;
+			this.setState(this.getState(this.props));
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			this.mounted = false;
+		}
+	}, {
 		key: 'render',
 		value: function render() {
-			return _react2['default'].createElement('div', null, _react2['default'].createElement(_componentsScroller2['default'], { direction: 'vertical',
-				itemCount: 1000,
-				itemSize: 100,
-				itemsPer: 1,
+			_picolog2['default'].debug(this.state.items);
+			return _react2['default'].createElement(_componentsScroller2['default'], {
+				className: 'ProductBrowser ' + this.props.category,
+				direction: 'vertical',
+				bufferBefore: 2,
 				items: this.state.items,
-				renderItem: function renderItem(item) {
-					return _react2['default'].createElement('div', { key: item.id, style: { height: '100px' } }, _react2['default'].createElement('h2', null, item.name), _react2['default'].createElement('p', null, item.description));
-				} }));
+				bufferAfter: 4,
+				itemCount: this.state.itemCount,
+				itemSize: 640,
+				//				itemsPer={3}
+				renderItem: function renderItem(item, idx) {
+					return _react2['default'].createElement('div', { className: 'Card' }, _react2['default'].createElement('h2', null, item.name || 'Loading'), _react2['default'].createElement('p', null, item.description || 'Loading item ' + idx));
+				}
+			});
 		}
 	}]);
 
-	return Products;
+	return ProductBrowser;
 })(_react2['default'].Component);
 
-exports['default'] = Products;
+exports['default'] = ProductBrowser;
+
+ProductBrowser.propTypes = {
+	category: _react2['default'].PropTypes.string
+};
+
+ProductBrowser.defaultProps = {
+	category: 'Wedding Dresses'
+};
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../components/Scroller":61}],68:[function(require,module,exports){
+},{"../components/Scroller":62,"picolog":21}],69:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -5104,6 +5373,197 @@ function _classCallCheck(instance, Constructor) {
 function _inherits(subClass, superClass) {
 	if (typeof superClass !== 'function' && superClass !== null) {
 		throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass);
+	}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+var _picolog = require('picolog');
+
+var _picolog2 = _interopRequireDefault(_picolog);
+
+var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _ProductBrowser = require('./ProductBrowser');
+
+var _ProductBrowser2 = _interopRequireDefault(_ProductBrowser);
+
+var ProductSearch = (function (_React$Component) {
+	_inherits(ProductSearch, _React$Component);
+
+	function ProductSearch(props) {
+		_classCallCheck(this, ProductSearch);
+
+		_get(Object.getPrototypeOf(ProductSearch.prototype), 'constructor', this).call(this, props);
+	}
+
+	_createClass(ProductSearch, [{
+		key: 'render',
+		value: function render() {
+			return _react2['default'].createElement(_ProductBrowser2['default'], { className: this.props.params.category, category: this.props.params.category });
+		}
+	}]);
+
+	return ProductSearch;
+})(_react2['default'].Component);
+
+exports['default'] = ProductSearch;
+
+var ProductSearchActionBar = (function (_React$Component2) {
+	_inherits(ProductSearchActionBar, _React$Component2);
+
+	function ProductSearchActionBar() {
+		_classCallCheck(this, ProductSearchActionBar);
+
+		_get(Object.getPrototypeOf(ProductSearchActionBar.prototype), 'constructor', this).apply(this, arguments);
+	}
+
+	_createClass(ProductSearchActionBar, [{
+		key: 'render',
+		value: function render() {
+			_picolog2['default'].warn('category=' + this.props.params.category);
+			return _react2['default'].createElement('div', { className: 'ActionBar ProductSearchActionBar' }, 'ProductSearchActionBar');
+		}
+	}]);
+
+	return ProductSearchActionBar;
+})(_react2['default'].Component);
+
+exports.ProductSearchActionBar = ProductSearchActionBar;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./ProductBrowser":68,"picolog":21}],70:[function(require,module,exports){
+(function (global){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = (function () {
+	function defineProperties(target, props) {
+		for (var i = 0; i < props.length; i++) {
+			var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+		}
+	}return function (Constructor, protoProps, staticProps) {
+		if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+	};
+})();
+
+var _get = function get(_x, _x2, _x3) {
+	var _again = true;_function: while (_again) {
+		var object = _x,
+		    property = _x2,
+		    receiver = _x3;_again = false;if (object === null) object = Function.prototype;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
+			var parent = Object.getPrototypeOf(object);if (parent === null) {
+				return undefined;
+			} else {
+				_x = parent;_x2 = property;_x3 = receiver;_again = true;desc = parent = undefined;continue _function;
+			}
+		} else if ("value" in desc) {
+			return desc.value;
+		} else {
+			var getter = desc.get;if (getter === undefined) {
+				return undefined;
+			}return getter.call(receiver);
+		}
+	}
+};
+
+function _interopRequireDefault(obj) {
+	return obj && obj.__esModule ? obj : { "default": obj };
+}
+
+function _classCallCheck(instance, Constructor) {
+	if (!(instance instanceof Constructor)) {
+		throw new TypeError("Cannot call a class as a function");
+	}
+}
+
+function _inherits(subClass, superClass) {
+	if (typeof superClass !== "function" && superClass !== null) {
+		throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+	}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
+
+var _react2 = _interopRequireDefault(_react);
+
+var Products = (function (_React$Component) {
+	_inherits(Products, _React$Component);
+
+	function Products(props) {
+		_classCallCheck(this, Products);
+
+		_get(Object.getPrototypeOf(Products.prototype), "constructor", this).call(this, props);
+	}
+
+	_createClass(Products, [{
+		key: "render",
+		value: function render() {
+			return _react2["default"].createElement("div", { className: "Products" }, this.props.children);
+		}
+	}]);
+
+	return Products;
+})(_react2["default"].Component);
+
+exports["default"] = Products;
+module.exports = exports["default"];
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],71:[function(require,module,exports){
+(function (global){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = (function () {
+	function defineProperties(target, props) {
+		for (var i = 0; i < props.length; i++) {
+			var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+		}
+	}return function (Constructor, protoProps, staticProps) {
+		if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+	};
+})();
+
+var _get = function get(_x, _x2, _x3) {
+	var _again = true;_function: while (_again) {
+		var object = _x,
+		    property = _x2,
+		    receiver = _x3;_again = false;if (object === null) object = Function.prototype;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
+			var parent = Object.getPrototypeOf(object);if (parent === null) {
+				return undefined;
+			} else {
+				_x = parent;_x2 = property;_x3 = receiver;_again = true;desc = parent = undefined;continue _function;
+			}
+		} else if ("value" in desc) {
+			return desc.value;
+		} else {
+			var getter = desc.get;if (getter === undefined) {
+				return undefined;
+			}return getter.call(receiver);
+		}
+	}
+};
+
+function _interopRequireDefault(obj) {
+	return obj && obj.__esModule ? obj : { "default": obj };
+}
+
+function _classCallCheck(instance, Constructor) {
+	if (!(instance instanceof Constructor)) {
+		throw new TypeError("Cannot call a class as a function");
+	}
+}
+
+function _inherits(subClass, superClass) {
+	if (typeof superClass !== "function" && superClass !== null) {
+		throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
 	}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 }
 
@@ -5117,23 +5577,44 @@ var Stores = (function (_React$Component) {
 	function Stores() {
 		_classCallCheck(this, Stores);
 
-		_get(Object.getPrototypeOf(Stores.prototype), 'constructor', this).apply(this, arguments);
+		_get(Object.getPrototypeOf(Stores.prototype), "constructor", this).apply(this, arguments);
 	}
 
 	_createClass(Stores, [{
-		key: 'render',
+		key: "render",
 		value: function render() {
-			return _react2['default'].createElement('div', null, _react2['default'].createElement('h1', null, 'Stores'), _react2['default'].createElement('p', null, 'Here you should be able to browse through nearby stores.'));
+			return _react2["default"].createElement("div", null, _react2["default"].createElement("h1", null, "Stores"), _react2["default"].createElement("p", null, "Here you should be able to browse through nearby stores."));
 		}
 	}]);
 
 	return Stores;
-})(_react2['default'].Component);
+})(_react2["default"].Component);
 
-exports['default'] = Stores;
-module.exports = exports['default'];
+exports["default"] = Stores;
+
+var StoresActionBar = (function (_React$Component2) {
+	_inherits(StoresActionBar, _React$Component2);
+
+	function StoresActionBar() {
+		_classCallCheck(this, StoresActionBar);
+
+		_get(Object.getPrototypeOf(StoresActionBar.prototype), "constructor", this).apply(this, arguments);
+	}
+
+	_createClass(StoresActionBar, [{
+		key: "render",
+		value: function render() {
+			return _react2["default"].createElement("div", { className: "ActionBar StoresActionBar" }, "StoresActionBar");
+		}
+	}]);
+
+	return StoresActionBar;
+})(_react2["default"].Component);
+
+Stores.StoresActionBar = StoresActionBar;
+module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[62]);
+},{}]},{},[63]);
 
 //# sourceMappingURL=bridalapp-ui.umd.js.map

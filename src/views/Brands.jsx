@@ -10,3 +10,13 @@ export default class Brands extends React.Component {
 		);
 	}
 }
+
+class BrandsActionBar extends React.Component {
+	render() {
+		return (
+			<div className="ActionBar BrandsActionBar">BrandsActionBar</div>
+		);
+	}
+}
+
+Brands.BrandsActionBar = BrandsActionBar;

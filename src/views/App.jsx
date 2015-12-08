@@ -1,3 +1,4 @@
+import log from 'picolog';
 import React from 'react';
 import { Link } from 'react-router';
 import { Layout, Header, Navigation, HeaderRow, HeaderTabs, Drawer, Content } from 'react-mdl/lib/Layout';
@@ -17,10 +18,18 @@ export default class App extends React.Component {
 		});
 	}
 	render() {
+		log.warn("appbar=" + this.props.appbar);
+		log.warn("main=" + this.props.main);
+//		let main = React.cloneElement(this.props.children, {
+//            initialData: this.props.initialData
+//        })
 		return (
 			<Layout fixedHeader fixedDrawer>
 				<Header title="Title">
 					<img className="logo" src="https://cdn.rawgit.com/download/bridalapp-static/0.9.14/bridalapp/logo-bridalapp.png" />
+					<Navigation className="ActionBar">
+						{this.props.appbar}
+					</Navigation>
 					<Navigation>
 						<i className="material-icons" onClick={this.rightDrawerToggle}>account_circle</i>
 					</Navigation>
@@ -42,13 +51,14 @@ export default class App extends React.Component {
 					</Navigation>
 				</Drawer>
 				<Content className="main">
-					{this.props.children}
+					{this.props.main}
 				</Content>
 				<div className={'mdl-layout__obfuscator ' + (this.state.rightDrawerOpen ? 'is-visible' : '')} onClick={this.rightDrawerToggle}></div>
 			</Layout>
 		);
 	}
 }
+
 /*
 App.contextTypes = {
 	history: React.PropTypes.object

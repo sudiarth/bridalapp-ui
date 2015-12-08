@@ -1,21 +1,21 @@
-import log from 'picolog'; 
-log.debug('Loading...');
-
+import log from 'picolog';
 import React from 'react';
-import { Router, IndexRoute, Link, Route, RouteHandler } from 'react-router';
-log.debug('Loaded. React=' + React + ', Router=' + Router + ', RouteHandler=' + RouteHandler + ', Route=' + Route + ', IndexRoute=' + IndexRoute + ', Link=' + Link);
-
+import { Route, IndexRedirect } from 'react-router';
 import App from './views/App';
-import Home from './views/Home';
+import Home, { HomeActionBar } from './views/Home';
 import Products from './views/Products';
-import Stores from './views/Stores';
-import Brands from './views/Brands';
+import ProductSearch, { ProductSearchActionBar } from './views/ProductSearch';
+import Stores, { StoresActionBar } from './views/Stores';
+import Brands, { BrandsActionBar } from './views/Brands';
 
 export default (
 	<Route component={App}>
-		<Route path="/" component={Home} />
-		<Route path="/products" component={Products} />
-		<Route path="/stores" component={Stores} />
-		<Route path="/brands" component={Brands} />
+		<Route path="/" components={{main:Home, appbar:HomeActionBar}} />
+		<Route path="/products" components={{main:Products, appbar:ProductSearchActionBar}} >
+			<IndexRedirect to="/products/search/Wedding+Dresses" />
+			<Route path="search/:category" component={ProductSearch} />
+		</Route>
+		<Route path="/stores" components={{main:Stores, appbar:StoresActionBar}} />
+		<Route path="/brands" components={{main:Brands, appbar:BrandsActionBar}} />
 	</Route>
 );
