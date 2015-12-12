@@ -23,8 +23,6 @@ if (typeof window != 'undefined') {
 	});
 }
 else if (typeof global != undefined) {
-	log.level = log.DEBUG;
-
 	/**
 	 * Determines the route for the given path and renders the markup for it if possible.
 	 * 

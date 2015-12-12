@@ -18,11 +18,6 @@ export default class App extends React.Component {
 		});
 	}
 	render() {
-		log.warn("appbar=" + this.props.appbar);
-		log.warn("main=" + this.props.main);
-//		let main = React.cloneElement(this.props.children, {
-//            initialData: this.props.initialData
-//        })
 		return (
 			<Layout fixedHeader fixedDrawer>
 				<Header title="Title">
