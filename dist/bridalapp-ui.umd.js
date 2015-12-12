@@ -5004,8 +5004,6 @@ if (typeof window != 'undefined') {
 		});
 	})();
 } else if (typeof global != undefined) {
-	_picolog2['default'].level = _picolog2['default'].DEBUG;
-
 	/**
   * Determines the route for the given path and renders the markup for it if possible.
   * 
@@ -5201,11 +5199,6 @@ var App = (function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			_picolog2['default'].warn("appbar=" + this.props.appbar);
-			_picolog2['default'].warn("main=" + this.props.main);
-			//		let main = React.cloneElement(this.props.children, {
-			//            initialData: this.props.initialData
-			//        })
 			return _react2['default'].createElement(_reactMdlLibLayout.Layout, { fixedHeader: true, fixedDrawer: true }, _react2['default'].createElement(_reactMdlLibLayout.Header, { title: 'Title' }, _react2['default'].createElement('img', { className: 'logo', src: 'https://cdn.rawgit.com/download/bridalapp-static/0.9.14/bridalapp/logo-bridalapp.png' }), _react2['default'].createElement(_reactMdlLibLayout.Navigation, { className: 'ActionBar' }, this.props.appbar), _react2['default'].createElement(_reactMdlLibLayout.Navigation, null, _react2['default'].createElement('i', { className: 'material-icons', onClick: this.rightDrawerToggle }, 'account_circle'))), _react2['default'].createElement(_componentsRightDrawer2['default'], { title: 'Right!', className: this.state.rightDrawerOpen ? 'is-visible' : '' }, _react2['default'].createElement(_reactMdlLibLayout.Navigation, null, _react2['default'].createElement(_reactRouter.Link, { to: '/' }, 'Home'), _react2['default'].createElement(_reactRouter.Link, { to: '/products' }, 'Products'), _react2['default'].createElement(_reactRouter.Link, { to: '/stores' }, 'Stores'), _react2['default'].createElement(_reactRouter.Link, { to: '/brands' }, 'Brands'))), _react2['default'].createElement(_reactMdlLibLayout.Drawer, { title: 'Title' }, _react2['default'].createElement(_reactMdlLibLayout.Navigation, null, _react2['default'].createElement(_reactRouter.Link, { to: '/' }, 'Home'), _react2['default'].createElement(_reactRouter.Link, { to: '/products' }, 'Products'), _react2['default'].createElement(_reactRouter.Link, { to: '/stores' }, 'Stores'), _react2['default'].createElement(_reactRouter.Link, { to: '/brands' }, 'Brands'))), _react2['default'].createElement(_reactMdlLibLayout.Content, { className: 'main' }, this.props.main), _react2['default'].createElement('div', { className: 'mdl-layout__obfuscator ' + (this.state.rightDrawerOpen ? 'is-visible' : ''), onClick: this.rightDrawerToggle }));
 		}
 	}]);
