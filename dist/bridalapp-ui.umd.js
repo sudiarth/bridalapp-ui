@@ -4270,6 +4270,224 @@ var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
+var FlipCard = (function (_React$Component) {
+	_inherits(FlipCard, _React$Component);
+
+	function FlipCard(props) {
+		_classCallCheck(this, FlipCard);
+
+		_get(Object.getPrototypeOf(FlipCard.prototype), 'constructor', this).call(this, props);
+		this.state = this.getState(props);
+	}
+
+	_createClass(FlipCard, [{
+		key: 'getState',
+		value: function getState(props) {
+			return {
+				flipped: props.flipped != undefined ? props.flipped : false
+			};
+		}
+	}, {
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(nextProps) {
+			this.setState(this.getState(nextProps));
+		}
+	}, {
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.mounted = true;
+			this.setState(this.getState(this.props));
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			this.mounted = false;
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this = this;
+
+			var _props = this.props;
+			var className = _props.className;
+			var children = _props.children;
+
+			var otherProps = _objectWithoutProperties(_props, ['className', 'children']);
+
+			var classes = (0, _classnames2['default'])('FlipCard', className, { flipped: this.state && this.state.flipped });
+
+			return _react2['default'].createElement('div', _extends({ className: classes }, otherProps, { onClick: function onClick(evt) {
+					_this.setState({ flipped: !_this.state.flipped });
+				} }), children);
+		}
+	}]);
+
+	return FlipCard;
+})(_react2['default'].Component);
+
+exports['default'] = FlipCard;
+
+FlipCard.propTypes = {
+	className: _react.PropTypes.string,
+	flipped: _react.PropTypes.bool
+};
+
+var Face = (function (_React$Component2) {
+	_inherits(Face, _React$Component2);
+
+	function Face() {
+		_classCallCheck(this, Face);
+
+		_get(Object.getPrototypeOf(Face.prototype), 'constructor', this).apply(this, arguments);
+	}
+
+	_createClass(Face, [{
+		key: 'getClassName',
+		value: function getClassName(cls) {
+			return (0, _classnames2['default'])('Face', cls);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _props2 = this.props;
+			var className = _props2.className;
+			var children = _props2.children;
+
+			var otherProps = _objectWithoutProperties(_props2, ['className', 'children']);
+
+			var classes = this.getClassName(className);
+			return _react2['default'].createElement('div', _extends({ className: classes }, otherProps), children);
+		}
+	}]);
+
+	return Face;
+})(_react2['default'].Component);
+
+Face.propTypes = {
+	className: _react.PropTypes.string
+};
+
+var Front = (function (_Face) {
+	_inherits(Front, _Face);
+
+	function Front() {
+		_classCallCheck(this, Front);
+
+		_get(Object.getPrototypeOf(Front.prototype), 'constructor', this).apply(this, arguments);
+	}
+
+	_createClass(Front, [{
+		key: 'getClassName',
+		value: function getClassName(cls) {
+			return (0, _classnames2['default'])('Front', _get(Object.getPrototypeOf(Front.prototype), 'getClassName', this).call(this, cls));
+		}
+	}]);
+
+	return Front;
+})(Face);
+
+exports.Front = Front;
+
+var Back = (function (_Face2) {
+	_inherits(Back, _Face2);
+
+	function Back() {
+		_classCallCheck(this, Back);
+
+		_get(Object.getPrototypeOf(Back.prototype), 'constructor', this).apply(this, arguments);
+	}
+
+	_createClass(Back, [{
+		key: 'getClassName',
+		value: function getClassName(cls) {
+			return (0, _classnames2['default'])('Back', _get(Object.getPrototypeOf(Back.prototype), 'getClassName', this).call(this, cls));
+		}
+	}]);
+
+	return Back;
+})(Face);
+
+exports.Back = Back;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"classnames":2}],62:[function(require,module,exports){
+(function (global){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
+
+var _extends = Object.assign || function (target) {
+	for (var i = 1; i < arguments.length; i++) {
+		var source = arguments[i];for (var key in source) {
+			if (Object.prototype.hasOwnProperty.call(source, key)) {
+				target[key] = source[key];
+			}
+		}
+	}return target;
+};
+
+var _createClass = (function () {
+	function defineProperties(target, props) {
+		for (var i = 0; i < props.length; i++) {
+			var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ('value' in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+		}
+	}return function (Constructor, protoProps, staticProps) {
+		if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+	};
+})();
+
+var _get = function get(_x, _x2, _x3) {
+	var _again = true;_function: while (_again) {
+		var object = _x,
+		    property = _x2,
+		    receiver = _x3;_again = false;if (object === null) object = Function.prototype;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
+			var parent = Object.getPrototypeOf(object);if (parent === null) {
+				return undefined;
+			} else {
+				_x = parent;_x2 = property;_x3 = receiver;_again = true;desc = parent = undefined;continue _function;
+			}
+		} else if ('value' in desc) {
+			return desc.value;
+		} else {
+			var getter = desc.get;if (getter === undefined) {
+				return undefined;
+			}return getter.call(receiver);
+		}
+	}
+};
+
+function _interopRequireDefault(obj) {
+	return obj && obj.__esModule ? obj : { 'default': obj };
+}
+
+function _objectWithoutProperties(obj, keys) {
+	var target = {};for (var i in obj) {
+		if (keys.indexOf(i) >= 0) continue;if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;target[i] = obj[i];
+	}return target;
+}
+
+function _classCallCheck(instance, Constructor) {
+	if (!(instance instanceof Constructor)) {
+		throw new TypeError('Cannot call a class as a function');
+	}
+}
+
+function _inherits(subClass, superClass) {
+	if (typeof superClass !== 'function' && superClass !== null) {
+		throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass);
+	}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 var RightDrawer = (function (_React$Component) {
 	_inherits(RightDrawer, _React$Component);
 
@@ -4307,7 +4525,7 @@ RightDrawer.propTypes = {
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"classnames":2}],62:[function(require,module,exports){
+},{"classnames":2}],63:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4387,33 +4605,66 @@ var Scroller = (function (_React$Component) {
 	_createClass(Scroller, [{
 		key: 'getState',
 		value: function getState(props) {
-			// default values
-			var items = props.items instanceof Array ? { 0: props.items } : props.items;
-			var itemCount = props.itemCount !== undefined ? props.itemCount : items && items.length || 0;
-			var itemSize = props.itemSize;
-			var renderedItems = [];
 			var dir = props.direction;
+			var items = props.items instanceof Array ? { 0: props.items } : props.items;
+			var itemCount = props.itemCount !== undefined ? props.itemCount : items && items[0] && items[0].length || 0;
+			var itemSize = props.itemSize;
+			var itemsPer = props.itemsPer;
 			var bufferBefore = props.bufferBefore;
 			var bufferAfter = props.bufferAfter;
-			var bufBeforeSize = bufferBefore * itemSize;
-			var bufAfterSize = bufferAfter * itemSize;
+			var containerCount = ~ ~(itemCount / itemsPer) + (~ ~(itemCount % itemsPer) ? 1 : 0);
+
 			var scroller = this.mounted ? _reactDom2['default'].findDOMNode(this) : undefined;
+			var scrollerSize = scroller ? getSize(dir, scroller) : Math.min(100, containerCount) * itemSize;
 			var slider = this.refs.slider;
-			var scrollerSize = scroller ? getSize(dir, scroller) : Math.min(100, itemCount) * itemSize;
-			var itemStart = scroller ? posDifference(dir, slider, scroller) : 0;
-			var viewStart = (scroller ? getScrollPos(dir, scroller) : 0) - bufBeforeSize;
-			var viewEnd = viewStart + bufBeforeSize + scrollerSize + bufAfterSize;
-			var listStart = Math.max(0, Math.min(viewStart - itemStart));
-			var listEnd = Math.max(0, Math.min(itemCount * itemSize, viewEnd - itemStart));
-			var firstIdx = Math.max(0, Math.floor(listStart / itemSize));
-			var lastIdx = Math.ceil(listEnd / itemSize) - 1;
+			var sliderOffset = scroller ? posDifference(dir, slider, scroller) : 0;
+			var sliderScroll = scroller ? getScrollPos(dir, scroller) : 0;
+			var renderedItems = [];
+
+			var containersBefore = ~ ~(sliderScroll / itemSize);
+			var bufBefore = Math.min(containersBefore, bufferBefore);
+			var skippedContainers = containersBefore - bufBefore;
+			var skippedItems = skippedContainers * itemsPer;
+			var firstIdx = skippedItems;
+			var containersInView = ~ ~(scrollerSize / itemSize) + (~ ~(scrollerSize % itemSize) ? 1 : 0);
+			//		let itemsInView = Math.min(containersInView * itemsPer, (itemCount - skippedItems));
+			//		containersInView = ~~(itemsInView / itemsPer) + (~~(itemsInView % itemsPer) ? 1 : 0);
+			var lastIdx = Math.min(firstIdx + containersInView * itemsPer + bufferAfter * itemsPer, itemCount - 1);
 			for (var i = firstIdx; i <= lastIdx; i++) {
 				var item = items[0][i] || null;
 				renderedItems.push(item);
 			}
-			var sizeBefore = firstIdx * itemSize;
-			var sizeItems = renderedItems.length * itemSize;
-			var sizeAfter = itemCount * itemSize - sizeBefore - sizeItems;
+			var renderedContainerCount = ~ ~(renderedItems.length / itemsPer) + (~ ~(renderedItems.length % itemsPer) ? 1 : 0);
+			var sizeBefore = ~ ~(firstIdx / itemsPer) * itemSize;
+			var sizeItems = renderedContainerCount * itemSize;
+			var sizeAfter = containerCount * itemSize - sizeBefore - sizeItems;
+
+			/*		
+   		
+   		
+   		
+   		
+   		
+   		let bufBeforeSize = bufferBefore * itemSize;
+   		let bufAfterSize = bufferAfter * itemSize;
+   		
+   		let viewStart = sliderScroll - bufBeforeSize;
+   		let viewEnd = sliderScroll + scrollerSize + bufAfterSize;
+   		let listStart = Math.max(0, Math.min(viewStart - sliderOffset));
+   		let listEnd = Math.max(0, Math.min(containerCount * itemSize, viewEnd - sliderOffset))
+   		let firstIdx = Math.max(0,  Math.floor(listStart / itemSize));
+   		let lastIdx = Math.ceil(listEnd / itemSize) - 1;
+   		for (let i=firstIdx; i<=lastIdx; i++) {
+   			let item = items[0][i] || null;
+   			renderedItems.push(item);
+   		}
+   		let renderedContainerCount = ~~(renderedItems.length / itemsPer) + (~~(renderedItems.length % itemsPer) == 0 ? 0 : 1); 
+   		let sizeBefore = ~~(firstIdx / itemsPer) * itemSize;
+   		let sizeItems = renderedContainerCount * itemSize;
+   		let sizeAfter = containerCount * itemSize - sizeBefore - sizeItems;
+   		
+   		
+   */
 			return {
 				renderedItems: renderedItems,
 				firstRenderedItemIndex: firstIdx,
@@ -4480,6 +4731,7 @@ var Scroller = (function (_React$Component) {
 			after[dim] = this.state.sizeAfter;
 			return _react2['default'].createElement('div', { className: 'Scroller ' + dir }, _react2['default'].createElement('div', { className: 'ScrollSlider', ref: 'slider', style: slider
 			}, _react2['default'].createElement('div', { className: 'ScrollSpacer ScrollSpacerBefore', ref: 'spacerBefore', style: before }), _react2['default'].createElement('div', { className: 'ScrollItems', style: items }, this.state.renderedItems.map(function (item, idx) {
+				idx = idx + _this.state.firstRenderedItemIndex;
 				var key = _this.props.keyForItem ? _this.props.keyForItem(item, idx) : 'item' + idx;
 				var renderItem = _this.props.renderItem;
 				if (item === null) {
@@ -4707,7 +4959,7 @@ function debounce(func, wait, immediate) {
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"picolog":21}],63:[function(require,module,exports){
+},{"picolog":21}],64:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4800,7 +5052,7 @@ if (typeof window != 'undefined') {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./apphistory":60,"./routes":64,"picolog":21,"react-tap-event-plugin":41}],64:[function(require,module,exports){
+},{"./apphistory":60,"./routes":65,"picolog":21,"react-tap-event-plugin":41}],65:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4850,7 +5102,7 @@ exports['default'] = _react2['default'].createElement(_reactRouter.Route, { comp
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./views/App":65,"./views/Brands":66,"./views/Home":67,"./views/ProductSearch":69,"./views/Products":70,"./views/Stores":71,"picolog":21}],65:[function(require,module,exports){
+},{"./views/App":66,"./views/Brands":67,"./views/Home":68,"./views/ProductSearch":70,"./views/Products":71,"./views/Stores":72,"picolog":21}],66:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4965,7 +5217,7 @@ exports['default'] = App;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../components/RightDrawer":61,"picolog":21,"react-mdl/lib/Layout":30}],66:[function(require,module,exports){
+},{"../components/RightDrawer":62,"picolog":21,"react-mdl/lib/Layout":30}],67:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -5067,7 +5319,7 @@ Brands.BrandsActionBar = BrandsActionBar;
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],67:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -5169,7 +5421,7 @@ Home.HomeActionBar = HomeActionBar;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],68:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -5235,6 +5487,10 @@ var _componentsScroller = require('../components/Scroller');
 
 var _componentsScroller2 = _interopRequireDefault(_componentsScroller);
 
+var _componentsFlipCard = require('../components/FlipCard');
+
+var _componentsFlipCard2 = _interopRequireDefault(_componentsFlipCard);
+
 var ProductBrowser = (function (_React$Component) {
 	_inherits(ProductBrowser, _React$Component);
 
@@ -5252,13 +5508,13 @@ var ProductBrowser = (function (_React$Component) {
 			var itemCount = this.state && this.state.itemCount;
 			if (!items) {
 				var initialData = typeof window != 'undefined' ? window.initialData : global.initialData;
-				if (initialData && initialData.searchResults) {
-					if (initialData.searchResults instanceof Array) {
-						items = initialData.searchResults;
+				if (initialData && initialData.products) {
+					if (initialData.products instanceof Array) {
+						items = initialData.products;
 					} else {
 						// TODO paging
-						itemCount = initialData.searchResults.itemCount;
-						items = initialData.searchResults.resultPages;
+						itemCount = initialData.products.count;
+						items = initialData.products.pages;
 					}
 				}
 			}
@@ -5290,7 +5546,7 @@ var ProductBrowser = (function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			_picolog2['default'].debug(this.state.items);
+			_picolog2['default'].debug("items=" + this.state.items);
 			return _react2['default'].createElement(_componentsScroller2['default'], {
 				className: 'ProductBrowser ' + this.props.category,
 				direction: 'vertical',
@@ -5298,10 +5554,11 @@ var ProductBrowser = (function (_React$Component) {
 				items: this.state.items,
 				bufferAfter: 4,
 				itemCount: this.state.itemCount,
-				itemSize: 640,
-				//				itemsPer={3}
+				itemSize: 400,
+				itemsPer: 3,
 				renderItem: function renderItem(item, idx) {
-					return _react2['default'].createElement('div', { className: 'Card' }, _react2['default'].createElement('h2', null, item.name || 'Loading'), _react2['default'].createElement('p', null, item.description || 'Loading item ' + idx));
+					return _react2['default'].createElement(_componentsFlipCard2['default'], { className: 'Product', key: item.id }, _react2['default'].createElement(_componentsFlipCard.Front, { className: 'Test' }, _react2['default'].createElement('div', { className: 'content' }, _react2['default'].createElement('img', { src: 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==',
+						style: { backgroundImage: 'url(https://cdn.rawgit.com/download/bridalapp-static/0.9.13/products/' + item.brandId + '/' + encodeURIComponent(item.name) + '/thumbs.jpg)' } }))), _react2['default'].createElement(_componentsFlipCard.Back, null, _react2['default'].createElement('h3', null, item.name || 'Loading'), _react2['default'].createElement('p', null, item.description || 'Loading item ' + idx)));
 				}
 			});
 		}
@@ -5313,7 +5570,7 @@ var ProductBrowser = (function (_React$Component) {
 exports['default'] = ProductBrowser;
 
 ProductBrowser.propTypes = {
-	category: _react2['default'].PropTypes.string
+	category: _react.PropTypes.string
 };
 
 ProductBrowser.defaultProps = {
@@ -5322,7 +5579,7 @@ ProductBrowser.defaultProps = {
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../components/Scroller":62,"picolog":21}],69:[function(require,module,exports){
+},{"../components/FlipCard":61,"../components/Scroller":63,"picolog":21}],70:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -5421,7 +5678,6 @@ var ProductSearchActionBar = (function (_React$Component2) {
 	_createClass(ProductSearchActionBar, [{
 		key: 'render',
 		value: function render() {
-			_picolog2['default'].warn('category=' + this.props.params.category);
 			return _react2['default'].createElement('div', { className: 'ActionBar ProductSearchActionBar' }, 'ProductSearchActionBar');
 		}
 	}]);
@@ -5432,7 +5688,7 @@ var ProductSearchActionBar = (function (_React$Component2) {
 exports.ProductSearchActionBar = ProductSearchActionBar;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./ProductBrowser":68,"picolog":21}],70:[function(require,module,exports){
+},{"./ProductBrowser":69,"picolog":21}],71:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -5513,7 +5769,7 @@ exports["default"] = Products;
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],71:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -5615,6 +5871,6 @@ Stores.StoresActionBar = StoresActionBar;
 module.exports = exports["default"];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[63]);
+},{}]},{},[64]);
 
 //# sourceMappingURL=bridalapp-ui.umd.js.map

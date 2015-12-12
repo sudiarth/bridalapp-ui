@@ -16,7 +16,6 @@ export default class ProductSearch extends React.Component {
 
 export class ProductSearchActionBar extends React.Component {
 	render() {
-		log.warn('category=' + this.props.params.category);
 		return (
 			<div className="ActionBar ProductSearchActionBar">ProductSearchActionBar</div>
 		);

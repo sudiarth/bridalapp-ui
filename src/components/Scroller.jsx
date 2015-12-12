@@ -10,33 +10,66 @@ export default class Scroller extends React.Component {
 	}
 
 	getState(props) {
-		// default values
-		let items = props.items instanceof Array ? {0: props.items} : props.items;
-		let itemCount = props.itemCount !== undefined ? props.itemCount : items && items.length || 0;
-		let itemSize = props.itemSize;
-		let renderedItems = [];
 		let dir = props.direction;
+		let items = props.items instanceof Array ? {0: props.items} : props.items;
+		let itemCount = props.itemCount !== undefined ? props.itemCount : items && items[0] && items[0].length || 0;
+		let itemSize = props.itemSize;
+		let itemsPer = props.itemsPer;
 		let bufferBefore = props.bufferBefore;
 		let bufferAfter = props.bufferAfter;
+		let containerCount = ~~(itemCount / itemsPer) + (~~(itemCount % itemsPer) ? 1 : 0);
+
+		let scroller = this.mounted ? ReactDOM.findDOMNode(this) : undefined;
+		let scrollerSize = scroller ? getSize(dir, scroller) : Math.min(100, containerCount) * itemSize;
+		let slider = this.refs.slider;
+		let sliderOffset = scroller ? posDifference(dir, slider, scroller) : 0;
+		let sliderScroll = scroller ? getScrollPos(dir, scroller) : 0;
+		let renderedItems = [];
+
+		let containersBefore = ~~(sliderScroll / itemSize);
+		let bufBefore = Math.min(containersBefore, bufferBefore);
+		let skippedContainers = containersBefore - bufBefore;
+		let skippedItems = skippedContainers * itemsPer;
+		let firstIdx = skippedItems;
+		let containersInView = ~~(scrollerSize / itemSize) + (~~(scrollerSize % itemSize) ? 1 : 0)
+//		let itemsInView = Math.min(containersInView * itemsPer, (itemCount - skippedItems));
+//		containersInView = ~~(itemsInView / itemsPer) + (~~(itemsInView % itemsPer) ? 1 : 0);
+		let lastIdx = Math.min(firstIdx + containersInView * itemsPer + bufferAfter * itemsPer, itemCount - 1); 
+		for (let i=firstIdx; i<=lastIdx; i++) {
+			let item = items[0][i] || null;
+			renderedItems.push(item);
+		}
+		let renderedContainerCount = ~~(renderedItems.length / itemsPer) + (~~(renderedItems.length % itemsPer) ? 1 : 0); 
+		let sizeBefore = ~~(firstIdx / itemsPer) * itemSize;
+		let sizeItems = renderedContainerCount * itemSize;
+		let sizeAfter = containerCount * itemSize - sizeBefore - sizeItems;
+
+/*		
+		
+		
+		
+		
+		
 		let bufBeforeSize = bufferBefore * itemSize;
 		let bufAfterSize = bufferAfter * itemSize;
-		let scroller = this.mounted ? ReactDOM.findDOMNode(this) : undefined;
-		let slider = this.refs.slider;
-		let scrollerSize = scroller ? getSize(dir, scroller) : Math.min(100, itemCount) * itemSize;
-		let itemStart = scroller ? posDifference(dir, slider, scroller) : 0;
-		let viewStart = (scroller ? getScrollPos(dir, scroller) : 0) - bufBeforeSize;
-		let viewEnd = viewStart + bufBeforeSize + scrollerSize + bufAfterSize;
-		let listStart = Math.max(0, Math.min(viewStart - itemStart));
-		let listEnd = Math.max(0, Math.min(itemCount * itemSize, viewEnd - itemStart))
+		
+		let viewStart = sliderScroll - bufBeforeSize;
+		let viewEnd = sliderScroll + scrollerSize + bufAfterSize;
+		let listStart = Math.max(0, Math.min(viewStart - sliderOffset));
+		let listEnd = Math.max(0, Math.min(containerCount * itemSize, viewEnd - sliderOffset))
 		let firstIdx = Math.max(0,  Math.floor(listStart / itemSize));
 		let lastIdx = Math.ceil(listEnd / itemSize) - 1;
 		for (let i=firstIdx; i<=lastIdx; i++) {
 			let item = items[0][i] || null;
 			renderedItems.push(item);
 		}
-		let sizeBefore = firstIdx * itemSize;
-		let sizeItems = renderedItems.length * itemSize;
-		let sizeAfter = itemCount * itemSize - sizeBefore - sizeItems;
+		let renderedContainerCount = ~~(renderedItems.length / itemsPer) + (~~(renderedItems.length % itemsPer) == 0 ? 0 : 1); 
+		let sizeBefore = ~~(firstIdx / itemsPer) * itemSize;
+		let sizeItems = renderedContainerCount * itemSize;
+		let sizeAfter = containerCount * itemSize - sizeBefore - sizeItems;
+		
+		
+*/		
 		return {
 			renderedItems: renderedItems,
 			firstRenderedItemIndex: firstIdx,
@@ -93,6 +126,7 @@ export default class Scroller extends React.Component {
 					><div className="ScrollSpacer ScrollSpacerBefore" ref="spacerBefore" style={before}></div 
 					><div className="ScrollItems" style={items}>{
 						this.state.renderedItems.map((item, idx) => {
+							idx = idx + this.state.firstRenderedItemIndex;
 							let key = this.props.keyForItem ? this.props.keyForItem(item, idx) : 'item' + idx;
 							let renderItem = this.props.renderItem; 
 							if (item === null) {

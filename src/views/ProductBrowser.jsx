@@ -1,6 +1,7 @@
 import log from 'picolog';
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Scroller from '../components/Scroller';
+import FlipCard, { Front, Back } from '../components/FlipCard';
 
 export default class ProductBrowser extends React.Component {
 	constructor(props) {
@@ -13,14 +14,14 @@ export default class ProductBrowser extends React.Component {
 		let itemCount = this.state && this.state.itemCount;
 		if (! items) {
 			let initialData = typeof window != 'undefined' ? window.initialData : global.initialData;
-			if (initialData && initialData.searchResults) {
-				if (initialData.searchResults instanceof Array) {
-					items = initialData.searchResults;
+			if (initialData && initialData.products) {
+				if (initialData.products instanceof Array) {
+					items = initialData.products;
 				}
 				else {
 					// TODO paging
-					itemCount = initialData.searchResults.itemCount;
-					items = initialData.searchResults.resultPages;
+					itemCount = initialData.products.count;
+					items = initialData.products.pages;
 				}
 			}
 		}
@@ -48,7 +49,7 @@ export default class ProductBrowser extends React.Component {
 	}
 
 	render() {
-		log.debug(this.state.items);
+		log.debug("items=" + this.state.items);
 		return (
 			<Scroller
 				className={'ProductBrowser ' + this.props.category}
@@ -57,13 +58,21 @@ export default class ProductBrowser extends React.Component {
 				items={this.state.items}
 				bufferAfter={4}
 				itemCount={this.state.itemCount}
-				itemSize={640}
-//				itemsPer={3}
+				itemSize={400}
+				itemsPer={3}
 				renderItem ={ (item, idx) => (
-					<div className="Card">
-						<h2>{item.name || 'Loading'}</h2>
-						<p>{item.description || 'Loading item ' + idx}</p>
-					</div>
+					<FlipCard className="Product" key={item.id}>
+						<Front className="Test">
+							<div className="content">
+								<img src="data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==" 
+										style={{backgroundImage: 'url(https://cdn.rawgit.com/download/bridalapp-static/0.9.13/products/' + item.brandId + '/' + encodeURIComponent(item.name) + '/thumbs.jpg)'}} />
+							</div>
+						</Front>
+						<Back>
+							<h3>{item.name || 'Loading'}</h3>
+							<p>{item.description || 'Loading item ' + idx}</p>
+						</Back>
+					</FlipCard>
 				)} 
 			/>
 		);
@@ -71,7 +80,7 @@ export default class ProductBrowser extends React.Component {
 }
 
 ProductBrowser.propTypes = {
-	category: React.PropTypes.string
+	category: PropTypes.string
 };
 
 ProductBrowser.defaultProps = {
