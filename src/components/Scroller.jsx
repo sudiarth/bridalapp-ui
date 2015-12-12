@@ -32,8 +32,6 @@ export default class Scroller extends React.Component {
 		let skippedItems = skippedContainers * itemsPer;
 		let firstIdx = skippedItems;
 		let containersInView = ~~(scrollerSize / itemSize) + (~~(scrollerSize % itemSize) ? 1 : 0)
-//		let itemsInView = Math.min(containersInView * itemsPer, (itemCount - skippedItems));
-//		containersInView = ~~(itemsInView / itemsPer) + (~~(itemsInView % itemsPer) ? 1 : 0);
 		let lastIdx = Math.min(firstIdx + containersInView * itemsPer + bufferAfter * itemsPer, itemCount - 1); 
 		for (let i=firstIdx; i<=lastIdx; i++) {
 			let item = items[0][i] || null;
@@ -44,32 +42,6 @@ export default class Scroller extends React.Component {
 		let sizeItems = renderedContainerCount * itemSize;
 		let sizeAfter = containerCount * itemSize - sizeBefore - sizeItems;
 
-/*		
-		
-		
-		
-		
-		
-		let bufBeforeSize = bufferBefore * itemSize;
-		let bufAfterSize = bufferAfter * itemSize;
-		
-		let viewStart = sliderScroll - bufBeforeSize;
-		let viewEnd = sliderScroll + scrollerSize + bufAfterSize;
-		let listStart = Math.max(0, Math.min(viewStart - sliderOffset));
-		let listEnd = Math.max(0, Math.min(containerCount * itemSize, viewEnd - sliderOffset))
-		let firstIdx = Math.max(0,  Math.floor(listStart / itemSize));
-		let lastIdx = Math.ceil(listEnd / itemSize) - 1;
-		for (let i=firstIdx; i<=lastIdx; i++) {
-			let item = items[0][i] || null;
-			renderedItems.push(item);
-		}
-		let renderedContainerCount = ~~(renderedItems.length / itemsPer) + (~~(renderedItems.length % itemsPer) == 0 ? 0 : 1); 
-		let sizeBefore = ~~(firstIdx / itemsPer) * itemSize;
-		let sizeItems = renderedContainerCount * itemSize;
-		let sizeAfter = containerCount * itemSize - sizeBefore - sizeItems;
-		
-		
-*/		
 		return {
 			renderedItems: renderedItems,
 			firstRenderedItemIndex: firstIdx,
@@ -121,7 +93,7 @@ export default class Scroller extends React.Component {
 		itm[dim] = this.props.itemSize;
 		after[dim] = this.state.sizeAfter;
 		return (
-			<div className={'Scroller ' + dir}>
+			<div className={'Scroller ' + dir + ' per' + this.props.itemsPer}>
 				<div className="ScrollSlider" ref="slider" style={slider}
 					><div className="ScrollSpacer ScrollSpacerBefore" ref="spacerBefore" style={before}></div 
 					><div className="ScrollItems" style={items}>{
@@ -148,12 +120,11 @@ export default class Scroller extends React.Component {
 }
 
 Scroller.propTypes = {
-	/** 
-	 * Total number of items available in the virtual scroller.
-	 * Defaults to `items[0].length`;
-	 * For a query with 9,287 results, set this to 9287. 
+	/**
+	 * The direction to scroll in, either 'vertical' or 'horizontal'.
+	 * Defaults to 'vertical'.
 	 */
-	itemCount: React.PropTypes.number,
+	direction: React.PropTypes.oneOf(['vertical','horizontal']),
 
 	/**
 	 * The items to be scrolled over.
@@ -184,62 +155,6 @@ Scroller.propTypes = {
 	itemSize: React.PropTypes.number.isRequired,
 	
 	/** 
-	 * The number of items per page. 
-	 * Defaults to `items[0].length` (just one page with all items).
-	 */
-	pageSize: React.PropTypes.number,
-	
-	/** 
-	 * The number of pages to buffer. 
-	 * Defaults to 5 when `pageSize` is set, otherwise to 1.
-	 * 
-	 * When the user scrolls to pages that are not in the buffer,
-	 * `pageFetch` will be called and it's results will be added
-	 * to the buffer. When the number of pages exceeds the number
-	 * of pages specified by this setting, those pages furthest 
-	 * away from the user's current scroll position will be removed 
-	 * from the buffer until this number is no longer exceeded.
-	 */
-	pageBufferSize: React.PropTypes.number,
-	
-
-	/**
-	 * Render function accepting an item and it's index and returning
-	 * the markup for that item. This function should accept empty
-	 * objects for it's item parameter and return valid markup either way.
-	 */
-	renderItem: React.PropTypes.func.isRequired, // function(item, index)
-
-	/**
-	 * Render function accepting an item index and returning markup 
-	 * indicating that the item is still loading.
-	 * This function is called when the item to be rendered is not
-	 * (yet) available. If this function is not provided. the system
-	 * will fall back to calling `renderItem` and providing an empty
-	 * object as item parameter. 
-	 */
-	renderLoadingItem: React.PropTypes.func, // function(index)
-
-	/**
-	 * Function accepting an item and it's index and returning
-	 * an identifying key for that item. The key is used for technical 
-	 * purposes. This function should accept null for it's item parameter 
-	 * and return a valid key either way. If this function is not provided, 
-	 * the key will default to `'item' + index`.
-	 */
-	keyForItem: React.PropTypes.func, // function(item, index)
-
-	/**
-	 * Function accepting an item and it's index and returning
-	 * an identifying handle for that item. The handle is used for 
-	 * bookmarking etc, so should preferably be human-friendly. 
-	 * This function should accept null for it's item parameter 
-	 * and return a valid handle either way. If this function is not provided, 
-	 * the key will default to `'item' + index`.
-	 */
-	handleForItem: React.PropTypes.func, // function(item, index)
-
-	/** 
 	 * Number of items shown per row/column. 
 	 * Defaults to 1.
 	 * For a vertical scroller, set this if there are multiple items per row,
@@ -250,18 +165,6 @@ Scroller.propTypes = {
 	 */ 
 	itemsPer: React.PropTypes.number,
 	
-	/**
-	 * Time, in ms, to capture scroll events before processing them.
-	 * Defaults to 10.
-	 */
-	scrollDebounce: React.PropTypes.number,
-
-	/**
-	 * The direction to scroll in, either 'vertical' or 'horizontal'.
-	 * Defaults to 'vertical'.
-	 */
-	direction: React.PropTypes.oneOf(['vertical','horizontal']),
-
 	/**
 	 * Size of buffer before the first visible item, defaults to 1.
 	 * Enables smoother scrolling by pre-rendering some items into a buffer area
@@ -282,8 +185,109 @@ Scroller.propTypes = {
 
 	/**
 	 * Whether to snap items to grid when scrolling comes to an end.
+	 * 
+	 * NOT IMPLEMENTED YET. IMPLEMENTATION SHOULD BE BASED ON CSS Scroll Snap Points
+	 * http://www.w3.org/TR/css-snappoints-1/
+	 * Backed by a polyfill for non-compliant browsers (many still unfortunately)
+	 * 
+	 * Reason: We want fluid native scrolling on iPhone.
 	 */
 	snap: React.PropTypes.bool,
+
+	/**
+	 * Render function accepting an item and it's index and returning
+	 * the markup for that item. This function should accept empty
+	 * objects for it's item parameter and return valid markup either way.
+	 */
+	renderItem: React.PropTypes.func.isRequired, // function(item, index)
+
+	/**
+	 * Function accepting an item and it's index and returning
+	 * an identifying key for that item. The key is used for technical 
+	 * purposes. This function should accept null for it's item parameter 
+	 * and return a valid key either way. If this function is not provided, 
+	 * the key will default to `'item' + index`.
+	 */
+	keyForItem: React.PropTypes.func, // function(item, index)
+
+	/**
+	 * Function accepting an item and it's index and returning
+	 * an identifying handle for that item. The handle is used for 
+	 * bookmarking etc, so should preferably be human-friendly. 
+	 * This function should accept null for it's item parameter 
+	 * and return a valid handle either way. If this function is not provided, 
+	 * the key will default to `'item' + index`.
+	 */
+	handleForItem: React.PropTypes.func, // function(item, index)
+
+	/**
+	 * Time, in ms, to capture scroll events before processing them.
+	 * Defaults to 10.
+	 */
+	scrollDebounce: React.PropTypes.number,
+
+
+	/* PROPERTIES RELATED TO PAGING */
+
+	/** 
+	 * Total number of items available in the virtual scroller.
+	 * Defaults to `items[0].length`;
+	 * 
+	 * When paging is enabled, set this to the total number of
+	 * items in the resultset. E.g. for a query with 9,287 results, 
+	 * set this to 9287. 
+	 */
+	itemCount: React.PropTypes.number,
+	
+	/** 
+	 * The number of items per page. 
+	 * Defaults to `items[0].length` (just one page with all items).
+	 * 
+	 * When paging is enabled, set this to the number of items per
+	 * page. It will be used i.c.w. `itemCount` to determine the
+	 * number of pages in the resultset. You can supply more than
+	 * one page of data initially by setting `items` to an object
+	 * with the data for multiple pages.
+	 */
+	pageSize: React.PropTypes.number,
+	
+	/** 
+	 * The number of pages to buffer. 
+	 * Defaults to 5 when `pageSize` is set, otherwise to 1.
+	 * 
+	 * When the user scrolls to pages that are not in the buffer,
+	 * `pageFetch` will be called and it's results will be added
+	 * to the buffer. When the number of pages exceeds the number
+	 * of pages specified by this setting, those pages furthest 
+	 * away from the user's current scroll position will be removed 
+	 * from the buffer until this number is no longer exceeded.
+	 */
+	pageBufferSize: React.PropTypes.number,
+	
+	/**
+	 * Function that fetches a page of results.
+	 * 
+	 * When paging is enabled, the scroller will call `pageFetch`,
+	 * passing it the index of the page to fetch, whenever it needs 
+	 * the data for a certain page but does not have it. This function 
+	 * should return a `Promise` that yields an array with the results 
+	 * for the given page index.
+	 * 
+	 * The scroller will call `renderLoadingItem` when it needs to
+	 * render results from a page that has not been fetched yet.
+	 */
+	pageFetch: React.PropTypes.func,
+	
+	/**
+	 * Render function accepting an item index and returning markup 
+	 * indicating that the item is still loading.
+	 * 
+	 * This function is called when paging is enabled and the item to 
+	 * be rendered is not (yet) available. If this function is not 
+	 * provided, the system will fall back to calling `renderItem` 
+	 * and providing an empty object as item parameter. 
+	 */
+	renderLoadingItem: React.PropTypes.func, // function(index)
 };
 
 Scroller.defaultProps = {
