@@ -11,6 +11,7 @@ export default class Scroller extends React.Component {
 
 	getState(props) {
 		let dir = props.direction;
+		let initialItemsInView = this.props.initialItemsInView;
 		let items = props.items instanceof Array ? {0: props.items} : props.items;
 		let itemCount = props.itemCount !== undefined ? props.itemCount : items && items[0] && items[0].length || 0;
 		let itemSize = props.itemSize;
@@ -20,7 +21,7 @@ export default class Scroller extends React.Component {
 		let containerCount = ~~(itemCount / itemsPer) + (~~(itemCount % itemsPer) ? 1 : 0);
 
 		let scroller = this.mounted ? ReactDOM.findDOMNode(this) : undefined;
-		let scrollerSize = scroller ? getSize(dir, scroller) : Math.min(100, containerCount) * itemSize;
+		let scrollerSize = scroller ? getSize(dir, scroller) : Math.min(initialItemsInView, containerCount) * itemSize;
 		let slider = this.refs.slider;
 		let sliderOffset = scroller ? posDifference(dir, slider, scroller) : 0;
 		let sliderScroll = scroller ? getScrollPos(dir, scroller) : 0;
@@ -129,6 +130,7 @@ Scroller.propTypes = {
 	/**
 	 * The items to be scrolled over.
 	 * Defaults to `{0:[]}`.
+	 * 
 	 * An object mapping page indexes to arrays of items for those pages 
 	 * that will be used as the initial data to load into the page buffer.
 	 * When paging is not used or only a single page is provided as initial
@@ -148,15 +150,28 @@ Scroller.propTypes = {
 
 	/** 
 	 * Size of an item in the scroll direction, in pixels.
-	 * Defaults to 300;
+	 * Defaults to 300.
+	 * 
 	 * For a vertical scroller, set this to the height of each
 	 * item, for a horizontal scroller, use the width. 
 	 */ 
 	itemSize: React.PropTypes.number.isRequired,
 	
+	/**
+	 * Number of items to be renderer initially, before the component
+	 * is mounted. 
+	 * Defaults to 100.
+	 * 
+	 * This will determine how many items are rendered
+	 * during server-side rendering and hence how many items googlebot
+	 * will see when visiting the page.
+	 */
+	initialItemsInView: React.PropTypes.number,
+		
 	/** 
 	 * Number of items shown per row/column. 
 	 * Defaults to 1.
+	 * 
 	 * For a vertical scroller, set this if there are multiple items per row,
 	 * for a horizontal scroller, if there are multiple items per column. You
 	 * must ensure that this setting corresponds with the actual situation.
@@ -293,6 +308,7 @@ Scroller.propTypes = {
 Scroller.defaultProps = {
 	items: {0: []},
 	itemSize: 300,
+	initialItemsInView: 100,
 	itemsPer: 1,
 	bufferBefore: 1,
 	bufferAfter: 1,
