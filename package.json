@@ -1,35 +1,39 @@
 {
-  "name": "OpenShift-Sample-App",
-  "version": "1.0.0",
-  "description": "OpenShift Sample Application",
+  "name": "bridalapp-ui",
+  "version": "0.1.0",
+  "description": "User Interface for BridalApp",
   "keywords": [
     "OpenShift",
     "Node.js",
-    "application",
-    "openshift"
+    "BridalApp"
   ],
-  "author": {
-    "name": "OpenShift",
-    "email": "ramr@example.org",
-    "url": "http://www.openshift.com/"
-  },
-  "homepage": "http://www.openshift.com/",
+  "main": "main.js",
+  "homepage": "http://www.bridalapp.net/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openshift/origin-server"
+    "url": "https://github.com/download/bridalapp-ui"
   },
-
+  "scripts": {
+    "start": "node ."
+  },
   "engines": {
     "node": ">= 0.6.0",
     "npm": ">= 1.0.0"
   },
-
   "dependencies": {
-    "express": "~3.4.4"
+    "chalk": "^1.1.1",
+    "express": "^3.4.8",
+    "http": "0.0.0",
+    "picolog": "^1.0.0"
   },
   "devDependencies": {},
   "bundleDependencies": [],
-
-  "private": true,
-  "main": "server.js"
+  "author": {
+    "name": "Stijn de Witt",
+    "email": "StijnDeWitt@hotmail.com",
+    "url": "http://www.StijnDeWitt.com/"
+  },
+  "copyright": "2016 by Stijn de Witt, some rights reserved.",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
 }
