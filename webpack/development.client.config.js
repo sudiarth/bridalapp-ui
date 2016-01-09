@@ -5,9 +5,9 @@ var path = require('path');
 var appRoot = require('app-root-path').toString();
 var webpack = require('webpack');
 
-var host = 'localhost';
-var port = 3000;
-var url = 'http://' + host + ':' + port;
+var cfg = require('../config');
+
+var url = 'http://' + cfg.devServer.host + ':' + cfg.devServer.port;
 
 module.exports = {
 	// The base directory (absolute path!) for resolving the entry option. 
@@ -23,7 +23,7 @@ module.exports = {
 		// Add a snippet that supresses reload
 		'webpack/hot/only-dev-server',
 		// The client entry point must be last so it is exported
-		'./src/client',
+		cfg.client.entry,
 	],
 
 	module: {
@@ -48,13 +48,13 @@ module.exports = {
 	output: {
 		// The output directory as absolute path (required).
 		// [hash] is replaced by the hash of the compilation.
-		path: path.resolve(appRoot, 'public', 'assets'),
+		path: cfg.client.output.path,
 		
 		// The output.path from the view of the Javascript / HTML page.
 		// To teach webpack to make requests (for chunk loading or HMR) to the 
 		// webpack-dev-server you need to provide a full URL in the output.publicPath 
 		//option. ( https://webpack.github.io/docs/webpack-dev-server.html )
-		publicPath: url + '/assets',
+		publicPath: url + cfg.client.output.publicPath,
 
 		// The filename of the entry chunk as relative path inside the output.path directory.
 		// [name] is replaced by the name of the chunk.
@@ -111,8 +111,8 @@ module.exports = {
 	// Can be used to configure the behaviour of webpack-dev-server when the webpack config 
 	// is passed to webpack-dev-server CLI.
 	devServer: {
-		host: host,
-		port: port,
+		host: cfg.devServer.host,
+		port: cfg.devServer.port,
 		headers: {
 			"Access-Control-Allow-Origin": "*",
 		},

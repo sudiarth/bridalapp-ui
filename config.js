@@ -18,7 +18,7 @@ module.exports = {
 	},
 	server: {
 		name: 'BridalApp UI Server',
-		host: process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1',
+		host: process.env.OPENSHIFT_NODEJS_IP || 'localhost',
 		port: process.env.OPENSHIFT_NODEJS_PORT || 80,
 		path: process.env.OPENSHIFT_NODEJS_PATH || '/',
 		entry: './src/server',
@@ -29,13 +29,13 @@ module.exports = {
 	},
 	apiServer: {
 		name: 'BridalApp API Server',
-		host: process.env.BRIDALAPP_API_SERVER_HOST || '127.0.0.1',
+		host: process.env.BRIDALAPP_API_SERVER_HOST || 'localhost',
 		port: process.env.BRIDALAPP_API_SERVER_PORT || 8080,
 		path: process.env.BRIDALAPP_API_SERVER_PATH || '/api',
 	},
 	devServer: {
 		name: 'Webpack DEV Server',
-		host: process.env.BRIDALAPP_DEV_SERVER_HOST || '127.0.0.1',
+		host: process.env.BRIDALAPP_DEV_SERVER_HOST || 'localhost',
 		port: process.env.BRIDALAPP_DEV_SERVER_PORT || 3000,
 		path: process.env.BRIDALAPP_DEV_SERVER_PATH || '/assets/',
 	},

@@ -12,6 +12,13 @@ module.exports = {
 		cfg.client.entry,
 	],
 
+	module: {
+		postLoaders: [
+			{test: /\.jsx$/, loaders: ["babel?presets[]=es2015&presets[]=stage-0&presets[]=react"], exclude: /node_modules/}
+		],
+		noParse: /\.min\.js/
+	},
+
 	// Compilation target. Possible values:
 	// "web" Compile for usage in a browser-like environment (default)
 	// "webworker" Compile as WebWorker
