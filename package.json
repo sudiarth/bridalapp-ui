@@ -7,14 +7,28 @@
     "Node.js",
     "BridalApp"
   ],
-  "main": "main.js",
+  "main": "server.js",
   "homepage": "http://www.bridalapp.net/",
   "repository": {
     "type": "git",
     "url": "https://github.com/download/bridalapp-ui"
   },
   "scripts": {
-    "start": "node ."
+    "clean-server": "rimraf hmr && rimraf server.js",
+    "clean-client": "rimraf public/assets/bridalapp-ui.js",
+    "clean": "npm run clean-server && npm run clean-client",
+    "start": "node server.js",
+    "start-dev": "node webpack/wait-for-dev-server.js && npm run start",
+    "build-server": "webpack --config webpack/server.config.js",
+    "build-client": "webpack --config webpack/client.config.js",
+    "build": "npm run build-server && npm run build-client",
+    "release-server": "npm run clean-server && npm run build-server",
+    "release-client": "npm run clean-client && npm run build-client",
+    "release": "npm run clean && npm run build",
+    "watch-server": "webpack --inline --watch --hide-modules --config webpack/development.server.config.js",
+    "watch-client": "webpack-dev-server --watch --config webpack/development.client.config.js",
+    "watch": "parallelshell \"npm run watch-server\" \"npm run watch-client\"",
+    "dev": "npm run -s clean && parallelshell \"npm run -s watch\" \"npm run -s start-dev\" "
   },
   "engines": {
     "node": ">= 0.6.0",
@@ -23,11 +37,33 @@
   "dependencies": {
     "chalk": "^1.1.1",
     "express": "^3.4.8",
+    "fs": "0.0.2",
+    "history": "^1.17.0",
     "http": "0.0.0",
-    "picolog": "^1.0.0"
+    "http-proxy": "^1.12.0",
+    "picolog": "^1.0.0",
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6",
+    "react-router": "^1.0.3",
+    "redux": "^3.0.5",
+    "redux-apis": "^0.3.1"
   },
-  "devDependencies": {},
-  "bundleDependencies": [],
+  "devDependencies": {
+    "app-root-path": "^1.0.0",
+    "babel": "^6.3.26",
+    "babel-core": "^6.4.0",
+    "babel-loader": "^6.2.1",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13",
+    "parallelshell": "^2.0.0",
+    "picolog": "^1.0.0",
+    "react-mdl": "^1.0.4",
+    "rimraf": "^2.5.0",
+    "webpack": "^1.12.10",
+    "webpack-dev-middleware": "^1.4.0",
+    "webpack-dev-server": "^1.14.0"
+  },
   "author": {
     "name": "Stijn de Witt",
     "email": "StijnDeWitt@hotmail.com",
