@@ -11,11 +11,15 @@ import Home from './components/Home';
 
 log.assert(typeof App == 'function', 'App should be defined');
 log.assert(typeof Home == 'function', 'Home should be defined');
-
+/*
 const routes = (
 	<Route component={App}>
 		<Route path="/" component={Home} />
 	</Route>
+);
+*/
+var routes = (
+	<Route path="/" component={App} />
 );
 
 log.debug('routes=' + routes);

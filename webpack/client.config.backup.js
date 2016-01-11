@@ -1,30 +1,42 @@
 ﻿var fs = require('fs');
 var webpack = require('webpack');
-var appRoot = require('app-root-path').toString();
 
 var cfg = require('../config');
 
-var node_modules = {};
-fs.readdirSync('node_modules')
-.filter(function(x){
-	return ['.bin'].indexOf(x) === -1;
-})
-.forEach(function(mod){
-	node_modules[mod] = 'commonjs ' + mod;
-});
-
 module.exports = {
-	// The base directory (absolute path!) for resolving the entry option. 
-	// If output.pathinfo is set, the included pathinfo is shortened to this directory.
-	context: appRoot,
-	
 	// The entry point for the bundle.
 	// If you pass a string: The string is resolved to a module which is loaded upon startup.
 	// If you pass an array: All modules are loaded upon startup. The last one is exported.
 	entry: [
-		// The server entry point
-		cfg.server.entry,
+		// The client entry point
+		cfg.client.entry,
 	],
+
+	// Compilation target. Possible values:
+	// "web" Compile for usage in a browser-like environment (default)
+	// "webworker" Compile as WebWorker
+	// "node" Compile for usage in a node.js-like environment (use require to load chunks)
+	// "async-node" Compile for usage in a node.js-like environment (use fs and vm to load chunks async)
+	// "node-webkit" Compile for usage in webkit, uses jsonp chunk loading but also supports builtin node.js modules plus require(“nw.gui”) (experimental)
+	// "atom" Compile for usage in electron (formerly known as atom-shell), supports require for modules necessary to run Electron.
+	target: 'web',
+
+	// Options affecting the output.
+	// If you use any hashing ([hash] or [chunkhash]) make sure to have a consistent ordering of modules. Use the OccurenceOrderPlugin or recordsPath.
+	output: {
+		// The output directory as absolute path (required).
+		// [hash] is replaced by the hash of the compilation.
+		path: cfg.client.output.path,
+
+		// The filename of the entry chunk as relative path inside the output.path directory.
+		// [name] is replaced by the name of the chunk.
+		// [hash] is replaced by the hash of the compilation.
+		// [chunkhash] is replaced by the hash of the chunk.
+		// ! You must not specify an absolute path here! Use the output.path option.
+		filename: cfg.client.output.filename,
+
+		publicPath: cfg.client.output.publicPath,
+	},
 
 	resolve: {
 		// IMPORTANT: Setting this option will override the default, meaning that webpack
@@ -36,71 +48,12 @@ module.exports = {
 		// include ".js" in your array.
 		// Default: ["", ".webpack.js", ".web.js", ".js"]
 		// https://webpack.github.io/docs/configuration.html#resolve-extensions
-		extensions: ['', '.js', '.jsx'],
+		extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx'],
 	},
 
-	module: {
-		loaders: [
-			{
-				test: /\.jsx$/,
-				exclude: /node_modules/,
-				loader: 'babel',
-				query: {
-					cacheDirectory: true,
-					presets: [
-						'react', 
-						'es2015',
-						'stage-0',
-					],
-					plugins: [
-						'transform-runtime',
-					],
-				}
-			},
-		],
-		noParse: /\.min\.js/,
+	externals: {
+//		'react': 'React',
 	},
-	
-	
-	// Compilation target. Possible values:
-	// "web" Compile for usage in a browser-like environment (default)
-	// "webworker" Compile as WebWorker
-	// "node" Compile for usage in a node.js-like environment (use require to load chunks)
-	// "async-node" Compile for usage in a node.js-like environment (use fs and vm to load chunks async)
-	// "node-webkit" Compile for usage in webkit, uses jsonp chunk loading but also supports builtin node.js modules plus require(“nw.gui”) (experimental)
-	// "atom" Compile for usage in electron (formerly known as atom-shell), supports require for modules necessary to run Electron.
-	target: 'node',
-
-	// Include polyfills or mocks for various node stuff:
-	//
-	// console: true or false
-	// global: true or false
-	// process: true, "mock" or false
-	// Buffer: true or false
-	// __filename: true (real filename), "mock" ("/index.js") or false
-	// __dirname: true (real dirname), "mock" ("/") or false
-	// <node buildin>: true, "mock", "empty" or false
-	node: {
-		__dirname: true,
-		__filename: true,
-	},
-
-	// Options affecting the output.
-	// If you use any hashing ([hash] or [chunkhash]) make sure to have a consistent ordering of modules. Use the OccurenceOrderPlugin or recordsPath.
-	output: {
-		// The output directory as absolute path (required).
-		// [hash] is replaced by the hash of the compilation.
-		path: cfg.server.output.path,
-
-		// The filename of the entry chunk as relative path inside the output.path directory.
-		// [name] is replaced by the name of the chunk.
-		// [hash] is replaced by the hash of the compilation.
-		// [chunkhash] is replaced by the hash of the chunk.
-		// ! You must not specify an absolute path here! Use the output.path option.
-		filename: cfg.server.output.filename,
-	},
-
-	externals: node_modules,
 
 	plugins: [
 		// BannerPlugin(banner, options)
@@ -109,7 +62,7 @@ module.exports = {
 		//  `options` an optional options object:
 		//    `options.raw` if true, banner will not be wrapped in a comment
 		//    `options.entryOnly` if true, the banner will only be added to the entry chunks.
-		new webpack.BannerPlugin('#!/bin/env node', {raw:true, entryOnly:true}),
+		new webpack.BannerPlugin('/* bridalapp-ui */', {raw:true, entryOnly:true}),
 
 		// OccurenceOrderPlugin(preferEntry)
 		// Assign the module and chunk ids by occurrence count. Ids that are used often get lower (shorter) ids.

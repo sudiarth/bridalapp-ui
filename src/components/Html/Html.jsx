@@ -19,11 +19,11 @@ export default class Html extends Component {
 		lang: PropTypes.string,
 		store: PropTypes.object,
 		script: PropTypes.string,
-	}
+	};
 
 	static defaultProps = {
 		lang: 'en-US',
-	}
+	};
 
 	render() {
 		const { lang, store, ...renderProps } = this.props;
@@ -47,7 +47,7 @@ export default class Html extends Component {
 					<div id="bridalapp" dangerouslySetInnerHTML={{__html: content}} />
 					<script dangerouslySetInnerHTML={{__html: `window.__data=${JSON.stringify(store.getState())};`}} charSet="UTF-8"/>
 					<script src="https://cdn.rawgit.com/tleunen/react-mdl/v1.0.4/extra/material.min.js" />
-					<script src={this.props.script} charSet="UTF-8"/>
+					<script src={this.props.script} charSet={'UTF-8'} />
 				</body>
 			</html>
 		);

@@ -19,18 +19,67 @@ module.exports = {
 	// If you pass an array: All modules are loaded upon startup. The last one is exported.
 	entry: [
 		// Add hot reloading client runtime
-		'webpack-dev-server/client?' + url,
+		// 'webpack-dev-server/client?' + url,
 		// Add a snippet that supresses reload
-		'webpack/hot/only-dev-server',
+		// 'webpack/hot/only-dev-server',
+		
+		// Reference impl. of React HMR using react-transform-hmr
+		// https://github.com/gaearon/react-transform-boilerplate/blob/master/webpack.config.dev.js
+		'eventsource-polyfill', // necessary for hot reloading with IE
+		// Webpack hot reloading you can attach to your own server
+		// https://github.com/glenjamin/webpack-hot-middleware
+		'webpack-hot-middleware/client',		
 		// The client entry point must be last so it is exported
 		cfg.client.entry,
 	],
 
+	resolve: {
+		// IMPORTANT: Setting this option will override the default, meaning that webpack
+		// will no longer try to resolve modules using the default extensions. If you want
+		// modules that were required with their extension (e.g. require('./somefile.ext'))
+		// to be properly resolved, you must include an empty string in your array.
+		// Similarly, if you want modules that were required without extensions (e.g.
+		// require('underscore')) to be resolved to files with “.js” extensions, you must
+		// include ".js" in your array.
+		// Default: ["", ".webpack.js", ".web.js", ".js"]
+		// https://webpack.github.io/docs/configuration.html#resolve-extensions
+		extensions: ['', '.js', '.jsx'],
+	},
+
+	cache: true,
+	debug: true,
+	
 	module: {
-		postLoaders: [
-			{test: /\.jsx$/, loaders: ["babel?presets[]=es2015&presets[]=stage-0&presets[]=react"], exclude: /node_modules/}
+		loaders: [
+			{
+				test: /\.jsx$/,
+				exclude: /node_modules/,
+				loader: 'babel',
+				query: {
+					cacheDirectory: true,
+					presets: [
+						'react', 
+						'es2015',
+						'stage-0',
+					],
+					plugins: [
+						'transform-runtime',
+						["react-transform", {
+							"transforms": [{
+								"transform": "react-transform-hmr",
+								"imports": ["react"],
+								// this is important for Webpack HMR:
+								"locals": ["module"]
+							}]
+							// note: you can put more transforms into array
+							// this is just one of them!
+						}]
+					],
+				}
+			},
+			//{test: /\.jsx$/, loaders: ["babel?presets[]=es2015&presets[]=stage-0&presets[]=react"], exclude: /node_modules/}
 		],
-		noParse: /\.min\.js/
+		noParse: /\.min\.js/,
 	},
 	
 	// Compilation target. Possible values:
@@ -53,8 +102,11 @@ module.exports = {
 		// The output.path from the view of the Javascript / HTML page.
 		// To teach webpack to make requests (for chunk loading or HMR) to the 
 		// webpack-dev-server you need to provide a full URL in the output.publicPath 
-		//option. ( https://webpack.github.io/docs/webpack-dev-server.html )
-		publicPath: url + cfg.client.output.publicPath,
+		// option. ( https://webpack.github.io/docs/webpack-dev-server.html )
+		// publicPath: url + cfg.client.output.publicPath,
+		// BUT, webpack-hot-middleware apparently does not need this
+		publicPath: cfg.client.output.publicPath,
+		
 
 		// The filename of the entry chunk as relative path inside the output.path directory.
 		// [name] is replaced by the name of the chunk.
@@ -95,19 +147,9 @@ module.exports = {
 		new webpack.NoErrorsPlugin(),
 	],
 
-	resolve: {
-		// IMPORTANT: Setting this option will override the default, meaning that webpack
-		// will no longer try to resolve modules using the default extensions. If you want
-		// modules that were required with their extension (e.g. require('./somefile.ext'))
-		// to be properly resolved, you must include an empty string in your array.
-		// Similarly, if you want modules that were required without extensions (e.g.
-		// require('underscore')) to be resolved to files with “.js” extensions, you must
-		// include ".js" in your array.
-		// Default: ["", ".webpack.js", ".web.js", ".js"]
-		// https://webpack.github.io/docs/configuration.html#resolve-extensions
-		extensions: ['', '.js', '.jsx'],
-	},
-
+	devtool: 'cheap-module-eval-source-map',
+	
+/*
 	// Can be used to configure the behaviour of webpack-dev-server when the webpack config 
 	// is passed to webpack-dev-server CLI.
 	devServer: {
@@ -139,6 +181,7 @@ module.exports = {
 			modules: false,
 		},
 	},
+*/
 };
 
 log.debug(chalk.styles.grey.open + 'development.client.config=', module.exports, chalk.styles.grey.close);
