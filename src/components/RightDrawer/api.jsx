@@ -4,27 +4,22 @@ import Api from 'redux-apis';
 log.debug('DrawerApi: Api=', Api);
 
 export default class DrawerApi extends Api {
-	static OPEN = 'OPEN';
-	static CLOSE = 'CLOSE';
+	constructor(state) {
+		super(state);
+		this.addHandler('OPEN', (action) => ({...this.state, open:true}));
+		this.addHandler('CLOSE', (action) => ({...this.state, open:false}));
+	}
 
 	open() {
-		this.dispatch(this.createAction(DrawerApi.OPEN));
+		this.dispatch(this.createAction('OPEN')());
 	}
 
 	close() {
-		this.dispatch(this.createAction(DrawerApi.CLOSE));
+		this.dispatch(this.createAction('CLOSE')());
 	}
 
 	isOpen() {
 		return this.state.open;
-	}
-
-	handle(action) {
-		switch(action.type) {
-			case DrawerApi.OPEN: return this.state.open ? this.state : {open:true};
-			case DrawerApi.CLOSE: return this.state.open ? {open:false} : this.state;
-			default: return this.state || {open:false};
-		}
 	}
 }
 

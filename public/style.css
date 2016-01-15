@@ -1,0 +1,292 @@
+body {
+	background-color: #ddd;
+}
+
+/* div:before, div:after{content: ' '; display: table;} */ /* prevent margin collapse */
+/* div {box-sizing: border-box; padding-top:0.025px} */ /* prevent margin collapse */
+
+.react-mdl-header-tabs-hack {
+	margin:0;
+	padding:0;
+}
+
+.mdl-layout--fixed-drawer:not(.is-small-screen) > .mdl-layout__inner-container > .mdl-layout__header {
+    margin-left: 0 240px;
+    width: calc(100% - 480px);
+}
+
+@media screen and (max-width: 1024px) {
+	.mdl-layout__header {
+	    min-height: 56px;
+	}
+	.mdl-layout__header .mdl-layout__drawer-button {
+	    margin: 6px 2px;
+	}
+}
+
+.mdl-layout__header {
+	background-color: white;
+}
+
+.mdl-layout__header-row {
+	padding-right: 0;
+}
+
+.mdl-layout__header .material-icons {
+	color: black;
+}
+
+.mdl-layout__header .logo {
+    position: absolute;
+    left: 52px;
+    height: 40px;
+    padding: 8px 0;
+}
+
+.mdl-layout__header .mdl-layout-title {
+}
+
+.mdl-layout .mdl-navigation .material-icons {
+	font-size: 24px;
+	margin: 0;
+    cursor: pointer;
+}
+
+.mdl-layout__drawer-right {
+	left: auto;
+    right: 0;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    border-right: none;
+    -webkit-transform: translateX(260px);
+    -ms-transform: translateX(260px);
+    transform: translateX(260px);
+}
+
+.mdl-layout__drawer-right.is-visible,
+.mdl-layout__obfuscator-right.is-visible {
+    -webkit-transform: translateX(0);
+    -ms-transform: translateX(0);
+    transform: translateX(0);
+}
+
+.mdl-layout__obfuscator-right {
+    background-color: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 4;
+    visibility: hidden;
+    -webkit-transition-property: background-color;
+    transition-property: background-color;
+    -webkit-transition-duration: .2s;
+    transition-duration: .2s;
+    -webkit-transition-timing-function: cubic-bezier(.4,0,.2,1);
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+}
+
+.mdl-layout__drawer-right.is-visible~.mdl-layout__obfuscator-right {
+    background-color: rgba(0,0,0,.5);
+    visibility: visible;
+}
+
+.mdl-layout--fixed-drawer > .mdl-layout__inner-container > .mdl-layout__content {
+    margin: 0 240px;
+}
+
+@media screen and (max-width: 1024px) {
+	.mdl-layout--fixed-drawer > .mdl-layout__inner-container > .mdl-layout__content {
+	    margin: 0;
+	}
+}
+
+.mdl-layout__drawer-right>.mdl-layout-title {
+    line-height: 56px;
+    padding-left: 16px;
+}
+
+.mdl-layout__content.main,
+.mdl-layout__content.main>div:first-of-type {
+	height: 100%;
+}
+
+.mdl-layout__content.main>div:first-of-type  {
+	box-sizing: border-box;
+	margin-top: -64px;  /* compensate for appbar */
+	padding-top: 64px;
+}
+
+@media screen and (max-width: 1024px) {
+	.mdl-layout__content.main>div:first-of-type  {
+		margin-top: -56px;
+		padding-top: 56px;
+	}
+}
+
+
+
+/* Scroller */
+
+.Scroller {
+	box-sizing: border-box;
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding: 7px;
+}
+
+.Scroller .ScrollSlider {
+	margin: 0;
+}
+
+.Scroller .ScrollItems {
+	box-sizing: border-box;
+/*
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: stretch;
+*/
+	margin: 0;
+}
+
+.Scroller .ScrollItem {
+	display: inline-block;
+	box-sizing: border-box;
+	padding: 7px 8px 8px 7px;
+	}
+
+.Scroller.per1 .ScrollItem {
+	width: 100%;
+}
+
+.Scroller.per2 .ScrollItem {
+	width: 50%;
+}
+
+.Scroller.per3 .ScrollItem {
+	width: 33.3%;
+}
+
+/*
+.Scroller .ScrollItem ~ .ScrollItem {
+	box-sizing: border-box;
+	padding: 0 15px 15px 15px;
+}
+*/
+/*
+.Scroller .ScrollItem>* {
+	margin: 15px;
+}
+*/
+.Scroller .ScrollSpacer {
+}
+
+.Scroller.vertical {
+}
+
+.Scroller.vertical .ScrollSlider {
+}
+
+.Scroller.vertical .ScrollItems {
+}
+
+.Scroller.vertical .ScrollSpacer {
+}
+
+.Scroller.horizontal {
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
+.Scroller.horizontal .ScrollSlider {
+	height: 100%;
+}
+
+.Scroller.horizontal .ScrollItems {
+	height: 100%;
+/*	flex-direction: row; */
+}
+
+.Scroller.horizontal .ScrollSpacer {
+	display: inline-block;
+}
+
+.Scroller.horizontal .ScrollItem {
+	display: inline-block;
+	height: 100%;
+	padding: 10px;
+}
+
+
+
+/* Cards */
+
+.FlipCard {
+	box-sizing: border-box;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	perspective: 1000px;
+}
+
+.FlipCard>.Face {
+	box-sizing: border-box;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	transform-style: preserve-3d;
+	backface-visibility: hidden;
+	transition: transform 0.5s;
+	border-radius: 6px;
+	box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+	overflow: hidden;
+	background-color: white;
+	text-align: center;
+	padding: 10px;
+}
+
+.FlipCard>.Face.Front {
+	transform: rotateY(0deg);
+}
+
+.FlipCard>.Face.Back {
+	transform: rotateY(180deg);
+}
+
+.FlipCard.flipped>.Face.Front {
+	transform: rotateY(-180deg);
+}
+
+.FlipCard.flipped>.Face.Back {
+	transform: rotateY(0deg);
+}
+
+
+
+/* Product cards */
+
+.FlipCard.Product .content {
+	height: 100%;
+}
+
+.FlipCard.Product .Back .content {
+	padding-top: 56px;
+	padding-bottom: 0; /* don't reserve space for rating toolbar on backside for tiny screens */
+}
+
+.FlipCard.Product .content img {
+	border-radius: 8px;
+}
+
+.FlipCard.Product .Front .content img {
+	background-size: 150%;
+	background-repeat: no-repeat;
+	height: 100%;
+	max-width: 100%;
+}
+
+

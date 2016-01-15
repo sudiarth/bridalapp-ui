@@ -6,11 +6,11 @@ export default class CardFace extends React.Component {
 		className: PropTypes.string,
 		faceClass: PropTypes.string,
 		children: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
-	}
+	};
 
 	static defaultProps = {
 		faceClass: 'mdl-card__face'
-	}
+	};
 
 	render() {
 		const { className, faceClass, children, ...otherProps } = this.props;
@@ -24,11 +24,11 @@ export default class CardFace extends React.Component {
 export class FrontFace extends CardFace {
 	static defaultProps = {
 		faceClass: classNames(CardFace.defaultProps.faceClass, 'mdl-card__front')
-	}
+	};
 }
 
 export class BackFace extends CardFace {
 	static defaultProps = {
 		faceClass: classNames(CardFace.defaultProps.faceClass, 'mdl-card__back')
-	}
+	};
 }

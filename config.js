@@ -1,7 +1,8 @@
 var path = require('path');
 
-var publicPath = path.resolve(__dirname, 'public');
 var buildPath = path.resolve(__dirname);
+var publicPath = path.resolve(__dirname, 'public');
+var testPath = path.resolve(__dirname, 'test');
 
 module.exports = {
 	isProduction: process.env.NODE_ENV === 'production',
@@ -33,10 +34,15 @@ module.exports = {
 		port: process.env.BRIDALAPP_API_SERVER_PORT || 8080,
 		path: process.env.BRIDALAPP_API_SERVER_PATH || '/api',
 	},
-	devServer: {
-		name: 'Webpack DEV Server',
-		host: process.env.BRIDALAPP_DEV_SERVER_HOST || 'localhost',
-		port: process.env.BRIDALAPP_DEV_SERVER_PORT || 3000,
-		path: process.env.BRIDALAPP_DEV_SERVER_PATH || '/assets/',
-	},
+	tests: {
+		name: 'BridalApp UI Tests',
+		entry: './src/tests',
+		output: {
+			filename: 'bridalapp-ui-tests.js',
+			path: path.resolve(testPath, 'assets'),
+			publicPath: '/test/assets/',
+		},
+		host: process.env.BRIDALAPP_TEST_SERVER_HOST || 'localhost',
+		port: process.env.BRIDALAPP_TEST_SERVER_PORT || 8081,
+	}
 };

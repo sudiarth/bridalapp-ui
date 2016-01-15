@@ -2,7 +2,6 @@
 import ReactTestUtils from 'react-addons-test-utils';
 import ShallowTestUtils from 'react-shallow-testutils';
 import { expect } from 'chai';
-import Immutable from 'seamless-immutable';
 
 import LayoutTitle from './LayoutTitle';
 

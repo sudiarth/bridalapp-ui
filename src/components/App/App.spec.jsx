@@ -1,20 +1,18 @@
 ﻿import log from 'picolog';
 import React from 'react';
-log.debug('React=', React);
 import ReactTestUtils from 'react-addons-test-utils';
-log.debug('ReactTestUtils=', ReactTestUtils);
 import ShallowTestUtils from 'react-shallow-testutils';
-log.debug('ShallowTestUtils=', ShallowTestUtils);
+import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-log.debug('Provider=', Provider);
+import { RootApi } from 'redux-apis';
 import { expect } from 'chai';
-log.debug('expect=', expect);
 
 import App from './App';
-log.debug('App=', App);
-import app, { store }  from '../../app';
+import AppApi from './api';
+
+var app = new RootApi(AppApi, createStore);
 log.debug('app=', app);
-log.debug('store=', store);
+log.debug('app.store=', app.store);
 
 describe('App', () => {
 
@@ -22,7 +20,7 @@ describe('App', () => {
 		it('renders basic app layout containing a navbar, left and right drawers and content', () => {
 			const renderer = ReactTestUtils.createRenderer();
 			renderer.render(
-				<Provider store={store}>
+				<Provider store={app.store}>
 					<App>TEST</App>
 				</Provider>
 				,

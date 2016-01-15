@@ -46,6 +46,10 @@ export default class Html extends Component {
 				<body>
 					<div id="bridalapp" dangerouslySetInnerHTML={{__html: content}} />
 					<script dangerouslySetInnerHTML={{__html: `window.__data=${JSON.stringify(store.getState())};`}} charSet="UTF-8"/>
+					<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react.min.js" />
+					<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react-dom.min.js" />
+					<script src="https://cdnjs.cloudflare.com/ajax/libs/history/1.17.0/History.min.js" />
+					<script src="https://cdnjs.cloudflare.com/ajax/libs/react-router/1.0.3/ReactRouter.min.js" />
 					<script src="https://cdn.rawgit.com/tleunen/react-mdl/v1.0.4/extra/material.min.js" />
 					<script src={this.props.script} charSet={'UTF-8'} />
 				</body>

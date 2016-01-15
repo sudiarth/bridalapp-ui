@@ -3,7 +3,6 @@ import React from 'react';
 import ReactTestUtils from 'react-addons-test-utils';
 import ShallowTestUtils from 'react-shallow-testutils';
 import { expect } from 'chai';
-import Immutable from 'seamless-immutable';
 
 import LayoutObfuscator from './LayoutObfuscator';
 

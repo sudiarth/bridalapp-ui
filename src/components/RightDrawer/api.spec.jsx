@@ -60,13 +60,13 @@ describe('DrawerApi', () => {
 				let apiPath = action.type.substring(0, idx);
 				let apiAction = action.type.substring(idx + 1);
 				expect(apiPath).to.equal('drawer');
-				expect(apiAction).to.equal(DrawerApi.OPEN);
+				expect(apiAction).to.equal('OPEN');
 				super.dispatch(action);
 			}
 
 			createAction(actionType, payload, ...args) {
 				expect(actionType).to.be.a('string');
-				expect(actionType).to.equal('drawer/' + DrawerApi.OPEN);
+				expect(actionType).to.equal('drawer/OPEN');
 				return super.createAction(actionType, payload, ...args);
 			}
 		}
@@ -100,13 +100,13 @@ describe('DrawerApi', () => {
 				let apiPath = action.type.substring(0, idx);
 				let apiAction = action.type.substring(idx + 1);
 				expect(apiPath).to.equal('drawer');
-				expect(apiAction).to.equal(DrawerApi.CLOSE);
+				expect(apiAction).to.equal('CLOSE');
 				super.dispatch(action);
 			}
 
 			createAction(actionType, payload, ...args) {
 				expect(actionType).to.be.a('string');
-				expect(actionType).to.equal('drawer/' + DrawerApi.CLOSE);
+				expect(actionType).to.equal('drawer/CLOSE');
 				return super.createAction(actionType, payload, ...args);
 			}
 		}

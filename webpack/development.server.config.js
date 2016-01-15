@@ -5,12 +5,23 @@ var webpack = require('webpack');
 
 var webpackCfg = require('./server.config');
 
+var node_modules = {};
+fs.readdirSync('node_modules')
+.filter(function(x){
+	return ['.bin'].indexOf(x) === -1;
+})
+.forEach(function(mod){
+	node_modules[mod] = 'commonjs ' + mod;
+});
+webpackCfg.externals = node_modules;
+
+
 webpackCfg.entry.unshift(
 	// Webpack's polling-based HMR runtime with a pol interval of 500ms
 	'webpack/hot/poll?500'
 );
 
-webpackCfg.cache = true;
+//webpackCfg.cache = true;
 webpackCfg.debug = true;
 webpackCfg.devtool = 'source-map';
 
@@ -43,14 +54,14 @@ webpackCfg.plugins = [
 	// Add the hashbang to create an executable file
 	// Add source map support
 	new webpack.BannerPlugin('#!/bin/env node\r\nrequire("source-map-support").install();', {raw:true, entryOnly:false}),
-	
+
 	// OccurenceOrderPlugin(preferEntry)
 	// Assign the module and chunk ids by occurrence count. Ids that are used often get lower (shorter) ids.
 	// This make ids predictable, reduces to total file size and is recommended.
 	//  `preferEntry` (boolean) give entry chunks higher priority. This makes entry chunks smaller
 	//                but increases the overall size. (recommended)
 	new webpack.optimize.OccurenceOrderPlugin(true),
-		
+
 	// HotModuleReplacementPlugin()
 	// Enables Hot Module Replacement. (This requires records data if not in dev-server mode, recordsPath)
 	// Generates Hot Update Chunks of each chunk in the records. It also enables the API and makes __webpack_hash__

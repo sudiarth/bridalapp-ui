@@ -1,6 +1,3 @@
-// Polyfill ES6 Promises etc
-import 'babel-polyfill';
-
 import log from 'picolog';
 log.info('Starting BridalApp UI');
 
@@ -36,11 +33,7 @@ var jsx = (
 	</Provider>
 );
 
-var appContainer = document.getElementById('bridalapp');
-
-log.info('ReactDOM=', ReactDOM);
-
-ReactDOM.render(jsx, appContainer);
+ReactDOM.render(jsx, document.getElementById('bridalapp'));
 
 
 if (module.hot) {

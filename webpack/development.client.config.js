@@ -7,28 +7,21 @@ var webpack = require('webpack');
 
 var cfg = require('../config');
 
-var url = 'http://' + cfg.devServer.host + ':' + cfg.devServer.port;
-
 module.exports = {
-	// The base directory (absolute path!) for resolving the entry option. 
+	// The base directory (absolute path!) for resolving the entry option.
 	// If output.pathinfo is set, the included pathinfo is shortened to this directory.
 	context: appRoot,
-	
+
 	// The entry point for the bundle.
 	// If you pass a string: The string is resolved to a module which is loaded upon startup.
 	// If you pass an array: All modules are loaded upon startup. The last one is exported.
 	entry: [
-		// Add hot reloading client runtime
-		// 'webpack-dev-server/client?' + url,
-		// Add a snippet that supresses reload
-		// 'webpack/hot/only-dev-server',
-		
 		// Reference impl. of React HMR using react-transform-hmr
 		// https://github.com/gaearon/react-transform-boilerplate/blob/master/webpack.config.dev.js
 		'eventsource-polyfill', // necessary for hot reloading with IE
 		// Webpack hot reloading you can attach to your own server
 		// https://github.com/glenjamin/webpack-hot-middleware
-		'webpack-hot-middleware/client',		
+		'webpack-hot-middleware/client',
 		// The client entry point must be last so it is exported
 		cfg.client.entry,
 	],
@@ -46,22 +39,22 @@ module.exports = {
 		extensions: ['', '.js', '.jsx'],
 	},
 
+	externals: {
+		'react': 'React',
+		'react-dom': 'ReactDOM',
+		'react-router': 'ReactRouter',
+	},
+
 	cache: true,
 	debug: true,
-	
+
 	module: {
 		loaders: [
 			{
-				test: /\.jsx$/,
+				test: /\.jsx/,
 				exclude: /node_modules/,
 				loader: 'babel',
 				query: {
-					cacheDirectory: true,
-					presets: [
-						'react', 
-						'es2015',
-						'stage-0',
-					],
 					plugins: [
 						'transform-runtime',
 						["react-transform", {
@@ -71,8 +64,6 @@ module.exports = {
 								// this is important for Webpack HMR:
 								"locals": ["module"]
 							}]
-							// note: you can put more transforms into array
-							// this is just one of them!
 						}]
 					],
 				}
@@ -81,7 +72,7 @@ module.exports = {
 		],
 		noParse: /\.min\.js/,
 	},
-	
+
 	// Compilation target. Possible values:
 	// "web" Compile for usage in a browser-like environment (default)
 	// "webworker" Compile as WebWorker
@@ -92,21 +83,21 @@ module.exports = {
 	target: 'web',
 
 	// Options affecting the output.
-	// If you use any hashing ([hash] or [chunkhash]) make sure to have a 
+	// If you use any hashing ([hash] or [chunkhash]) make sure to have a
 	// consistent ordering of modules. Use the OccurenceOrderPlugin or recordsPath.
 	output: {
 		// The output directory as absolute path (required).
 		// [hash] is replaced by the hash of the compilation.
 		path: cfg.client.output.path,
-		
+
 		// The output.path from the view of the Javascript / HTML page.
-		// To teach webpack to make requests (for chunk loading or HMR) to the 
-		// webpack-dev-server you need to provide a full URL in the output.publicPath 
+		// To teach webpack to make requests (for chunk loading or HMR) to the
+		// webpack-dev-server you need to provide a full URL in the output.publicPath
 		// option. ( https://webpack.github.io/docs/webpack-dev-server.html )
 		// publicPath: url + cfg.client.output.publicPath,
 		// BUT, webpack-hot-middleware apparently does not need this
 		publicPath: cfg.client.output.publicPath,
-		
+
 
 		// The filename of the entry chunk as relative path inside the output.path directory.
 		// [name] is replaced by the name of the chunk.
@@ -128,7 +119,7 @@ module.exports = {
 		// Stijn: It seems these files are never actually written to disk...
 		hotUpdateMainFilename: 'hmr/[hash]/hot-update.json',
 	},
-	
+
 	plugins: [
 		// HotModuleReplacementPlugin()
 		// Enables Hot Module Replacement. (This requires records data if not in dev-server mode, recordsPath)
@@ -137,7 +128,7 @@ module.exports = {
 		// ! Only add HotModuleReplacementPlugin here when you don't use cmd line option --hot
 		// because it will break if we add both! see https://github.com/webpack/webpack/issues/1830
 		new webpack.HotModuleReplacementPlugin(),
-		
+
 		// NoErrorsPlugin()
 		// When there are errors while compiling this plugin skips the emitting phase
 		// (and recording phase), so there are no assets emitted that include errors.
@@ -148,40 +139,6 @@ module.exports = {
 	],
 
 	devtool: 'cheap-module-eval-source-map',
-	
-/*
-	// Can be used to configure the behaviour of webpack-dev-server when the webpack config 
-	// is passed to webpack-dev-server CLI.
-	devServer: {
-		host: cfg.devServer.host,
-		port: cfg.devServer.port,
-		headers: {
-			"Access-Control-Allow-Origin": "*",
-		},
-		hot: true,
-		inline: true,
-		lazy: false,
-		
-		
-		// SET LOGGING LEVELS
-		// Uunfortunately, these flags are largely undocumented...
-		// https://github.com/webpack/webpack/issues/1660
-//		quiet: true,
-//		noInfo: true,
-//		stats: 'minimal', 
-		stats: {
-			colors: true,
-			hash: false,
-			version: false,
-			timings: false,
-			assets: true,
-			chunks: false,
-			chunkModules: false,
-			chunkOrigins: false,
-			modules: false,
-		},
-	},
-*/
 };
 
 log.debug(chalk.styles.grey.open + 'development.client.config=', module.exports, chalk.styles.grey.close);

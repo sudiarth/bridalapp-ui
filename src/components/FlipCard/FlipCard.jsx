@@ -9,14 +9,14 @@ export default class FlipCard extends React.Component {
 		flippedClass: PropTypes.string,
 		flipped: PropTypes.bool,
 		children: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-	}
+	};
 
 	static defaultProps = {
 		cardClass: 'mdl-card mdl-flip-card',
 		shadowClass: 'mdl-shadow--2dp',
 		flippedClass: 'is-flipped',
 		flipped: PropTypes.bool,
-	}
+	};
 
 	render() {
 		const { className, cardClass, shadowClass, flippedClass, flipped, children, ...otherProps } = this.props;
