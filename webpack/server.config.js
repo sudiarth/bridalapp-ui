@@ -95,6 +95,8 @@ module.exports = {
 	// "atom" Compile for usage in electron (formerly known as atom-shell), supports require for modules necessary to run Electron.
 	target: 'node',
 
+	devtool: 'source-map',
+
 	// Include polyfills or mocks for various node stuff:
 	//
 	// console: true or false

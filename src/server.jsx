@@ -1,4 +1,5 @@
-﻿var chalk = require('chalk');
+﻿require('babel-polyfill');
+var chalk = require('chalk');
 var Express = require('express');
 var http = require('http');
 var httpProxy = require('http-proxy');
@@ -9,7 +10,7 @@ var match = require('react-router').match;
 var createStore = require('redux').createStore;
 var applyMiddleware = require('redux').applyMiddleware;
 var thunk = require('redux-thunk');
-var RootApi = require('redux-apis').RootApi;
+var RootApi = require('./redux-apis').RootApi;
 
 var cfg = require('../config');
 

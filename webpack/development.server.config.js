@@ -23,7 +23,6 @@ webpackCfg.entry.unshift(
 
 //webpackCfg.cache = true;
 webpackCfg.debug = true;
-webpackCfg.devtool = 'source-map';
 
 // The filename of the Hot Update Main File. It is inside the output.path directory.
 // [hash] is replaced by the hash of the compilation. (The last hash stored in the records)
