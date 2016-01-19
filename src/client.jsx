@@ -1,7 +1,8 @@
 import log from 'picolog';
 log.info('Starting BridalApp UI');
 
-import { createStore as reduxCreateStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import { RootApi } from 'redux-apis';
 
 import React from 'react';
@@ -10,17 +11,13 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 
-//const loggerMiddleware = createLogger({logger:log});
-const createStore = applyMiddleware(
-	// thunkMiddleware,
-	// loggerMiddleware
-)(reduxCreateStore);
+const storeCreator = applyMiddleware(thunk)(createStore);
 
 
 var routes = require('./routes').default;
 var AppApi = require('./components/App/api').default;
 
-const app = new RootApi(AppApi, createStore);
+const app = new RootApi(AppApi, storeCreator, window.__data);
 
 typeof window == 'object' ? window.app = app : global.app = app;
 

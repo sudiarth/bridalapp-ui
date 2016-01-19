@@ -1,31 +1,36 @@
 import log from 'picolog';
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+
 import Scroller from '../Scroller';
 import FlipCard, { Front, Back } from '../FlipCard';
 
-export default class ProductBrowser extends React.Component {
+function select(state) {return {items: state.products.results};}
+
+export default connect(select)(class ProductBrowser extends React.Component {
+	static propTypes = {
+		category: PropTypes.string
+	};
+
+	static defaultProps = {
+		category: 'Wedding Dresses'
+	};
+
+	static fetchData = (props) => {
+		const filter = {
+			category: props.params.category,
+		}
+		return app.products.search(filter);
+	};
+
 	constructor(props) {
 		super(props);
 		this.state = this.getState(props);
 	}
 
 	getState(props) {
-		let items = this.state && this.state.items;
-		let itemCount = this.state && this.state.itemCount;
-		if (! items) {
-			let initialData = typeof window != 'undefined' ? window.initialData : global.initialData;
-			if (initialData && initialData.products) {
-				if (initialData.products instanceof Array) {
-					items = initialData.products;
-				}
-				else {
-					// TODO paging
-					itemCount = initialData.products.count;
-					items = initialData.products.pages;
-				}
-			}
-		}
-
+		let items = this.state && this.state.items || props.items;
+		let itemCount = this.state && this.state.itemCount || props.itemCount || (props.items && props.items.length);
 		return {
 			items: items || [],
 			itemCount: itemCount || items && items.length || 0
@@ -77,12 +82,5 @@ export default class ProductBrowser extends React.Component {
 			/>
 		);
 	}
-}
+})
 
-ProductBrowser.propTypes = {
-	category: PropTypes.string
-};
-
-ProductBrowser.defaultProps = {
-	category: 'Wedding Dresses'
-}

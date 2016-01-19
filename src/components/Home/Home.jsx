@@ -5,7 +5,7 @@ export default class Home extends React.Component {
 		return (
 			<div className="Home">
 				<h1>BRIDAL APP</h1>
-				Ok then
+				Allrighty :) thenn
 			</div>
 		);
 	}

@@ -2,7 +2,7 @@ var path = require('path');
 
 var buildPath = path.resolve(__dirname);
 var publicPath = path.resolve(__dirname, 'public');
-var testPath = path.resolve(__dirname, 'test');
+var testPath = path.resolve(publicPath, 'test');
 
 module.exports = {
 	isProduction: process.env.NODE_ENV === 'production',
@@ -42,7 +42,5 @@ module.exports = {
 			path: path.resolve(testPath, 'assets'),
 			publicPath: '/test/assets/',
 		},
-		host: process.env.BRIDALAPP_TEST_SERVER_HOST || 'localhost',
-		port: process.env.BRIDALAPP_TEST_SERVER_PORT || 8081,
 	}
 };

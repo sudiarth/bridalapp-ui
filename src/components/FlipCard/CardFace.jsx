@@ -21,13 +21,13 @@ export default class CardFace extends React.Component {
 	}
 }
 
-export class FrontFace extends CardFace {
+export class Front extends CardFace {
 	static defaultProps = {
 		faceClass: classNames(CardFace.defaultProps.faceClass, 'mdl-card__front')
 	};
 }
 
-export class BackFace extends CardFace {
+export class Back extends CardFace {
 	static defaultProps = {
 		faceClass: classNames(CardFace.defaultProps.faceClass, 'mdl-card__back')
 	};

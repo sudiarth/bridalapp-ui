@@ -10,6 +10,10 @@ export default class DrawerApi extends Api {
 		this.addHandler('CLOSE', (action) => ({...this.state, open:false}));
 	}
 
+	initialState() {
+		return { open: false };
+	}
+
 	open() {
 		this.dispatch(this.createAction('OPEN')());
 	}

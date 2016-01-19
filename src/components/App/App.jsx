@@ -21,8 +21,8 @@ class App extends Component {
 	static propTypes = {
 		dispatch: PropTypes.func.isRequired,
 		rightDrawer: PropTypes.shape({
-			open: PropTypes.bool.isRequired
-		})
+			open: PropTypes.bool.isRequired,
+		}),
 	};
 
 	constructor(props) {

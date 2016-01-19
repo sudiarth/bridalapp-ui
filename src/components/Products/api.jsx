@@ -1,4 +1,8 @@
-﻿import Api from 'redux-apis';
+﻿import log from 'picolog';
+import Api from 'redux-apis';
+import fetch from 'isomorphic-fetch';
+
+import ApiClient from '../../api-client';
 
 export default class ProductsApi extends Api {
 	constructor(state) {
@@ -8,12 +12,24 @@ export default class ProductsApi extends Api {
 			filter: action.payload,
 			loading: true,
 		}));
-		this.addHandler('SEARCH_SUCCESS', (action) => ({
-			...this.state,
-			results: action.payload.results,
-			loading: false,
-			loaded: true,
-		}));
+		this.addHandler('SEARCH_SUCCESS', (action) => {
+			return {
+				...this.state,
+				results: action.payload,
+				loading: false,
+				loaded: true,
+			};
+		});
+		this.addHandler('SEARCH_ERROR', (action) => {
+			log.error('Error searching for products: ', action.payload, action.payload.stack);
+			return {
+				...this.state,
+				results: [],
+				loading: false,
+				loaded: false,
+				error: action.payload,
+			};
+		});
 	}
 
 	initialState() {
@@ -21,14 +37,29 @@ export default class ProductsApi extends Api {
 			loading: false,
 			loaded: false,
 			filter: {
-				category: 'Wedding Dresses',
+				category: 'Wedding+Dresses',
 			},
 			results: [],
 		};
 	}
 
 	search(filter) {
-		this.dispatch(this.createAction('SEARCH')(filter));
+		// dispatch a function... redux-thunk will execute the function
+		let dispatchResult = this.dispatch((dispatch, getState) => {
+			this.dispatch(this.createAction('SEARCH')(filter));
+			return ApiClient.fetch(`/products/search/${filter.category}`)
+				.then(response => {
+					if (response.status === 200) {return response.json();}
+					else throw new Error('Not Found.');
+				})
+				.then(json => {
+					return this.dispatch(this.createAction('SEARCH_SUCCESS')(json))
+				})
+				.catch(error => {
+					return this.dispatch(this.createAction('SEARCH_ERROR')(error))
+				});
+		});
+		return dispatchResult;
 	}
 
 	results() {

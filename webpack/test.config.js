@@ -1,14 +1,23 @@
 ﻿var fs = require('fs');
+var appRoot = require('app-root-path').toString();
 var webpack = require('webpack');
 
 var cfg = require('../config');
 
 module.exports = {
+	// The base directory (absolute path!) for resolving the entry option.
+	// If output.pathinfo is set, the included pathinfo is shortened to this directory.
+	context: appRoot,
+
 	// The entry point for the bundle.
 	// If you pass a string: The string is resolved to a module which is loaded upon startup.
 	// If you pass an array: All modules are loaded upon startup. The last one is exported.
 	entry: [
-		// The tests entry point
+		'eventsource-polyfill', // necessary for hot reloading with IE
+		// Webpack hot reloading you can attach to your own server
+		// https://github.com/glenjamin/webpack-hot-middleware
+		'webpack-hot-middleware/client',
+		// The client entry point must be last so it is exported
 		'mocha!' + cfg.tests.entry,
 	],
 
@@ -22,7 +31,7 @@ module.exports = {
 		// include ".js" in your array.
 		// Default: ["", ".webpack.js", ".web.js", ".js"]
 		// https://webpack.github.io/docs/configuration.html#resolve-extensions
-		extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx'],
+		extensions: ['', '.js', '.jsx'],
 	},
 
 	externals: {
@@ -32,12 +41,28 @@ module.exports = {
 		'history': 'History',
 	},
 
+	cache: true,
+	debug: true,
+
 	module: {
 		loaders: [
 			{
 				test: /\.jsx/,
 				exclude: /node_modules/,
 				loader: 'babel',
+				query: {
+					plugins: [
+						'transform-runtime',
+						["react-transform", {
+							"transforms": [{
+								"transform": "react-transform-hmr",
+								"imports": ["react"],
+								// this is important for Webpack HMR:
+								"locals": ["module"]
+							}]
+						}]
+					],
+				}
 			},
 		],
 		noParse: /\.min\.js/,
@@ -66,7 +91,20 @@ module.exports = {
 		// ! You must not specify an absolute path here! Use the output.path option.
 		filename: cfg.tests.output.filename,
 
-		publicPath: 'http://' + cfg.tests.host + ':' + cfg.tests.port + cfg.tests.output.publicPath,
+		publicPath: cfg.tests.output.publicPath,
+
+		// The filename of the Hot Update Chunks. They are inside the output.path directory.
+		// [id] is replaced by the id of the chunk.
+		// [hash] is replaced by the hash of the compilation. (The last hash stored in the records)
+		// Default: "[id].[hash].hot-update.js"
+		// Stijn: It seems these files are never actually written to disk...
+		hotUpdateChunkFilename: 'hmr/[hash]/hot-update-chunk-[id].js',
+
+		// The filename of the Hot Update Main File. It is inside the output.path directory.
+		// [hash] is replaced by the hash of the compilation. (The last hash stored in the records)
+		// Default: "[hash].hot-update.json"
+		// Stijn: It seems these files are never actually written to disk...
+		hotUpdateMainFilename: 'hmr/[hash]/hot-update.json',
 	},
 
 	plugins: [
@@ -84,13 +122,23 @@ module.exports = {
 		//  `preferEntry` (boolean) give entry chunks higher priority. This makes entry chunks smaller
 		//                but increases the overall size. (recommended)
 		new webpack.optimize.OccurenceOrderPlugin(true),
+
+		// HotModuleReplacementPlugin()
+		// Enables Hot Module Replacement. (This requires records data if not in dev-server mode, recordsPath)
+		// Generates Hot Update Chunks of each chunk in the records. It also enables the API and makes __webpack_hash__
+		// available in the bundle.
+		// ! Only add HotModuleReplacementPlugin here when you don't use cmd line option --hot
+		// because it will break if we add both! see https://github.com/webpack/webpack/issues/1830
+		new webpack.HotModuleReplacementPlugin(),
+
+		// NoErrorsPlugin()
+		// When there are errors while compiling this plugin skips the emitting phase
+		// (and recording phase), so there are no assets emitted that include errors.
+		// The emitted flag in the stats is false for all assets. If you are using the
+		// CLI, the webpack process will not exit with an error code by enabling this plugin.
+		// If you want webpack to "fail" when using the CLI, please check out the bail option.
+		new webpack.NoErrorsPlugin(),
 	],
 
-	devServer: {
-		host: cfg.tests.host,
-		port: cfg.tests.port,
-		stats: {
-			chunks: false,
-		}
-	},
+	devtool: 'cheap-module-eval-source-map',
 };

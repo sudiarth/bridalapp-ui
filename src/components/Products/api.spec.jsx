@@ -14,9 +14,9 @@ describe('ProductsApi', () => {
 			loading: true,
 			loaded: false,
 			filter: {
-				category: 'Wedding Dresses',
+				category: 'Wedding+Dresses',
 			},
-			results: ['one result!'],
+			results: ['one result! yay'],
 		});
 		expect(products).to.be.an.instanceOf(ProductsApi);
 		expect(products).to.have.a.property('state');
@@ -48,6 +48,7 @@ describe('ProductsApi', () => {
 
 	describe('search', () => {
 		let dispatched = false;
+		let promise = null;
 		class TestProducts extends Api {
 			constructor(state) {
 				super(state);
@@ -55,9 +56,8 @@ describe('ProductsApi', () => {
 			}
 			dispatch(action) {
 				log.info('DISPATCH:', action);
-				expect(action).to.be.an('object');
 				dispatched = true;
-				super.dispatch(action);
+				return super.dispatch(action);
 			}
 		}
 		const test = new TestProducts();
@@ -66,8 +66,8 @@ describe('ProductsApi', () => {
 
 		it('creates and dispatches an action \'SEARCH\'', () => {
 			expect(test.products.state.loading).to.equal(false);
-			expect(test.products.state.filter.category).to.equal('Wedding Dresses');
-			test.products.search({category: 'Test stuff'});
+			expect(test.products.state.filter.category).to.equal('Wedding+Dresses');
+			promise = test.products.search({category: 'Wedding+Dresses'});
 			expect(dispatched).to.equal(true);
 		});
 
@@ -76,7 +76,19 @@ describe('ProductsApi', () => {
 		});
 
 		it('results in the `filter` options being set to the given values', () => {
-			expect(test.products.state.filter.category).to.equal('Test stuff');
+			expect(test.products.state.filter.category).to.equal('Wedding+Dresses');
+		});
+
+		it('returns a promise', () => {
+			log.info('promise=', promise);
+			expect(promise).to.not.equal(null);
+			expect(promise.then).to.be.a('function');
+		});
+
+		it('sets the `loading` flag to `false` when the promise resolves', () => {
+			promise.then(() => {
+				expect(test.products.state.loading).to.equal(false);
+			});
 		});
 	});
 });

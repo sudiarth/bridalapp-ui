@@ -7,6 +7,8 @@ var React = require('react');
 var ReactDOM = require('react-dom/server')
 var match = require('react-router').match;
 var createStore = require('redux').createStore;
+var applyMiddleware = require('redux').applyMiddleware;
+var thunk = require('redux-thunk');
 var RootApi = require('redux-apis').RootApi;
 
 var cfg = require('../config');
@@ -23,17 +25,46 @@ var g=chalk.green, gb=chalk.green.bold,  y=chalk,yellow, yb=chalk.yellow.bold,
 // production mode, we serve up a static pre-compiled client bundle
 if (module.hot) {
 	var webpack = require('webpack');
-	var webpackCfg = require('../webpack/development.client.config');
 	var devMiddleware = require('webpack-dev-middleware');
 	var hotMiddleware = require('webpack-hot-middleware');
-	var compiler = webpack(webpackCfg);
 
-	express.use(devMiddleware(compiler, {noInfo:true, publicPath:webpackCfg.output.publicPath}));
-	express.use(hotMiddleware(compiler));
+	var stats = {colors:true, chunks:false, hash:false, version:false};
+
+	var clientCfg = require('../webpack/development.client.config');
+	var clientCompiler = webpack(clientCfg);
+	express.use(devMiddleware(clientCompiler, {stats, publicPath:clientCfg.output.publicPath}));
+	express.use(hotMiddleware(clientCompiler));
+/*
+	var testCfg = require('../webpack/test.config');
+	var testCompiler = webpack(testCfg);
+	express.use(devMiddleware(testCompiler, {stats, publicPath:testCfg.output.publicPath}));
+	express.use(hotMiddleware(testCompiler));
+*/
 }
 
 // We point to our static assets
 express.use(Express.static(cfg.publicPath));
+
+
+// Proxy to BridalApp API server
+log.log(chalk.grey('Proxying requests incoming at ') + chalk.white('http://%s:%s%s'), cfg.server.host, cfg.server.port, cfg.apiServer.path);
+log.log(chalk.grey('   to ') + chalk.white('%s') + chalk.grey(' at ') + chalk.white('http://%s:%s%s'), cfg.apiServer.name, cfg.apiServer.host, cfg.apiServer.port, cfg.apiServer.path);
+const apiProxy = httpProxy.createProxyServer({
+	target: {host:cfg.apiServer.host, port:cfg.apiServer.port, path:cfg.apiServer.path},
+});
+express.use(cfg.apiServer.path, (req, res) => {
+	log.debug('Received API request.');
+	apiProxy.web(req, res);
+});
+// added the error handling to avoid https://github.com/nodejitsu/node-http-proxy/issues/527
+apiProxy.on('error', (error, req, res) => {
+	if (error.code !== 'ECONNRESET') {log.error('proxy error', error);}
+	if (!res.headersSent) {res.writeHead(500, {'content-type': 'application/json'});}
+	let json = {error: 'proxy_error', reason: error.message};
+	res.end(JSON.stringify(json));
+});
+
+
 
 express.get('/status', function(req, res) {
 	res.writeHead(200, {'Content-Type': 'text/html'});
@@ -48,23 +79,29 @@ express.get(/\/.*/, function(req, res) {
 	match({routes:routes, location:req.originalUrl}, function (error, redirectLocation, renderProps) {
 		if (redirectLocation) {
 			res.redirect(redirectLocation.pathname + redirectLocation.search);
+			res.end();
 		}
 		else if (error) {
 			log.warn(chalk.red.bold('ROUTER ERROR:'), pretty.render(error));
 			res.status(500);
 			res.send('Server error.');
+			res.end();
 		}
 		else if (!renderProps) {
 			res.status(404);
+			res.end();
 		}
 		else {
+			log.log(chalk.styles.gray.open, 'Rendering using props: ', renderProps, chalk.styles.gray.close);
+
 			// require again on each request, to enable hot-reload in development mode.
 			// In production, this will just grab the module from require.cache.
 			var Html = require('./components/Html/Html').default;
 			var App = require('./components/App/App').default;
 			var AppApi = require('./components/App/api').default;
 
-			const app = new RootApi(AppApi, createStore);
+			const storeCreator = applyMiddleware(thunk)(createStore);
+			const app = new RootApi(AppApi, storeCreator);
 
 			// omg global state?
 			// yes, but remember, a redux app only needs one variable,
@@ -73,15 +110,34 @@ express.get(/\/.*/, function(req, res) {
 			// a convenience wrapper around the redux store.
 			global.app = app;
 
-			res.status(200);
-			res.send('<!DOCTYPE html>\n' +
-				ReactDOM.renderToString(
-					<Html lang="en-US" store={app.store} {...renderProps} script="/assets/bridalapp-ui.js" />
-				)
-			);
+			const fetchingComponents = renderProps.components
+					.map(component => component.WrappedComponent ? component.WrappedComponent : component)
+					.filter(component => component.fetchData);
+			log.info('fetchingComponents=', fetchingComponents);
+			const fetchPromises = fetchingComponents.map(component => component.fetchData(renderProps));
+
+			// From the components from the matched route, get the fetchData functions
+			Promise.all(fetchPromises)
+			// Promise.all combines all the promises into one
+			.then(() => {
+				// now fetchData() has been run on every component in my route, and the
+				// promises resolved, so we know the redux state is populated
+				res.status(200);
+				res.send('<!DOCTYPE html>\n' +
+					ReactDOM.renderToString(
+						<Html lang="en-US" store={app.store} {...renderProps} script="/assets/bridalapp-ui.js" />
+					)
+				);
+				res.end();
+			})
+			.catch((error) => {
+				log.error('Error fetching data.', error, error.stack);
+				res.status(500);
+				res.send('Server error.');
+				res.end();
+			});
 		}
 	});
-	res.end();
 });
 
 var server = httpServer.listen(cfg.server.port, cfg.server.host, function(error) {

@@ -1,5 +1,7 @@
-﻿require('./components/App/App.spec.jsx');
-require('./components/App/api.spec.jsx');
-require('./components/Products/api.spec.jsx');
-require('./components/RightDrawer/RightDrawer.spec.jsx');
-require('./components/RightDrawer/api.spec.jsx');
+﻿require('./components/App/App.spec');
+require('./components/App/api.spec');
+require('./components/Products/api.spec');
+require('./components/RightDrawer/RightDrawer.spec');
+require('./components/RightDrawer/api.spec');
+require('./components/Home/Home');
+
