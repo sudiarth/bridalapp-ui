@@ -42,8 +42,8 @@ express.use(Express.static(cfg.publicPath));
 
 
 // Proxy to BridalApp API server
-log.log(gr('Proxying requests incoming at ') + w('http://%s:%s%s'), cfg.server.host, cfg.server.port, cfg.apiServer.path);
-log.log(gr('   to ') + w('%s') + gr(' at ') + w('http://%s:%s%s'), cfg.apiServer.name, cfg.apiServer.host, cfg.apiServer.port, cfg.apiServer.path);
+log.warn(gr('Proxying requests incoming at ') + w('http://%s:%s%s'), cfg.server.host, cfg.server.port, cfg.apiServer.path);
+log.warn(gr('   to ') + w('%s') + gr(' at ') + w('http://%s:%s%s'), cfg.apiServer.name, cfg.apiServer.host, cfg.apiServer.port, cfg.apiServer.path);
 const apiProxy = httpProxy.createProxyServer({
 	target: {host:cfg.apiServer.host, port:cfg.apiServer.port, path:cfg.apiServer.path},
 });

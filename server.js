@@ -2604,8 +2604,8 @@
 	express.use(_express2.default.static(_config2.default.publicPath));
 	
 	// Proxy to BridalApp API server
-	_picolog2.default.log(gr('Proxying requests incoming at ') + w('http://%s:%s%s'), _config2.default.server.host, _config2.default.server.port, _config2.default.apiServer.path);
-	_picolog2.default.log(gr('   to ') + w('%s') + gr(' at ') + w('http://%s:%s%s'), _config2.default.apiServer.name, _config2.default.apiServer.host, _config2.default.apiServer.port, _config2.default.apiServer.path);
+	_picolog2.default.warn(gr('Proxying requests incoming at ') + w('http://%s:%s%s'), _config2.default.server.host, _config2.default.server.port, _config2.default.apiServer.path);
+	_picolog2.default.warn(gr('   to ') + w('%s') + gr(' at ') + w('http://%s:%s%s'), _config2.default.apiServer.name, _config2.default.apiServer.host, _config2.default.apiServer.port, _config2.default.apiServer.path);
 	var apiProxy = _httpProxy2.default.createProxyServer({
 		target: { host: _config2.default.apiServer.host, port: _config2.default.apiServer.port, path: _config2.default.apiServer.path }
 	});
