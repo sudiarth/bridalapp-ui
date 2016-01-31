@@ -1,5 +1,5 @@
 ﻿import React, { PropTypes } from 'react';
-const { string, node } = PropTypes;
+const { string, node, bool } = PropTypes;
 import classNames from 'classnames';
 
 function simpleComponent(defaultClass) {
