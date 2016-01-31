@@ -48,8 +48,10 @@ const apiProxy = httpProxy.createProxyServer({
 	target: {host:cfg.apiServer.host, port:cfg.apiServer.port, path:cfg.apiServer.path},
 });
 express.use(cfg.apiServer.path, (req, res) => {
-	log.warn('Received API request.');
+	log.warn('Received API request: ', req.originalUrl);
 	apiProxy.web(req, res);
+	log.warn('Received API response: ', res);
+
 });
 // added the error handling to avoid https://github.com/nodejitsu/node-http-proxy/issues/527
 apiProxy.on('error', (error, req, res) => {
