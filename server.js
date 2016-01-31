@@ -2610,7 +2610,7 @@
 		target: { host: _config2.default.apiServer.host, port: _config2.default.apiServer.port, path: _config2.default.apiServer.path }
 	});
 	express.use(_config2.default.apiServer.path, function (req, res) {
-		_picolog2.default.debug('Received API request.');
+		_picolog2.default.warn('Received API request.');
 		apiProxy.web(req, res);
 	});
 	// added the error handling to avoid https://github.com/nodejitsu/node-http-proxy/issues/527
