@@ -2,8 +2,8 @@ import log from 'picolog';
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import Scroller from '../Scroller';
-import FlipCard, { Front, Back } from '../FlipCard';
+import Scroller from '../Scroller/Scroller';
+import Card, { Front, Back } from '../Card/Card';
 
 function select(state) {return {items: state.brands.results};}
 
@@ -66,7 +66,7 @@ export default connect(select)(class BrandBrowser extends React.Component {
 				itemSize={480}
 				itemsPer={1}
 				renderItem ={ (item, idx) => (
-					<FlipCard className="Brand" key={item.id}>
+					<Card className="Brand" key={item.id}>
 						<Front className="Test">
 							<div className="content">
 								<img src={'https://cdn.rawgit.com/download/bridalapp-static/0.10.0/brands/' + item.id + '/logo-brand-name.png'} />
@@ -76,7 +76,7 @@ export default connect(select)(class BrandBrowser extends React.Component {
 							<h3>{item.name || 'Loading'}</h3>
 							<p>{item.description || 'Loading item ' + idx}</p>
 						</Back>
-					</FlipCard>
+					</Card>
 				)}
 			/>
 		);

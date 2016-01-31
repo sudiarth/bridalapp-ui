@@ -70,7 +70,6 @@ module.exports = {
 			},
 			//{test: /\.jsx$/, loaders: ["babel?presets[]=es2015&presets[]=stage-0&presets[]=react"], exclude: /node_modules/}
 		],
-		noParse: /\.min\.js/,
 	},
 
 	// Compilation target. Possible values:

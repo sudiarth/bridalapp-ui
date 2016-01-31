@@ -1,8 +1,36 @@
 ﻿import log from 'picolog';
 import { expect } from 'chai';
+import Api, { link } from 'redux-apis';
 
-import Api from 'redux-apis';
-import ProductsApi from './api';
+import SearchApi from '../Search/api';
+import ProductsApi, { ProductSearch } from './api';
+
+describe('ProductSearch', () => {
+	const test = new ProductSearch({...SearchApi.INITIAL_STATE, filter: {a:'test', category:'cat'}});
+
+	it('is a subclass of SearchApi', () => {
+		expect(ProductSearch.prototype).to.be.an.instanceOf(SearchApi);
+	});
+
+	it('accepts a state slice', () => {
+		expect(test.pending()).to.equal(true);
+		expect(test.filter().a).to.equal('test');
+		expect(test.filter().category).to.equal('cat');
+	});
+
+	it('has overridden `url(filter)`', () => {
+		expect(test.url).to.equal(ProductSearch.prototype.url);
+		expect(test.url).to.not.equal(SearchApi.prototype.url);
+	});
+
+	describe('url(filter)', () => {
+		it('returns a custom search url', () => {
+			const url = test.url(test.filter());
+			expect(url).to.equal('/cat?a=test');
+		});
+	});
+
+});
 
 describe('ProductsApi', () => {
 	it('is a subclass of Api', () => {
@@ -10,85 +38,25 @@ describe('ProductsApi', () => {
 	});
 
 	it('accepts a state slice', () => {
-		let products = new ProductsApi({
-			loading: true,
-			loaded: false,
-			filter: {
-				category: 'Wedding+Dresses',
-			},
-			results: ['one result! yay'],
-		});
+		let products = new ProductsApi({search:{async:'DONE', filter:{}, results:['Yeah!']}});
 		expect(products).to.be.an.instanceOf(ProductsApi);
-		expect(products).to.have.a.property('state');
-		expect(products.state).to.have.a.property('loading');
-		expect(products.state.loading).to.equal(true);
-		expect(products.state).to.have.a.property('results');
-		expect(products.state.results).to.have.a.property('length');
-		expect(products.state.results.length).to.equal(1);
+		expect(products).to.have.a.property('getState');
+		expect(products.getState()).to.have.a.property('search');
+		expect(products.getState().search).to.have.a.property('async');
+		expect(products.getState().search.async).to.equal('DONE');
+		expect(products.search.done()).to.equal(true);
+		expect(products.search.results()).to.have.a.property('length');
+		expect(products.search.results().length).to.equal(1);
+		expect(products.search.results()[0]).to.equal('Yeah!');
 	});
 
-	it('has methods to inspect it\'s state slice', () => {
+	it('has a nested `search` api', () => {
 		let products = new ProductsApi();
-		expect(products).to.have.property('results');
-		expect(products.results).to.be.a('function');
+		expect(products).to.have.a.property('search');
 	});
 
-	it('has methods to dispatch actions to manipulate it\'s state slice', () => {
+	it('has a nested `search` api that extends `ProductSearch`', () => {
 		let products = new ProductsApi();
-		expect(products).to.have.property('search');
-		expect(products.search).to.be.a('function');
-	});
-
-	describe('results', () => {
-		it('returns the value of the property `results` in the state slice', () => {
-			let products = new ProductsApi({results:[]});
-			expect(products.results()).to.equal(products.state.results);
-		});
-	});
-
-	describe('search', () => {
-		let dispatched = false;
-		let promise = null;
-		class TestProducts extends Api {
-			constructor(state) {
-				super(state);
-				this.sub('products', ProductsApi);
-			}
-			dispatch(action) {
-				log.info('DISPATCH:', action);
-				dispatched = true;
-				return super.dispatch(action);
-			}
-		}
-		const test = new TestProducts();
-		test.dispatch(test.createAction('INIT')());
-		dispatched = false;
-
-		it('creates and dispatches an action \'SEARCH\'', () => {
-			expect(test.products.state.loading).to.equal(false);
-			expect(test.products.state.filter.category).to.equal('Wedding+Dresses');
-			promise = test.products.search({category: 'Wedding+Dresses'});
-			expect(dispatched).to.equal(true);
-		});
-
-		it('results in the `loading` flag being set to `true`', () => {
-			expect(test.products.state.loading).to.equal(true);
-		});
-
-		it('results in the `filter` options being set to the given values', () => {
-			expect(test.products.state.filter.category).to.equal('Wedding+Dresses');
-		});
-
-		it('returns a promise', () => {
-			log.info('promise=', promise);
-			expect(promise).to.not.equal(null);
-			expect(promise.then).to.be.a('function');
-		});
-
-		it('sets the `loading` flag to `false` when the promise resolves', () => {
-			promise.then(() => {
-				expect(test.products.state.loading).to.equal(false);
-			});
-		});
+		expect(products.search).to.be.an.instanceOf(ProductSearch);
 	});
 });

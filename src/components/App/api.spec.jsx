@@ -1,7 +1,7 @@
 ﻿import { expect } from 'chai';
 import Api from 'redux-apis';
 
-import AppApi from './api';
+import { AppApi } from './api';
 // import DrawerApi from '../../components/RightDrawer/api';
 
 describe('AppApi', () => {

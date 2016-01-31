@@ -1,26 +1,23 @@
 import log from 'picolog';
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { onload } from 'redux-load-api';
 
-import Scroller from '../Scroller';
-import FlipCard, { Front, Back } from '../FlipCard';
+import app from '../App/api';
+import Scroller from '../Scroller/Scroller';
+import ProductCard from './ProductCard'
 
-function select(state) {return {items: state.products.results};}
-
-export default connect(select)(class ProductBrowser extends React.Component {
+@onload((params) => {
+	const filter = app.products.search.filter();
+	app.products.search.setFilter({...filter, category:params.category});
+	return app.products.search.search()
+})
+@connect(app.products.search.connector)
+export default class ProductBrowser extends React.Component {
 	static propTypes = {
-		category: PropTypes.string
-	};
-
-	static defaultProps = {
-		category: 'Wedding Dresses'
-	};
-
-	static fetchData = (props) => {
-		const filter = {
-			category: props.params.category,
-		}
-		return app.products.search(filter);
+		async: PropTypes.any.isRequired,
+		filter: PropTypes.object.isRequired,
+		results: PropTypes.array.isRequired,
 	};
 
 	constructor(props) {
@@ -29,8 +26,8 @@ export default connect(select)(class ProductBrowser extends React.Component {
 	}
 
 	getState(props) {
-		let items = this.state && this.state.items || props.items;
-		let itemCount = this.state && this.state.itemCount || props.itemCount || (props.items && props.items.length);
+		let items = this.state && this.state.items || props.results;
+		let itemCount = this.state && this.state.itemCount || props.itemCount || (props.results && props.results.length);
 		return {
 			items: items || [],
 			itemCount: itemCount || items && items.length || 0
@@ -53,6 +50,10 @@ export default connect(select)(class ProductBrowser extends React.Component {
 		this.mounted = false;
 	}
 
+	flipCard(component, event) {
+
+	}
+
 	render() {
 		log.debug("items=" + this.state.items);
 		return (
@@ -66,21 +67,10 @@ export default connect(select)(class ProductBrowser extends React.Component {
 				itemSize={480}
 				itemsPer={1}
 				renderItem ={ (item, idx) => (
-					<FlipCard className="Product" key={item.id}>
-						<Front className="Test">
-							<div className="content">
-								<img src="data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw=="
-										style={{backgroundImage: 'url(https://cdn.rawgit.com/download/bridalapp-static/0.9.13/products/' + item.brandId + '/' + encodeURIComponent(item.name) + '/thumbs.jpg)'}} />
-							</div>
-						</Front>
-						<Back>
-							<h3>{item.name || 'Loading'}</h3>
-							<p>{item.description || 'Loading item ' + idx}</p>
-						</Back>
-					</FlipCard>
+					<ProductCard product={item} />
 				)}
 			/>
 		);
 	}
-})
+}
 

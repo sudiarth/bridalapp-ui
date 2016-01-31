@@ -1,18 +1,16 @@
-﻿import log from 'picolog';
+﻿import { expect } from 'chai';
+import log from 'picolog';
 import React from 'react';
 import ReactTestUtils from 'react-addons-test-utils';
 import ShallowTestUtils from 'react-shallow-testutils';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { RootApi } from 'redux-apis';
-import { expect } from 'chai';
+import Api from 'redux-apis';
 
 import App from './App';
-import AppApi from './api';
+import app from './api';
 
-var app = new RootApi(AppApi, createStore);
 log.debug('app=', app);
-log.debug('app.store=', app.store);
 
 describe('App', () => {
 

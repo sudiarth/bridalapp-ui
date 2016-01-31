@@ -1,23 +1,16 @@
 ﻿import log from 'picolog';
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-
 import { connect } from 'react-redux';
-log.assert(connect !== undefined, 'connect is undefined');
-
 import { Layout, Header, Navigation, Drawer, Content } from 'react-mdl/lib/Layout';
-log.assert(Layout !== undefined, 'Layout is undefined');
-log.assert(Header !== undefined, 'Header is undefined');
-log.assert(Navigation !== undefined, 'Navigation is undefined');
-log.assert(Drawer !== undefined, 'Drawer is undefined');
-log.assert(Content !== undefined, 'Content is undefined');
 
-import RightDrawer, { LayoutTitle, LayoutObfuscator } from '../RightDrawer';
-log.assert(RightDrawer !== undefined, 'RightDrawer is undefined');
-log.assert(LayoutTitle !== undefined, 'LayoutTitle is undefined');
-log.assert(LayoutObfuscator !== undefined, 'LayoutObfuscator is undefined');
+import RightDrawer from '../RightDrawer/RightDrawer';
+import LayoutTitle from '../RightDrawer/LayoutTitle';
+import LayoutObfuscator from '../RightDrawer/LayoutObfuscator';
+import app from './api';
 
-class App extends Component {
+@connect(app.connector)
+export class App extends Component {
 	static propTypes = {
 		dispatch: PropTypes.func.isRequired,
 		rightDrawer: PropTypes.shape({
@@ -35,11 +28,11 @@ class App extends Component {
 				<Header title="Title">
 					<img className="logo" src="https://cdn.rawgit.com/download/bridalapp-static/0.9.14/bridalapp/logo-bridalapp.png" />
 					<Navigation className="ActionBar">
-						<p onClick={function(){alert('WTF');}}>this.props.appbar</p>
+						<p>this.props.appbar</p>
 					</Navigation>
 					<Navigation>
 						{!this.props.rightDrawer.open ? (
-							<i className="material-icons" onClick={()=>log.info('click!')}>account_circle</i>
+							<i className="material-icons" onClick={()=>{this.props.api.rightDrawer.open();}}>account_circle</i>
 						) : (
 							<span></span>
 						)}
@@ -72,15 +65,4 @@ class App extends Component {
 	}
 }
 
-
-// Which props do we want to inject, given the global state?
-// Note: use https://github.com/faassen/reselect for better performance.
-function select(state) {
-  return state;
-}
-
-// Wrap the component to inject dispatch and state into it
-export default connect(select)(App)
-
-
-//export default App;
+export default App;

@@ -1,23 +1,24 @@
 ﻿require('babel-polyfill');
-var chalk = require('chalk');
-var Express = require('express');
-var http = require('http');
-var httpProxy = require('http-proxy');
-var log = require('picolog');
-var React = require('react');
-var ReactDOM = require('react-dom/server')
-var match = require('react-router').match;
-var createStore = require('redux').createStore;
-var applyMiddleware = require('redux').applyMiddleware;
-var thunk = require('redux-thunk');
-var RootApi = require('./redux-apis').RootApi;
+global.fetch = require('node-fetch');
+import chalk from 'chalk';
+import Express from 'express';
+import http from 'http';
+import httpProxy from 'http-proxy';
+import log from 'picolog';
+import React from 'react';
+import ReactDOM from 'react-dom/server';
+import { match } from 'react-router';
 
-var cfg = require('../config');
+//import { syncHistory, routeReducer } from 'redux-simple-router';
+import { link } from 'redux-apis';
+import { load } from 'redux-load-api';
 
-var express = new Express();
-var httpServer = new http.Server(express);
+import cfg from '../config';
 
-var g=chalk.green, gb=chalk.green.bold,  y=chalk,yellow, yb=chalk.yellow.bold,
+const express = new Express();
+const httpServer = new http.Server(express);
+
+const g=chalk.green, gb=chalk.green.bold,  y=chalk.yellow, yb=chalk.yellow.bold,
 	w=chalk.white, wb=chalk.white.bold, gr=chalk.grey,  grb=chalk.grey.bold,
 	r=chalk.red, rb=chalk.red.bold;
 
@@ -25,22 +26,15 @@ var g=chalk.green, gb=chalk.green.bold,  y=chalk,yellow, yb=chalk.yellow.bold,
 // and webpack-hot-middleware to serve a hot bundle to the client. In
 // production mode, we serve up a static pre-compiled client bundle
 if (module.hot) {
-	var webpack = require('webpack');
-	var devMiddleware = require('webpack-dev-middleware');
-	var hotMiddleware = require('webpack-hot-middleware');
-
-	var stats = {colors:true, chunks:false, hash:false, version:false};
-
-	var clientCfg = require('../webpack/development.client.config');
-	var clientCompiler = webpack(clientCfg);
+	// use require because it will be optimized out if !module.hot
+	const webpack = require('webpack');
+	const devMiddleware = require('webpack-dev-middleware');
+	const hotMiddleware = require('webpack-hot-middleware');
+	const stats = {colors:true, chunks:false, hash:false, version:false};
+	const clientCfg = require('../webpack/development.client.config');
+	const clientCompiler = webpack(clientCfg);
 	express.use(devMiddleware(clientCompiler, {stats, publicPath:clientCfg.output.publicPath}));
 	express.use(hotMiddleware(clientCompiler));
-/*
-	var testCfg = require('../webpack/test.config');
-	var testCompiler = webpack(testCfg);
-	express.use(devMiddleware(testCompiler, {stats, publicPath:testCfg.output.publicPath}));
-	express.use(hotMiddleware(testCompiler));
-*/
 }
 
 // We point to our static assets
@@ -48,8 +42,8 @@ express.use(Express.static(cfg.publicPath));
 
 
 // Proxy to BridalApp API server
-log.log(chalk.grey('Proxying requests incoming at ') + chalk.white('http://%s:%s%s'), cfg.server.host, cfg.server.port, cfg.apiServer.path);
-log.log(chalk.grey('   to ') + chalk.white('%s') + chalk.grey(' at ') + chalk.white('http://%s:%s%s'), cfg.apiServer.name, cfg.apiServer.host, cfg.apiServer.port, cfg.apiServer.path);
+log.log(gr('Proxying requests incoming at ') + w('http://%s:%s%s'), cfg.server.host, cfg.server.port, cfg.apiServer.path);
+log.log(gr('   to ') + w('%s') + gr(' at ') + w('http://%s:%s%s'), cfg.apiServer.name, cfg.apiServer.host, cfg.apiServer.port, cfg.apiServer.path);
 const apiProxy = httpProxy.createProxyServer({
 	target: {host:cfg.apiServer.host, port:cfg.apiServer.port, path:cfg.apiServer.path},
 });
@@ -66,73 +60,72 @@ apiProxy.on('error', (error, req, res) => {
 });
 
 
-
-express.get('/status', function(req, res) {
-	res.writeHead(200, {'Content-Type': 'text/html'});
-	var html = '<html><head><title>Status</title></head><body><h1 style="color:green">ONLINE</h1><p>' + cfg.server.name + ' is ONLINE</p></body></html>';
-	res.end('<!DOCTYPE html>\r\n' + html);
+// polled by OpenShift haproxy load balancer to test server availability
+express.get('/status', (req, res) => {
+	res.writeHead(200, {'Content-Type': 'text/html; charset=UTF-8'});
+	res.end(`<!DOCTYPE html>
+<html>
+<head>
+	<title>Status</title>
+</head>
+<body>
+	<h1 style="color:green">ONLINE</h1>
+	<p>${cfg.server.name} is ONLINE</p>
+</body>
+</html>`);
 });
 
-express.get(/\/.*/, function(req, res) {
+express.get(/\/.*/, (req, res) => {
 	// require again on each request, to enable hot-reload in development mode.
 	// In production, this will just grab the module from require.cache.
-	var routes = require('./routes').default;
-	match({routes:routes, location:req.originalUrl}, function (error, redirectLocation, renderProps) {
+	const store = require('./store').store;
+	const routes = require('./routes').routes;
+	const Html = require('./components/Html/Html').Html;
+
+	match({routes:routes, location:req.originalUrl}, (error, redirectLocation, renderProps) => {
 		if (redirectLocation) {
 			res.redirect(redirectLocation.pathname + redirectLocation.search);
 			res.end();
 		}
 		else if (error) {
-			log.warn(chalk.red.bold('ROUTER ERROR:'), pretty.render(error));
+			log.warn(rb('ROUTER ERROR:'), pretty.render(error));
 			res.status(500);
 			res.send('Server error.');
 			res.end();
 		}
 		else if (!renderProps) {
 			res.status(404);
+			res.send('Not Found.');
 			res.end();
 		}
 		else {
-			log.log(chalk.styles.gray.open, 'Rendering using props: ', renderProps, chalk.styles.gray.close);
+			log.debug(chalk.styles.gray.open, 'Rendering using props: ', renderProps, chalk.styles.gray.close);
 
-			// require again on each request, to enable hot-reload in development mode.
-			// In production, this will just grab the module from require.cache.
-			var Html = require('./components/Html/Html').default;
-			var App = require('./components/App/App').default;
-			var AppApi = require('./components/App/api').default;
 
-			const storeCreator = applyMiddleware(thunk)(createStore);
-			const app = new RootApi(AppApi, storeCreator);
+			// dispatch initial action(s) based on route
+//			var fetchingComponents = renderProps.components
+//					.map(component => component.WrappedComponent ? component.WrappedComponent : component)
+//					.filter(component => component.fetchData);
+//			log.info('fetchingComponents=', fetchingComponents);
+			// any promises fired will be captured by redux-promise
+//			var fetchPromises = fetchingComponents.map(component => component.fetchData(renderProps));
 
-			// omg global state?
-			// yes, but remember, a redux app only needs one variable,
-			// the store that maintains the application state tree.
-			// If you inspect RootApi closer, you'll see that it's actually
-			// a convenience wrapper around the redux store.
-			global.app = app;
 
-			const fetchingComponents = renderProps.components
-					.map(component => component.WrappedComponent ? component.WrappedComponent : component)
-					.filter(component => component.fetchData);
-			log.info('fetchingComponents=', fetchingComponents);
-			const fetchPromises = fetchingComponents.map(component => component.fetchData(renderProps));
 
-			// From the components from the matched route, get the fetchData functions
-			Promise.all(fetchPromises)
-			// Promise.all combines all the promises into one
-			.then(() => {
-				// now fetchData() has been run on every component in my route, and the
-				// promises resolved, so we know the redux state is populated
+
+			// pre-load onload actions
+			load(renderProps.components, renderProps.params).then(() => {
+				// do awesome stuff knowing all promises (if any) are resolved
 				res.status(200);
 				res.send('<!DOCTYPE html>\n' +
 					ReactDOM.renderToString(
-						<Html lang="en-US" store={app.store} {...renderProps} script="/assets/bridalapp-ui.js" />
+						<Html lang="en-US" store={store} {...renderProps} />
 					)
 				);
 				res.end();
 			})
 			.catch((error) => {
-				log.error('Error fetching data.', error, error.stack);
+				log.error('Error loading data for route ', req.url, ': ', error, error.stack);
 				res.status(500);
 				res.send('Server error.');
 				res.end();
@@ -152,7 +145,7 @@ var server = httpServer.listen(cfg.server.port, cfg.server.host, function(error)
 	}
 	log.warn(gb(' √  ') + g('Talking to ') + gb('%s') + g(' at ') + gb('%s:%s'), cfg.apiServer.name, cfg.apiServer.host, cfg.apiServer.port);
 	log.warn(gb(' √  ') + g('Listening for connections at ') + gb('http://%s:%s'), addr.address, addr.port);
-	log.warn(gb(' √  %s started succesfully on %s.'), cfg.server.name, Date(Date.now()));
+	log.warn(gb(' √  %s started succesfully ') + g('on %s.'), cfg.server.name, Date(Date.now()));
 	log.warn('');
 });
 
@@ -171,19 +164,17 @@ process.on('uncaughtException', function(error){
 process.on('exit', function() {log.warn(msg = (gb(' √  ') + g('Stopped ') + gb(cfg.server.name) + g(' on ' + Date(Date.now()) + '.\r\n')));});
 
 if (module.hot) {
+	module.hot.accept('./store', function(){
+        log.warn(yb('Hot reloading ') + g('\'./store\'...'));
+	});
 	module.hot.accept('./routes', function(){
         log.warn(yb('Hot reloading ') + g('\'./routes\'...'));
 	});
 	module.hot.accept('./components/Html/Html', function(){
         log.warn(yb('Hot reloading ') + g('\'./components/Html/Html\'...'));
 	});
-	module.hot.accept('./components/App/App', function(){
-        log.warn(yb('Hot reloading ') + g('\'./components/App/App\'...'));
-	});
-	module.hot.accept('./components/App/api', function(){
-        log.warn(yb('Hot reloading ') + g('\'./components/App/api\'...'));
-	});
 
+/*  SHOULD BE POSSIBLE BUT CAN'T GET IT TO WORK RELIABLY
 	// self-accept. This allows hot-reload of this very file. We cleanup in the
 	// dispose handler and then the server will be restarted.
 	module.hot.accept();
@@ -193,4 +184,5 @@ if (module.hot) {
 			log.warn(g('Closed HTTP server listening on port ') + g(cfg.server.port));
 		});
     });
+*/
 }

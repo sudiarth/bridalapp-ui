@@ -1,17 +1,13 @@
 ﻿import log from 'picolog';
 import Api from 'redux-apis';
 
-log.debug('DrawerApi: Api=', Api);
-
 export default class DrawerApi extends Api {
-	constructor(state) {
-		super(state);
-		this.addHandler('OPEN', (action) => ({...this.state, open:true}));
-		this.addHandler('CLOSE', (action) => ({...this.state, open:false}));
-	}
+	static INITIAL_STATE = { open: false };
 
-	initialState() {
-		return { open: false };
+	constructor(state = DrawerApi.INITIAL_STATE) {
+		super(state);
+		this.setHandler('OPEN', (state, action) => ({...state, open:true}));
+		this.setHandler('CLOSE', (state, action) => ({...state, open:false}));
 	}
 
 	open() {
@@ -23,7 +19,7 @@ export default class DrawerApi extends Api {
 	}
 
 	isOpen() {
-		return this.state.open;
+		return this.getState().open;
 	}
 }
 

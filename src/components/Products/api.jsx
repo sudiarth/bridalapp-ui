@@ -1,68 +1,22 @@
-﻿import log from 'picolog';
-import Api from 'redux-apis';
-import fetch from 'isomorphic-fetch';
+﻿import { Api, link } from 'redux-apis';
+import { remote } from 'redux-fetch-api';
 
-import ApiClient from '../../api-client';
+import SearchApi from '../Search/api';
 
-export default class ProductsApi extends Api {
-	constructor(state) {
-		super(state);
-		this.addHandler('SEARCH', (action) => ({
-			...this.state,
-			filter: action.payload,
-			loading: true,
-		}));
-		this.addHandler('SEARCH_SUCCESS', (action) => {
-			return {
-				...this.state,
-				results: action.payload,
-				loading: false,
-				loaded: true,
-			};
-		});
-		this.addHandler('SEARCH_ERROR', (action) => {
-			log.error('Error searching for products: ', action.payload, action.payload.stack);
-			return {
-				...this.state,
-				results: [],
-				loading: false,
-				loaded: false,
-				error: action.payload,
-			};
-		});
-	}
-
-	initialState() {
-		return {
-			loading: false,
-			loaded: false,
-			filter: {
-				category: 'Wedding+Dresses',
-			},
-			results: [],
-		};
-	}
-
-	search(filter) {
-		// dispatch a function... redux-thunk will execute the function
-		let dispatchResult = this.dispatch((dispatch, getState) => {
-			this.dispatch(this.createAction('SEARCH')(filter));
-			return ApiClient.fetch(`/products/search/${filter.category}`)
-				.then(response => {
-					if (response.status === 200) {return response.json();}
-					else throw new Error('Not Found.');
-				})
-				.then(json => {
-					return this.dispatch(this.createAction('SEARCH_SUCCESS')(json))
-				})
-				.catch(error => {
-					return this.dispatch(this.createAction('SEARCH_ERROR')(error))
-				});
-		});
-		return dispatchResult;
-	}
-
-	results() {
-		return this.state.results;
+export class ProductSearch extends SearchApi {
+	url(filter) {
+		let clone = { ...filter };
+		let result = filter.category ? `/${filter.category}` : '';
+		delete clone.category;
+		return result + super.url(clone);
 	}
 }
+
+@remote('/products')
+export class ProductsApi extends Api {
+	constructor(state) {
+		super(state);
+		this.search = remote('/search')(link(this, new ProductSearch({})));
+	}
+}
+export default ProductsApi;
