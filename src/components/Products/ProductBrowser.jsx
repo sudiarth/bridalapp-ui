@@ -10,7 +10,7 @@ import ProductCard from './ProductCard'
 @onload((params) => {
 	const filter = app.products.search.filter();
 	app.products.search.setFilter({...filter, category:params.category});
-	return app.products.search.search()
+	return app.products.search.search().catch((error) => {log.error('ProductBrowser@onload: Searching products failed:', error);});
 })
 @connect(app.products.search.connector)
 export default class ProductBrowser extends React.Component {

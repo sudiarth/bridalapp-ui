@@ -1740,7 +1740,9 @@
 	var ProductBrowser = (_dec = (0, _reduxLoadApi.onload)(function (params) {
 		var filter = _api2.default.products.search.filter();
 		_api2.default.products.search.setFilter((0, _extends3.default)({}, filter, { category: params.category }));
-		return _api2.default.products.search.search();
+		return _api2.default.products.search.search().catch(function (error) {
+			_picolog2.default.error('ProductBrowser@onload: Searching products failed:', error);
+		});
 	}), _dec2 = (0, _reactRedux.connect)(_api2.default.products.search.connector), _dec(_class = _dec2(_class = (_temp = _class2 = function (_React$Component) {
 		(0, _inherits3.default)(ProductBrowser, _React$Component);
 	
