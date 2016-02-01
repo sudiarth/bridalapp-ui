@@ -169,6 +169,10 @@
 	});
 	exports.app = exports.AppApi = undefined;
 	
+	var _picolog = __webpack_require__(7);
+	
+	var _picolog2 = _interopRequireDefault(_picolog);
+	
 	var _reduxApis = __webpack_require__(9);
 	
 	var _reduxApis2 = _interopRequireDefault(_reduxApis);
@@ -191,11 +195,12 @@
 	
 	var API_URL = '/api';
 	if (typeof process != 'undefined') {
-		var host = process.env.OPENSHIFT_NODEJS_IP || 'localhost';
-		var port = process.env.OPENSHIFT_NODEJS_PORT || '80';
+		var host = process.env.BRIDALAPP_API_SERVER_HOST || 'localhost';
+		var port = process.env.BRIDALAPP_API_SERVER_PORT || '80';
 		var path = process.env.BRIDALAPP_API_SERVER_PATH || '/api';
 		API_URL = 'http://' + host + (port === '80' ? '' : ':' + port) + path;
 	}
+	_picolog2.default.log('Using REST API server url: ', API_URL);
 	
 	var AppApi = exports.AppApi = (_dec = (0, _reduxFetchApi.remote)(API_URL), _dec(_class = function (_Api) {
 		(0, _inherits3.default)(AppApi, _Api);
