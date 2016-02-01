@@ -950,6 +950,10 @@
 	});
 	exports.SearchApi = undefined;
 
+	var _picolog = __webpack_require__(3);
+
+	var _picolog2 = _interopRequireDefault(_picolog);
+
 	var _reduxApis = __webpack_require__(4);
 
 	var _reduxAsyncApi = __webpack_require__(58);
@@ -1043,15 +1047,22 @@
 			value: function search() {
 				var _this2 = this;
 
+				_picolog2.default.warn('SEARCH: Dispatching search function...');
 				// dispatch a function... redux-thunk will execute the function
 				return this.dispatch(function () {
+					_picolog2.default.warn('SEARCH: Executing search function...');
+					var url = _this2.url(_this2.filter());
 					_this2.setBusy();
-					return _this2.fetch(_this2.url(_this2.filter())).then(function (response) {
+					_picolog2.default.warn('SEARCH: Fetching ', url);
+					return _this2.fetch(url).then(function (response) {
+						_picolog2.default.warn('SEARCH: Got response with status ', response.status);
 						if (response.status === 200) {
 							return response.json();
 						} else {
+							_picolog2.default.warn('SEARCH: Got an error response ', response.status, response.statusText);
 							return new Promise(function (resolve, reject) {
 								response.text().then(function (text) {
+									_picolog2.default.warn('SEARCH: ERROR ', response.status, text);
 									var error = Error(text);
 									error.status = response.status;
 									error.statusText = response.statusText;
@@ -1060,9 +1071,11 @@
 							});
 						}
 					}).then(function (json) {
+						_picolog2.default.warn('SEARCH: OK got ' + json.length + ' results');
 						_this2.setDone();
 						return _this2.setResults(json);
 					}).catch(function (error) {
+						_picolog2.default.warn('SEARCH: ERROR error=', error);
 						return _this2.setError(error);
 					});
 				});
@@ -2185,7 +2198,6 @@
 		}, {
 			key: 'render',
 			value: function render() {
-				_picolog2.default.debug("items=" + this.state.items);
 				return _react2.default.createElement(_Scroller2.default, {
 					className: 'ProductBrowser ' + this.props.category,
 					direction: 'vertical',

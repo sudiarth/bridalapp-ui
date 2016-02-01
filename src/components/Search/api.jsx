@@ -1,4 +1,5 @@
-﻿import { link } from 'redux-apis';
+﻿import log from 'picolog';
+import { link } from 'redux-apis';
 import Async from 'redux-async-api';
 import { remote } from 'redux-fetch-api';
 
@@ -34,17 +35,24 @@ export class SearchApi extends Async {
 	}
 
 	search() {
+		log.warn('SEARCH: Dispatching search function...');
 		// dispatch a function... redux-thunk will execute the function
 		return this.dispatch(() => {
+			log.warn('SEARCH: Executing search function...');
+			const url = this.url(this.filter());
 			this.setBusy();
-			return this.fetch(this.url(this.filter()))
+			log.warn('SEARCH: Fetching ', url);
+			return this.fetch(url)
 				.then(response => {
+					log.warn('SEARCH: Got response with status ', response.status);
 					if (response.status === 200) {
 						return response.json();
 					}
 					else {
+						log.warn('SEARCH: Got an error response ', response.status, response.statusText);
 						return new Promise((resolve, reject) => {
 							response.text().then(text => {
+								log.warn('SEARCH: ERROR ', response.status, text);
 								const error = Error(text);
 								error.status = response.status;
 								error.statusText = response.statusText;
@@ -54,10 +62,12 @@ export class SearchApi extends Async {
 					}
 				})
 				.then(json => {
+					log.warn('SEARCH: OK got ' + json.length + ' results');
 					this.setDone();
 					return this.setResults(json);
 				})
 				.catch(error => {
+					log.warn('SEARCH: ERROR error=', error);
 					return this.setError(error);
 				});
 		});

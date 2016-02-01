@@ -55,7 +55,6 @@ export default class ProductBrowser extends React.Component {
 	}
 
 	render() {
-		log.debug("items=" + this.state.items);
 		return (
 			<Scroller
 				className={'ProductBrowser ' + this.props.category}
