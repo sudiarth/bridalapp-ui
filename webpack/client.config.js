@@ -30,6 +30,7 @@ module.exports = {
 		'react-dom': 'ReactDOM',
 		'react-router': 'ReactRouter',
 		'history': 'History',
+		'react-mdl': 'ReactMDL',
 	},
 
 	module: {
@@ -83,5 +84,7 @@ module.exports = {
 		//  `preferEntry` (boolean) give entry chunks higher priority. This makes entry chunks smaller
 		//                but increases the overall size. (recommended)
 		new webpack.optimize.OccurenceOrderPlugin(true),
+
+		new webpack.DefinePlugin({'process.env': {'NODE_ENV': JSON.stringify('production')}}),
 	],
 };

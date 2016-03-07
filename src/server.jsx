@@ -2,15 +2,13 @@
 global.fetch = require('node-fetch');
 import chalk from 'chalk';
 import Express from 'express';
+import compress from 'compression';
 import http from 'http';
 import httpProxy from 'http-proxy';
 import log from 'picolog';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import { match } from 'react-router';
-
-//import { syncHistory, routeReducer } from 'redux-simple-router';
-import { link } from 'redux-apis';
 import { load } from 'redux-load-api';
 
 import cfg from '../config';
@@ -21,6 +19,9 @@ const httpServer = new http.Server(express);
 const g=chalk.green, gb=chalk.green.bold,  y=chalk.yellow, yb=chalk.yellow.bold,
 	w=chalk.white, wb=chalk.white.bold, gr=chalk.grey,  grb=chalk.grey.bold,
 	r=chalk.red, rb=chalk.red.bold;
+
+
+express.use(compress());
 
 // if the server is started in hot mode, we include webpack-dev-middleware
 // and webpack-hot-middleware to serve a hot bundle to the client. In
@@ -36,29 +37,11 @@ if (module.hot) {
 	express.use(devMiddleware(clientCompiler, {stats, publicPath:clientCfg.output.publicPath}));
 	express.use(hotMiddleware(clientCompiler));
 }
+else {
+}
 
 // We point to our static assets
 express.use(Express.static(cfg.publicPath));
-
-
-// Proxy to BridalApp API server
-log.warn(gr('Proxying requests incoming at ') + w('http://%s:%s%s'), cfg.server.host, cfg.server.port, cfg.apiServer.path);
-log.warn(gr('   to ') + w('%s') + gr(' at ') + w('http://%s:%s%s'), cfg.apiServer.name, cfg.apiServer.host, cfg.apiServer.port, cfg.apiServer.path);
-const apiProxy = httpProxy.createProxyServer({
-	target: {host:cfg.apiServer.host, port:cfg.apiServer.port, path:cfg.apiServer.path},
-});
-express.use(cfg.apiServer.path, (req, res) => {
-	log.warn('Received API request: ', req.originalUrl);
-	apiProxy.web(req, res);
-});
-// added the error handling to avoid https://github.com/nodejitsu/node-http-proxy/issues/527
-apiProxy.on('error', (error, req, res) => {
-	if (error.code !== 'ECONNRESET') {log.error('proxy error', error);}
-	if (!res.headersSent) {res.writeHead(500, {'content-type': 'application/json'});}
-	let json = {error: 'proxy_error', reason: error.message};
-	res.end(JSON.stringify(json));
-});
-
 
 // polled by OpenShift haproxy load balancer to test server availability
 express.get('/status', (req, res) => {
@@ -78,7 +61,7 @@ express.get('/status', (req, res) => {
 express.get(/\/.*/, (req, res) => {
 	// require again on each request, to enable hot-reload in development mode.
 	// In production, this will just grab the module from require.cache.
-	const store = require('./store').store;
+	const store = require('./store').createStore();
 	const routes = require('./routes').routes;
 	const Html = require('./components/Html/Html').Html;
 
@@ -101,25 +84,15 @@ express.get(/\/.*/, (req, res) => {
 		else {
 			log.debug(chalk.styles.gray.open, 'Rendering using props: ', renderProps, chalk.styles.gray.close);
 
-
-			// dispatch initial action(s) based on route
-//			var fetchingComponents = renderProps.components
-//					.map(component => component.WrappedComponent ? component.WrappedComponent : component)
-//					.filter(component => component.fetchData);
-//			log.info('fetchingComponents=', fetchingComponents);
-			// any promises fired will be captured by redux-promise
-//			var fetchPromises = fetchingComponents.map(component => component.fetchData(renderProps));
-
-
-
-
 			// pre-load onload actions
-			load(renderProps.components, renderProps.params).then(() => {
+			const components = renderProps.routes.map(x => x.component);
+			log.log('########################### components: ', components);
+			load(renderProps.routes.map(x => x.component), renderProps.params).then(() => {
 				// do awesome stuff knowing all promises (if any) are resolved
 				res.status(200);
 				res.send('<!DOCTYPE html>\n' +
 					ReactDOM.renderToString(
-						<Html lang="en-US" store={store} {...renderProps} />
+						<Html store={store} apiUrl={cfg.apiServer.url} version={cfg.version} {...renderProps} />
 					)
 				);
 				res.end();
@@ -143,8 +116,8 @@ var server = httpServer.listen(cfg.server.port, cfg.server.host, function(error)
 	} else {
 		log.warn(gb(' √  ') + g('Running in ') + gb('production') + g(' mode. ') + gb('gzip compression') + g(' is enabled.'));
 	}
-	log.warn(gb(' √  ') + g('Talking to ') + gb('%s') + g(' at ') + gb('%s:%s'), cfg.apiServer.name, cfg.apiServer.host, cfg.apiServer.port);
-	log.warn(gb(' √  ') + g('Listening for connections at ') + gb('http://%s:%s'), addr.address, addr.port);
+	log.warn(gb(' √  ') + g('Talking to ') + gb(cfg.apiServer.name) + g(' at ') + gb(cfg.apiServer.url));
+	log.warn(gb(' √  ') + g('Listening for connections at ') + gb(cfg.server.protocol + addr.address + (addr.port == 80 ? '' : ':' + addr.port)));
 	log.warn(gb(' √  %s started succesfully ') + g('on %s.'), cfg.server.name, Date(Date.now()));
 	log.warn('');
 });
@@ -157,9 +130,7 @@ SIGNALS.forEach(function(signal) {process.on(signal, function(){
     process.exit();
 })});
 process.on('uncaughtException', function(error){
-	log.warn(msg = (rb(' ×  ') + g('Stopping ') + gb(cfg.server.name) + g(' due to uncaught exception ') + yb(error) + g('.')));
-	server.close();
-	process.exit();
+	log.warn(msg = (rb(' ×  ') + g('Uncaught exception ') + yb(error) + g('.')));
 });
 process.on('exit', function() {log.warn(msg = (gb(' √  ') + g('Stopped ') + gb(cfg.server.name) + g(' on ' + Date(Date.now()) + '.\r\n')));});
 

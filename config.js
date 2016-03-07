@@ -3,9 +3,10 @@ var path = require('path');
 var buildPath = path.resolve(__dirname);
 var publicPath = path.resolve(__dirname, 'public');
 var testPath = path.resolve(publicPath, 'test');
+var pkg = require('./package.json');
 
-module.exports = {
-	isProduction: process.env.NODE_ENV === 'production',
+var cfg = {
+	version: pkg.version,
 	publicPath: publicPath,
 	buildPath: buildPath,
 	client: {
@@ -19,7 +20,9 @@ module.exports = {
 	},
 	server: {
 		name: 'BridalApp UI Server',
-		host: process.env.OPENSHIFT_NODEJS_IP || 'localhost',
+		protocol: 'http://',
+		protocol: process.env.OPENSHIFT_NODEJS_PROTOCOL || 'http://',
+		host: process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
 		port: process.env.OPENSHIFT_NODEJS_PORT || 80,
 		path: process.env.OPENSHIFT_NODEJS_PATH || '/',
 		entry: './src/server',
@@ -30,6 +33,7 @@ module.exports = {
 	},
 	apiServer: {
 		name: 'BridalApp API Server',
+		protocol: process.env.BRIDALAPP_API_SERVER_PROTOCOL || 'http://',
 		host: process.env.BRIDALAPP_API_SERVER_HOST || 'localhost',
 		port: process.env.BRIDALAPP_API_SERVER_PORT || 8080,
 		path: process.env.BRIDALAPP_API_SERVER_PATH || '/api',
@@ -44,3 +48,12 @@ module.exports = {
 		},
 	}
 };
+
+cfg.server.url = url(cfg.server);
+cfg.apiServer.url = url(cfg.apiServer);
+
+module.exports = cfg;
+
+function url(srv) {
+	return srv.protocol + srv.host + (srv.port == '80' ? '' : ':' + srv.port) + srv.path;
+}

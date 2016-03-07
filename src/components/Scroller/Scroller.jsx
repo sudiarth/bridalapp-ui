@@ -8,7 +8,7 @@ export default class Scroller extends React.Component {
 		 * The direction to scroll in, either 'vertical' or 'horizontal'.
 		 * Defaults to 'vertical'.
 		 */
-		direction: React.PropTypes.oneOf(['vertical','horizontal']),
+//		direction: React.PropTypes.oneOf(['vertical','horizontal']),
 
 		/**
 		 * The items to be scrolled over.
@@ -32,18 +32,18 @@ export default class Scroller extends React.Component {
 		]),
 
 		/**
-		 * Size of an item in the scroll direction, in pixels.
+		 * Default size of an item in the scroll direction, in pixels.
 		 * Defaults to 300.
 		 *
 		 * For a vertical scroller, set this to the height of each
-		 * item, for a horizontal scroller, use the width.
+		 * item, for a horizontal scroller, the screen width is used.
 		 */
 		itemSize: React.PropTypes.number.isRequired,
 
 		/**
-		 * Number of items to be renderer initially, before the component
+		 * Number of items to be rendered initially, before the component
 		 * is mounted.
-		 * Defaults to 100.
+		 * Defaults to 12.
 		 *
 		 * This will determine how many items are rendered
 		 * during server-side rendering and hence how many items googlebot
@@ -61,7 +61,7 @@ export default class Scroller extends React.Component {
 		 * If this setting differs from what is really happening, the scroll
 		 * calculations will be off and the behavior will break down.
 		 */
-		itemsPer: React.PropTypes.number,
+//		itemsPer: React.PropTypes.number,
 
 		/**
 		 * Size of buffer before the first visible item, defaults to 1.
@@ -168,7 +168,7 @@ export default class Scroller extends React.Component {
 		 * When paging is enabled, the scroller will call `pageFetch`,
 		 * passing it the index of the page to fetch, whenever it needs
 		 * the data for a certain page but does not have it. This function
-		 * should return a `Promise` that yields an array with the results
+		 * should return a Promise that yields an array with the results
 		 * for the given page index.
 		 *
 		 * The scroller will call `renderLoadingItem` when it needs to
@@ -190,46 +190,51 @@ export default class Scroller extends React.Component {
 
 	static defaultProps = {
 		items: {0: []},
-		itemSize: 300,
-		initialItemsInView: 100,
-		itemsPer: 1,
+		itemSize: 580,
+		initialItemsInView: 20,
+//		itemsPer: 1,
 		bufferBefore: 1,
 		bufferAfter: 1,
-		scrollDebounce: 10,
-		direction: 'vertical',
+		scrollDebounce: 250,
+//		direction: 'vertical',
 		snap: false,
 	};
 
 	constructor(props) {
+		log.debug('Scroller', props);
 		super(props); // direction, itemCount, items, itemSize, itemsPer
 		this.state = this.getState(props);
 		this.onScroll = this.onScroll.bind(this);
 	}
 
 	getState(props) {
-		let dir = props.direction;
+		// let dir = props.direction;
+		let win = typeof window == 'object' && window;
+		let w = win && window.innerWidth || 767;
+		let horizontal = win && w < 480;
+		let scroller = this.mounted ? ReactDOM.findDOMNode(this) : undefined;
+		let scrollPos = scroller ? getScrollPos(horizontal, scroller) : 0;
+
 		let initialItemsInView = this.props.initialItemsInView;
 		let items = props.items instanceof Array ? {0: props.items} : props.items;
 		let itemCount = props.itemCount !== undefined ? props.itemCount : items && items[0] && items[0].length || 0;
-		let itemSize = props.itemSize;
-		let itemsPer = props.itemsPer;
+		let itemSize = horizontal ? w : props.itemSize;
+		let itemsPer = !win ? 1 : (w > 1024 ? 3 : (w > 767 ? 2 : 1));
 		let bufferBefore = props.bufferBefore;
 		let bufferAfter = props.bufferAfter;
 		let containerCount = ~~(itemCount / itemsPer) + (~~(itemCount % itemsPer) ? 1 : 0);
 
-		let scroller = this.mounted ? ReactDOM.findDOMNode(this) : undefined;
-		let scrollerSize = scroller ? getSize(dir, scroller) : Math.min(initialItemsInView, containerCount) * itemSize;
+		let scrollerSize = scroller ? getSize(horizontal, scroller) : Math.min(initialItemsInView, containerCount) * itemSize;
 		let slider = this.refs.slider;
-		let sliderOffset = scroller ? posDifference(dir, slider, scroller) : 0;
-		let sliderScroll = scroller ? getScrollPos(dir, scroller) : 0;
+		let sliderOffset = scroller ? posDifference(horizontal, slider, scroller) : 0;
 		let renderedItems = [];
 
-		let containersBefore = ~~(sliderScroll / itemSize);
+		let containersBefore = ~~(scrollPos / itemSize);
 		let bufBefore = Math.min(containersBefore, bufferBefore);
 		let skippedContainers = containersBefore - bufBefore;
 		let skippedItems = skippedContainers * itemsPer;
 		let firstIdx = skippedItems;
-		let containersInView = ~~(scrollerSize / itemSize) + (~~(scrollerSize % itemSize) ? 1 : 0)
+		let containersInView = ~~(scrollerSize / itemSize) + (~~(scrollerSize % itemSize) ? 2 : 1)
 		let lastIdx = Math.min(firstIdx + containersInView * itemsPer + bufferAfter * itemsPer, itemCount - 1);
 		for (let i=firstIdx; i<=lastIdx; i++) {
 			let item = items[0][i] || null;
@@ -241,76 +246,84 @@ export default class Scroller extends React.Component {
 		let sizeAfter = containerCount * itemSize - sizeBefore - sizeItems;
 
 		return {
-			renderedItems: renderedItems,
+			horizontal,
+			renderedItems,
+			sizeBefore,
+			sizeItems,
+			sizeAfter,
+			itemSize,
+			// scrollPos,
 			firstRenderedItemIndex: firstIdx,
 			lastRenderedItemIndex: lastIdx,
 			size: scrollerSize,
-			sizeBefore: sizeBefore,
-			sizeItems: sizeItems,
-			sizeAfter: sizeAfter,
 		};
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
+		log.debug('shouldComponentUpdate', nextProps, nextState);
 		if (this.state.size !== nextState.size) return true;
 		if (this.state.sizeBefore !== nextState.sizeBefore) return true;
 		if (this.state.sizeAfter !== nextState.sizeAfter) return true;
+		if (this.props.items.length !== nextProps.items.length) return true;
 		if (!arraysEqual(this.state.renderedItems, nextState.renderedItems)) return true;
+		if (!arraysEqual(this.props.items, nextProps.items)) return true;
 		return false;
 	}
 
 	componentWillReceiveProps(nextProps) {
+		log.debug('componentWillReceiveProps', nextProps);
 		this.setState(this.getState(nextProps));
 	}
 
-	componentWillMount() {
-		this.onScrollDebounced = debounce(this.onScroll, this.props.scrollDebounce, false);
-	}
-
 	componentDidMount() {
+		log.debug('componentDidMount');
 		this.mounted = true;
+		this.onScrollDebounced = window.innerWidth < 480
+			? debounce(this.onScroll, this.props.scrollDebounce, false)
+			: this.onScroll;
 		this.setState(this.getState(this.props));
 		ReactDOM.findDOMNode(this).addEventListener('scroll', this.onScrollDebounced);
 	}
 
 	componentWillUnmount() {
+		log.debug('componentWillUnmount');
 		ReactDOM.findDOMNode(this).removeEventListener('scroll', this.onScrollDebounced);
 		this.mounted = false;
 	}
 
 	onScroll() {
+		log.trace('onscroll');
 		this.setState(this.getState(this.props));
 	}
 
 	render() {
-		let slider={}, before={}, items={}, after={}, itm={}, dir = this.props.direction;
-		let dim = (dir == 'horizontal' ? 'width' : 'height');
+		log.debug('render', this.props, this.state);
+		let slider={}, before={}, after={}, itm={};
+		const dim = (this.state.horizontal ? 'width' : 'height');
 		slider[dim] = this.state.sizeBefore + this.state.sizeItems + this.state.sizeAfter;
 		before[dim] = this.state.sizeBefore;
-		items[dim] = this.state.sizeItems;
-		itm[dim] = this.props.itemSize;
+		itm[dim] = this.state.itemSize;
 		after[dim] = this.state.sizeAfter;
 		return (
-			<div className={'Scroller ' + dir + ' per' + this.props.itemsPer}>
+			<div className="Scroller">
 				<div className="ScrollSlider" ref="slider" style={slider}
 					><div className="ScrollSpacer ScrollSpacerBefore" ref="spacerBefore" style={before}></div
-					><div className="ScrollItems" style={items}>{
-						this.state.renderedItems.map((item, idx) => {
-							idx = idx + this.state.firstRenderedItemIndex;
-							let key = this.props.keyForItem ? this.props.keyForItem(item, idx) : 'item' + idx;
-							let renderItem = this.props.renderItem;
-							if (item === null) {
-								if (this.props.renderLoadingItem) {renderItem = this.props.renderLoadingItem;}
-								else {item = {};}
-							}
-							return(
-								<div className="ScrollItem" key={key} style={itm}>
-									{renderItem(item, idx)}
-								</div>
-							);
-						})
-					}</div
-					><div className="ScrollSpacer ScrollSpacerAfter" ref="spacerAfter" style={after}></div
+					>{this.state.renderedItems.map((item, idx) => {
+						idx = idx + this.state.firstRenderedItemIndex;
+						const key = this.props.keyForItem ? this.props.keyForItem(item, idx) : 'item' + idx;
+						let { renderItem } = this.props;
+						if (item === null) {
+							if (this.props.renderLoadingItem) {renderItem = this.props.renderLoadingItem;}
+							else {item = {};}
+						}
+
+						// style={itm}
+						return(
+							<div className="ScrollItem" key={key} style={itm}>{
+								renderItem(item, idx)
+							}</div>
+						);
+					})}<div className="ScrollSpacer ScrollSpacerAfter" ref="spacerAfter" style={after}></div
 				></div
 			></div>
 		);
@@ -326,24 +339,24 @@ function arraysEqual(a, b) {
 	return true;
 }
 
-function posFromWindow(direction, element) {
-	var dir = direction === 'horizontal' ? 'Left' : 'Top';
+function posFromWindow(horizontal, element) {
+	const dir = horizontal ? 'Left' : 'Top';
 	if (!element || element === window) return 0;
-	return element['offset' + dir] + posFromWindow(direction, element.offsetParent);
+	return element['offset' + dir] + posFromWindow(horizontal, element.offsetParent);
 }
 
-function posDifference(direction, element, container) {
-	return posFromWindow(direction, element) - posFromWindow(direction, container);
+function posDifference(horizontal, element, container) {
+	return posFromWindow(horizontal, element) - posFromWindow(horizontal, container);
 }
 
-function getSize(direction, element) {
-	const dir = direction === 'horizontal' ? 'Width' : 'Height';
+function getSize(horizontal, element) {
+	const dir = horizontal ? 'Width' : 'Height';
 	return typeof element['inner' + dir] != 'undefined' ? element['inner' + dir] : element['client' + dir];
 }
 
-function getScrollPos(direction, element) {
-	var res, axis = 'Y', dir = 'Top';
-	if (direction === 'horizontal') {axis = 'X'; dir = 'Left';}
+function getScrollPos(horizontal, element) {
+	let res;
+	const { axis, dir } = horizontal ? {axis:'X', dir:'Left'} : {axis:'Y', dir:'Top'};
 	if (element === window) {
 		res = window['page' + axis + 'Offset'];
 		if (res == null) res = document.documentElement['scroll' + dir];

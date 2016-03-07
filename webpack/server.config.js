@@ -35,7 +35,7 @@ module.exports = {
 		// include ".js" in your array.
 		// Default: ["", ".webpack.js", ".web.js", ".js"]
 		// https://webpack.github.io/docs/configuration.html#resolve-extensions
-		extensions: ['', '.js', '.jsx'],
+		extensions: ['', '.webpack.js', '.web.js', '.js', '.json', '.jsx'],
 	},
 
 	// Specify dependencies that shouldn’t be resolved by webpack, but should become dependencies
@@ -69,6 +69,9 @@ module.exports = {
 	},
 
 	module: {
+		preLoaders: [
+			{ test: /\.json$/, exclude: /node_modules/, loader: 'json'},
+		],
 		loaders: [
 			{
 				test: /\.jsx$/,
@@ -151,5 +154,7 @@ module.exports = {
 		//  `preferEntry` (boolean) give entry chunks higher priority. This makes entry chunks smaller
 		//                but increases the overall size. (recommended)
 		new webpack.optimize.OccurenceOrderPlugin(true),
+
+		new webpack.DefinePlugin({'process.env': {'NODE_ENV': JSON.stringify('production')}}),
 	],
 };

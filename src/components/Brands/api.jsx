@@ -8,7 +8,9 @@ import SearchApi from '../Search/api';
 export class BrandsApi extends Api {
 	constructor(state) {
 		super(state);
-		this.search = link(this, new SearchApi());
+		this.search = remote('/search')(
+			link(this, new SearchApi())
+		);
 	}
 }
 export default BrandsApi;

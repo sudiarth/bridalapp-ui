@@ -1,59 +1,72 @@
-﻿import React, { Component, PropTypes } from 'react';
-const { bool, string, object, shape } = PropTypes;
+﻿import log from 'picolog';
+import React, { Component, PropTypes } from 'react';
+const { any, bool, string, object, func, shape } = PropTypes;
 import classNames from 'classnames';
 
-import Card, { Front, Back } from '../Card/Card';
+import { Card, CardTitle } from 'react-mdl';
+import { StatefulFlipCard, FrontFace, BackFace } from '../Mdl/mdl-extras';
 
 export class ProductCard extends Component {
 	static propTypes = {
-//		product: PropTypes.object.isRequired,
-
 		product: shape({
-			id: object,
-			brandId: object,
+			id: any,
+			brandId: any,
 			name: string,
 			description: string,
 		}).isRequired,
-
-		flipped: bool.isRequired,
+		onOpenLightbox: func.isRequired,
 	};
 
-	static defaultProps = {
-		flipped: false,
-	};
-
-	constructor(props) {
-		super(props);
-		this.state = this.getState(props);
+	constructor(...props) {
+		super(...props);
 	}
 
-	getState(props) {
-		return {flipped: (this.state && this.state.flipped || props.flipped) };
-	}
-
-	componentWillReceiveProps(nextProps) {
-		this.setState(this.getState(nextProps));
-	}
-
-	componentDidMount() {
-		this.setState(this.getState(this.props));
+	thumbnailClicked(images, index, event) {
+		const { onOpenLightbox } = this.props;
+		if (onOpenLightbox) {onOpenLightbox(images, index, event);}
+		if (event) {event.preventDefault(); event.stopPropagation();}
 	}
 
 	render() {
 		const { product: { id, brandId, name, description } } = this.props;
+		const { flipCard } = this.refs;
+		const img = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
+		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.0/products/${brandId}/${encodeURIComponent(name)}`;
+		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.0/brands/${brandId}/logo-brand-name.png`;
+		const thumbs = `${prdUrl}/thumbs.jpg`;
+		const thumbnail = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
+		const size = typeof window == 'object' && window.innerWidth < 480 ? {width:'100%'} : {height:'100%'};
+		const images = [
+			{src: `${prdUrl}/back-large.jpg`, className:'back', alt:{src:img, style:{...size, backgroundImage:`url(${thumbs})`, backgroundSize:'300%', backgroundPosition:'100% 0'}}},
+			{src: `${prdUrl}/front-large.jpg`, className:'front', alt:{src:img, style:{...size, backgroundImage:`url(${thumbs})`, backgroundSize:'150%', backgroundPosition:'0 0'}}},
+			{src: `${prdUrl}/detail-1-large.jpg`, className:'detail-1', alt:{src:img, style:{...size, backgroundImage:`url(${thumbs})`, backgroundSize:'600%', backgroundPosition:'200% 200%'}}},
+			{src: `${prdUrl}/detail-2-large.jpg`, className:'detail-2', alt:{src:img, style:{...size, backgroundImage:`url(${thumbs})`, backgroundSize:'600%', backgroundPosition:'100% 200%'}}},
+			{src: `${prdUrl}/detail-3-large.jpg`, className:'detail-3', alt:{src:img, style:{...size, backgroundImage:`url(${thumbs})`, backgroundSize:'600%', backgroundPosition:'200% 100%'}}},
+		];
+
 		return (
-			<Card className="Product" key={id}>
-				<Front>
+			<StatefulFlipCard className="Product" key={id}>
+				<FrontFace>
 					<div className="content">
-						<img src="data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw=="
-								style={{backgroundImage: 'url(https://cdn.rawgit.com/download/bridalapp-static/0.9.13/products/' + brandId + '/' + encodeURIComponent(name) + '/thumbs.jpg)'}} />
+						<img className="ProductImage" src={img} style={{backgroundImage: `url(${thumbs})`, height:'100%'}} />
 					</div>
-				</Front>
-				<Back>
-					<h3>{name || 'Loading...'}</h3>
-					<p>{description || 'Loading...'}</p>
-				</Back>
-			</Card>
+				</FrontFace>
+				<BackFace>
+					<CardTitle>
+						<img className="BrandLogo" src={brandUrl} />
+						<h3 className="ProductName">{name || 'Loading...'}</h3>
+					</CardTitle>
+					<div className="ProductGallery">
+						<div className="thumbs">{images.map(({src, className}, i) => (
+							<img key={i} className={classNames(className, 'thumb')}
+									src={thumbnail} onClick={this.thumbnailClicked.bind(this, images, i)}
+									style={{backgroundImage:`url(${thumbs})`}}
+							/>
+						))}</div>
+					</div>
+					<div className="ProductDescription">{description || ''}</div>
+				</BackFace>
+			</StatefulFlipCard>
 		);
 	}
 }

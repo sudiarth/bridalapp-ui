@@ -1,11 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-export default class Products extends React.Component {
+export default class Products extends Component {
 	render() {
-		return (
-			<div className="Products">
-				{this.props.children}
-			</div>
-		);
+		const { children, ...others } = this.props;
+		return <div className="Products" {...others} >{children}</div>
 	}
 }

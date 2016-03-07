@@ -12,11 +12,13 @@ export class ProductSearch extends SearchApi {
 	}
 }
 
-@remote('/products')
+@remote
 export class ProductsApi extends Api {
 	constructor(state) {
 		super(state);
-		this.search = remote('/search')(link(this, new ProductSearch({})));
+		this.search = remote('/search')(
+			link(this, new ProductSearch())
+		);
 	}
 }
 export default ProductsApi;

@@ -1,85 +1,53 @@
 import log from 'picolog';
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
+const { bool, object, array, any } = PropTypes;
 import { connect } from 'react-redux';
+import { onload } from 'redux-load-api';
 
+import app from '../App/api';
 import Scroller from '../Scroller/Scroller';
 import Card, { Front, Back } from '../Card/Card';
+import BrandCard from './BrandCard'
 
-function select(state) {return {items: state.brands.results};}
+function load(filter) {
+	filter && app.brands.search.setFilter(filter);
+	return app.brands.search.search()
+		.catch((error) => {
+			log.error('Searching stores failed.', error);
+		});
+}
 
-export default connect(select)(class BrandBrowser extends React.Component {
+@onload(params => load(params))
+@connect((state, props) => ({...props, lightbox:app.lightbox, ...app.brands.search}))
+export default class BrandBrowser extends React.Component {
 	static propTypes = {
-		category: PropTypes.string
-	};
-
-	static defaultProps = {
-		category: 'Wedding Dresses'
-	};
-
-	static fetchData = (props) => {
-		const filter = {
-			category: props.params.category,
-		}
-		return app.brands.search(filter);
-	};
-
-	constructor(props) {
-		super(props);
-		this.state = this.getState(props);
+		params: object.isRequired,
+		lightbox: object.isRequired,
+		filter: object.isRequired,
+		results: array.isRequired,
+		pending: bool,
+		error: any,
 	}
 
-	getState(props) {
-		let items = this.state && this.state.items || props.items;
-		let itemCount = this.state && this.state.itemCount || props.itemCount || (props.items && props.items.length);
-		return {
-			items: items || [],
-			itemCount: itemCount || items && items.length || 0
-		};
-	}
-
-	componentWillReceiveProps(nextProps) {
-		this.setState(this.getState(nextProps));
-	}
-
-	componentWillMount() {
-	}
 
 	componentDidMount() {
-		this.mounted = true;
-		this.setState(this.getState(this.props));
-	}
-
-	componentWillUnmount() {
-		this.mounted = false;
+		log.log('componentDidMount()');
+		const { pending, error, params } = this.props;
+		if (pending || error) {load(params)}
 	}
 
 	render() {
-		log.debug("items=" + this.state.items);
+		const { results, lightbox } = this.props;
 		return (
 			<Scroller
-				className={'BrandBrowser ' + this.props.category}
-				direction="vertical"
+				className={'BrandBrowser '}
 				bufferBefore={2}
-				items={this.state.items}
+				items={results}
 				bufferAfter={4}
-				itemCount={this.state.itemCount}
-				itemSize={480}
-				itemsPer={1}
 				renderItem ={ (item, idx) => (
-					<Card className="Brand" key={item.id}>
-						<Front className="Test">
-							<div className="content">
-								<img src={'https://cdn.rawgit.com/download/bridalapp-static/0.10.0/brands/' + item.id + '/logo-brand-name.png'} />
-							</div>
-						</Front>
-						<Back>
-							<h3>{item.name || 'Loading'}</h3>
-							<p>{item.description || 'Loading item ' + idx}</p>
-						</Back>
-					</Card>
+					<BrandCard brand={item} {...lightbox} />
 				)}
 			/>
 		);
 	}
-})
-
+}
