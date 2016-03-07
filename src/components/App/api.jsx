@@ -7,7 +7,7 @@ import BrandsApi   from '../Brands/api';
 import ProductsApi from '../Products/api';
 import StoresApi from '../Stores/api';
 import { DrawerApi, LightboxApi } from '../Mdl/api';
-import Suid from '../../suid';
+import Suid from 'ws.suid';
 
 const API_URL = apiUrl();
 log.info('Using BridalApp API Server url: ', API_URL);

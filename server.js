@@ -76,13 +76,13 @@
 /* 5 */
 /***/ function(module, exports) {
 
-	module.exports = require("picolog");
+	module.exports = require("babel-runtime/helpers/createClass");
 
 /***/ },
 /* 6 */
 /***/ function(module, exports) {
 
-	module.exports = require("babel-runtime/helpers/createClass");
+	module.exports = require("picolog");
 
 /***/ },
 /* 7 */
@@ -173,7 +173,7 @@
 	
 	var _dec, _dec2, _class;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -201,22 +201,22 @@
 	
 	var _api9 = __webpack_require__(27);
 	
-	var _suid = __webpack_require__(18);
+	var _ws = __webpack_require__(20);
 	
-	var _suid2 = _interopRequireDefault(_suid);
+	var _ws2 = _interopRequireDefault(_ws);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var API_URL = apiUrl();
 	_picolog2.default.info('Using BridalApp API Server url: ', API_URL);
-	var idx = undefined,
+	var idx = void 0,
 	    lastSlash = 0;
 	while ((idx = API_URL.indexOf('/', lastSlash + 1)) !== -1) {
 		lastSlash = idx;
 	}
 	var SUID_URL = API_URL.substring(0, lastSlash) + '/suid/suid.json';
 	_picolog2.default.info('Using Suid Server url: ', SUID_URL);
-	_suid2.default.config({ server: SUID_URL });
+	_ws2.default.config({ server: SUID_URL });
 	
 	// override the default fetcher with one that does a cross-origin (CORS) request and has a timeout
 	var AppApi = exports.AppApi = (_dec = (0, _reduxFetchApi.fetcher)(authenticatedCrossOriginFetchWithTimeout), _dec2 = (0, _reduxFetchApi.remote)(API_URL), _dec(_class = _dec2(_class = function (_Api) {
@@ -320,13 +320,13 @@
 	exports.equals = equals;
 	exports.register = register;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _suid = __webpack_require__(18);
+	var _ws = __webpack_require__(20);
 	
-	var _suid2 = _interopRequireDefault(_suid);
+	var _ws2 = _interopRequireDefault(_ws);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -354,19 +354,19 @@
 	function revive(key, value) {
 		var t = value && (typeof value === 'undefined' ? 'undefined' : (0, _typeof3.default)(value)) == 'object' && typeof value.type == 'string' && value.type;
 		var type = t && registry[t];
-		return type ? type.fromJSON(value) : _suid2.default.revive(key, value);
+		return type ? type.fromJSON(value) : _ws2.default.revive(key, value);
 	}
 	
 	function equals(one, other) {
 		if (arguments.length == 1) {
-			return one && (one.id instanceof _suid2.default && one.id.equals(this.id) || one instanceof _suid2.default && one.equals(this.id) || this.id && this.id.value == one);
+			return one && (one.id instanceof _ws2.default && one.id.equals(this.id) || one instanceof _ws2.default && one.equals(this.id) || this.id && this.id.value == one);
 		}
 	
 		if (one === other) return true;
-		if (one && !(one instanceof _suid2.default) && typeof one.equals == 'function') return one.equals(other);
-		if (other && !(other instanceof _suid2.default) && typeof other.equals == 'function') return other.equals(one);
-		if (one instanceof _suid2.default) return one.equals(other);
-		if (other instanceof _suid2.default) return other.equals(one);
+		if (one && !(one instanceof _ws2.default) && typeof one.equals == 'function') return one.equals(other);
+		if (other && !(other instanceof _ws2.default) && typeof other.equals == 'function') return other.equals(one);
+		if (one instanceof _ws2.default) return one.equals(other);
+		if (other instanceof _ws2.default) return other.equals(one);
 		return false;
 	}
 	
@@ -377,12 +377,12 @@
 					return entity.__id;
 				},
 				set: function set(id) {
-					Object.defineProperty(this, '__id', { value: new _suid2.default(id) });
+					Object.defineProperty(this, '__id', { value: new _ws2.default(id) });
 				}
 			});
 			entity.version = null;
 		}
-		var wrapped = undefined;
+		var wrapped = void 0;
 		eval('\n\t\twrapped = function ' + name + '(){\n\t\t\tenhance(this);\n\t\t\ttype.apply(this, arguments);\n\t\t};\n\t');
 		wrapped.prototype = (0, _create2.default)(type.prototype);
 		registry[name] = wrapped;
@@ -423,7 +423,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -455,7 +455,7 @@
 	
 	exports.component = component;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -699,10 +699,10 @@
 				var children = _props3.children;
 				var others = (0, _objectWithoutProperties3.default)(_props3, ['flipped', 'className', 'children']);
 	
-				var front = undefined,
-				    back = undefined,
-				    backProps = undefined,
-				    backChilds = undefined;
+				var front = void 0,
+				    back = void 0,
+				    backProps = void 0,
+				    backChilds = void 0;
 				var childs = [];
 				for (var i = 0, elem; elem = children[i]; i++) {
 					if (elem.type === FrontFace) {
@@ -711,9 +711,10 @@
 						back = elem;
 						var _back$props = back.props;
 						var _children = _back$props.children;
-						var others = (0, _objectWithoutProperties3.default)(_back$props, ['children']);
 	
-						backProps = others;
+						var _others = (0, _objectWithoutProperties3.default)(_back$props, ['children']);
+	
+						backProps = _others;
 						backChilds = _children;
 					} else childs.push(elem);
 				}
@@ -1113,521 +1114,21 @@
 
 /***/ },
 /* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**!
-	 * Distributed Service-Unique IDs that are short and sweet.
-	 *
-	 * http://download.github.io/suid
-	 *
-	 * @Author Stijn de Witt (http://StijnDeWitt.com)
-	 * @Copyright (c) 2015. Some rights reserved.
-	 * @License CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
-	 */
-	/** @namespace ws.suid */
-	(function(u,m,d) {var p='picolog',l; if(this.log&&this.log.INFO){l=this.log;}
-		if(true){try{/*require.resolve*/(5);l=__webpack_require__(5);}catch(e){}module.exports=d(l);}
-		else if(typeof define == 'function' && define.amd){define(u, ['require'], function(r){
-			return d((r.defined && r.defined('picolog')) || (r.c && r.c['picolog']) ? r('picolog') : l);
-		})}
-		else{this[m] = d(l);}
-	}('suid','Suid',function(log){'use strict';
-	var
-	SHARDSIZE = 2,
-	IDSIZE = 64,
-	THROTTLE = 5000,
-	POOL = 'suidpool',
-	DETECT = 'suiddetect',
-	ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz',
-	localStorageSupported = (function(ls){
-		try{
-			ls.setItem(DETECT, DETECT);
-			ls.removeItem(DETECT);
-			return true;
-		}
-		catch(e){
-			return false;
-		}
-	})(typeof window == 'object' && window.localStorage),
-	currentBlock,
-	currentId,
-	readyListeners = [],
-	win = typeof window != 'undefined' ? window : typeof global != 'undefined' ? global : {},
-	config = getConfig(win.Suid, {server:'/suid/suid.json', min:3, max:4});
-	
-	/**
-	 * Distributed Service-Unique IDs that are short and sweet.
-	 *
-	 * <p>When called without arguments, defaults to <tt>Suid(0)</tt>.</p>
-	 *
-	 * <p>When called with an argument, constructs a new Suid based
-	 * on the given value, which may be either a:</p>
-	 *
-	 * <ul>
-	 *   <li>Number</li>
-	 *   <li>Base-36 String</li>
-	 *   <li>Other Suid</li>
-	 * </ul>
-	 *
-	 * <p>This constructor function may be called without the <tt>new</tt> keyword.</p>
-	 *
-	 * <p><b>Examples</b></p>
-	 *
-	 * <big><pre>
-	 * // Call without arguments
-	 * var NOP = new Suid();
-	 *
-	 * // call with a Number argument
-	 * var ZERO = new Suid(0);
-	 * var ONE = new Suid(1);
-	 * NOP.equals(ZERO); // true
-	 *
-	 * // New-less invocation
-	 * var TWO = Suid(2);
-	 *
-	 * // call with a base-36 string argument
-	 * var suid1 = Suid('14she');
-	 *
-	 * // call with another suid as argument
-	 * var suid2 = Suid(suid1);
-	 * </pre></big>
-	 *
-	 * @param value The value for the new Suid.
-	 *
-	 * @class Suid
-	 * @memberof! ws.suid
-	 */
-	var Suid = (function() {
-		function Suid(value) {
-			if (! (this instanceof Suid)) {return new Suid(value);}
-			if (value === undefined) {value = 0;}
-			if (typeof value === 'string') {value = parseInt(value, 36);}
-			this.value = value instanceof Suid ? value.value : value;
-			Number.call(this, this.value);
-		}
-	
-		Suid.prototype = Object.create(Number.prototype);
-		Suid.prototype.constructor = Suid;
-	
-		/**
-		 * Converts this suid to a string.
-		 *
-		 * The returned String will be in base-36 format.
-		 * For example: <tt>'14she'</tt>.
-		 *
-		 * @return The base-36 string.
-		 *
-		 * @memberof! ws.suid.Suid#
-		 */
-		Suid.prototype.toString = function Suid_toString() {
-			return this.value.toString(36);
-		};
-	
-		/**
-		 * Converts this suid to a JSON string.
-		 *
-		 * The returned String will be in base-36 format.
-		 * For example: <tt>'14she'</tt>. This method
-		 * is called by <tt>JSON.stringify</tt>.
-		 *
-		 * @return The JSON string.
-		 *
-		 * @memberof! ws.suid.Suid#
-		 *
-		 * @see {@link ws.suid.Suid.revive}
-		 */
-		Suid.prototype.toJSON = function Suid_toJSON() {
-			return this.toString();
-		};
-	
-		/**
-		 * Returns the underlying value of this suid.
-		 *
-		 * @return The underlying primitive Number value.
-		 *
-		 * @memberof! ws.suid.Suid#
-		 */
-		Suid.prototype.valueOf = function Suid_valueOf() {
-			return this.value;
-		};
-	
-		/**
-		 * Compares this suid with <tt>that</tt>.
-		 *
-		 * @return <tt>-1</tt> when this suid is less than,
-		 *         <tt>0</tt> when it is equal to and
-		 *         <tt>+1</tt> when it is greater than <tt>that</tt>.
-		 *
-		 * @memberof! ws.suid.Suid#
-		 */
-		Suid.prototype.compare = function Suid_compare(that) {
-			that = Suid(that);
-			return this.value < that.value ? -1 : this.value > that.value ? 1 : 0;
-		};
-	
-		/**
-		 * Indicates whether this suid and <tt>that</tt> are equal.
-		 *
-		 * @return <tt>true</tt> when the values are equal, <tt>false</tt> otherwise.
-		 *
-		 * @memberof! ws.suid.Suid#
-		 */
-		Suid.prototype.equals = function Suid_equals(that) {
-			return this.value === Suid(that).value;
-		};
-	
-		/**
-		 * Indicates whether the given string value looks like a valid suid.
-		 *
-		 * If this method returns true, this only indicates that it's
-		 * *probably* valid. There are no guarantees.
-		 *
-		 * @param str The string to test.
-		 * @return <tt>true</tt> if it looks valid, <tt>false</tt> otherwise.
-		 *
-		 * @memberof! ws.suid.Suid
-		 */
-		Suid.looksValid = function Suid_looksValid(value) {
-			if (!value) {return false;}
-			var len = value.length;
-			if ((!len) || (len > 11)) {return false;}
-			if ((len === 11) && (ALPHABET.indexOf(value.charAt(0)) > 2)) {return false;}
-			for (var i=0; i<len; i++) {
-				if (ALPHABET.indexOf(value.charAt(i)) === -1) {return false;}
-			}
-			return true;
-		};
-	
-		/**
-		 * Creates a reviver function to be used i.c.w. JSON.parse.
-		 *
-		 * Example:
-		 *
-		 * <big><pre>
-		 * var object = {
-		 *   id: Suid(),
-		 *   name: 'Example'
-		 * };
-		 * var obj, json = JSON.stringify(object);
-		 * // json === '{"id":"19b","name":"Example"}'
-		 * obj = JSON.parse(json, Suid.revive('id'));   // OR
-		 * obj = JSON.parse(json, Suid.revive(['id'])); // OR
-		 * obj = JSON.parse(json, Suid.revive(function(key,val){return key === 'id';}));
-		 * // obj.id instanceof Suid === true
-		 * </pre></big>
-		 *
-		 * @param prop The (array of) name(s) of properties to be revived, or an evaluator function.
-		 * @returns A reviver function
-		 *
-		 * @memberof! ws.suid.Suid
-		 */
-		Suid.revive = function Suid_revive(prop) {
-			var mayRevive = typeof prop === undefined ? function(){return true;} : function(key){return prop.indexOf(key) !== -1;};
-			if (typeof prop == 'string') {prop = [prop];}
-			if (typeof prop == 'function') {mayRevive = prop;}
-			return function reviver(key, value) {
-				return mayRevive(key, value) && Suid.looksValid(value) ? new Suid(value) : value;
-			};
-		};
-	
-		/**
-		 * Generates the next suid.
-		 *
-		 * @return The next new suid.
-		 *
-		 * @memberof! ws.suid.Suid
-		 */
-		Suid.next = function Suid_next() {
-			var pool = Pool.get();
-			if ((pool.length < config.min) || ((!currentBlock && pool.length === config.min))) {
-				if (config.server) {Server.fetch();}
-				else {log && log.warn('No suid server configured. Please add the data-suid-server attribute to the script tag or call Suid.config before generating IDs.');}
-			}
-			if (! currentBlock) {
-				if (pool.length === 0) {
-					throw new Error('Unable to generate IDs. Suid block pool exhausted.');
-				}
-				currentId = 0;
-				currentBlock = pool.splice(0, 1)[0];
-				Pool.set(pool);
-			}
-	
-			var result = currentBlock + currentId * SHARDSIZE;
-			currentId++;
-			if (currentId >= IDSIZE) {
-				currentBlock = null;
-			}
-			return new Suid(result);
-		};
-	
-		/**
-		 * Configures the suid generator or gets the current config.
-		 *
-		 * <p>This method can be used as an alternative for, or in addition to, specifying
-		 * the configuration in the <tt>data-suid-server</tt> and <tt>data-suid-options</tt>
-		 * script attributes.</p>
-		 *
-		 * <p><b>Examples:</b></p>
-		 *
-		 * <code><pre>
-		 * // Assuming no config was set yet... (defaults)
-		 * var config = Suid.config();       // config => {server:'/suid/suid.json', min:3, max:4}
-		 *
-		 * Suid.config({
-		 *     server: '/suid.json',
-		 *     min: 2,
-		 *     max: 6,
-		 *     seed: ['14she', '14sky']
-		 * });
-		 *
-		 * // The seed is used to fill the pool and then discarded:
-		 * var config = Suid.config();       // config => {server:'/suid.json', min:2, max:6}
-		 *
-		 * // Config does a merge:
-		 * config = Suid.config({max: 8});   // config => {server:'/suid.json', min:2, max:8}
-		 * </pre></code>
-		 *
-		 * @return The current config after the given <tt>cfg</tt> object has been processed, if any.
-		 *
-		 * @memberof! ws.suid.Suid
-		 */
-		Suid.config = function Suid_config(cfg) {
-			if (cfg) {
-				config = merge(config, cfg);
-				if (cfg.seed) {
-					var pool = Pool.get();
-					pool.push(cfg.seed);
-					Pool.set(pool);
-					delete config.seed;
-				}
-				Suid.ready();
-			}
-			return config;
-		};
-	
-		/**
-		 * Indicates if Suid is ready to generate IDs, attaches the given callback listener.
-		 *
-		 * <p>This method can be used to find out whether Suid is ready to generate ID's, or
-		 * to attach an event listener to the ready event. The given <tt>callback</tt> function
-		 * is guaranteed to fire asynchronously, meaning this method will always return before
-		 * the callback is fired. Due to this, this method may already return <tt>true</tt> even
-		 * though the ready event hasn't fired yet.</p>
-		 *
-		 * <p><b>Examples:</b></p>
-		 *
-		 * <code><pre>
-		 * if (Suid.ready()) {
-		 *   // Suid is ready!
-		 * } else {
-		 *   // Suid is not ready yet...
-		 * }
-		 *
-		 * Suid.ready(function(){
-		 *   // Suid is ready!
-		 * });
-		 * </pre></code>
-		 *
-		 * @param callback The optional callback function that will be called once Suid is ready.
-		 * @return <tt>true</tt> if Suid is ready, <tt>false</tt> otherwise.
-		 */
-		Suid.ready = function Suid_ready(callback) {
-			var ready = Pool.get().length > 0;
-			if (callback) {readyListeners.push(callback);}
-			if (ready) {setTimeout(function(){for (var l; l=readyListeners.shift();) {l();}}, 0);}
-			// give client 100ms to configure the server using Suid.configure
-			else {setTimeout(function(){Server.fetch();}, 100);}
-			return ready;
-		};
-	
-		return Suid;
-	})();
-	
-	var Pool = (function(){
-		var pool = [];
-		return {
-			get: function() {
-				if (localStorageSupported) {
-					pool = Pool.from(localStorage.getItem(POOL));
-				}
-				return pool;
-			},
-			set: function(values){
-				pool = values;
-				if (localStorageSupported) {
-					localStorage.setItem(POOL, Pool.to(pool));
-				}
-				return Pool;
-			},
-			from: function(str){
-				var results = [];
-				if (str) {
-					var strings = str.split(',');
-					for (var i=0, s; s=strings[i]; i++) {
-						results.push(new Suid(s));
-					}
-				}
-				return results;
-			},
-			to: function(obj){
-				return obj.join(',');
-			}
-		};
-	})();
-	
-	var Server = (function(){
-		var retries = 0,
-			started = 0;
-	
-		function handleSuccess(text) {
-			retries = 0;
-			var pool = Pool.get();
-			pool.push(JSON.parse(text));
-			Pool.set(pool);
-			Suid.ready();
-		}
-	
-		function handleError(status, request) {
-			// status code 5xx ? possibly recoverable.
-			switch(status) {
-				case 500: // Internal server error
-				case 502: // Bad Gateway
-				case 503: // Service unavailable
-				case 504: // Gateway Timeout
-					retry(request);
-					break;
-				default: // unrecoverable? give up
-					log && log.error('Unable to fetch suid data from server. ', request, status);
-					retries = 0;
-			}
-		}
-	
-		function retry(request) {
-			if (retries === 0) {
-				log && log.error('Giving up fetching suid data from server: ' + config.server);
-				return;
-			}
-	
-			retries--;
-			var after = 300000; // 5 minutes
-			var retryAfter = request.getResponseHeader('Retry-After');
-			if (retryAfter) {
-				after = parseInt(retryAfter, 10);
-				if (! isNaN(after)) {
-					after = after * 1000; // seconds to ms.
-				}
-			}
-			// Is this urgent?
-			if (! Pool.get().length) { // Pool is out of blocks
-				if (after > 60000) {
-					after = 60000; // 1 min
-				}
-			}
-			if (currentId > (IDSIZE/2)) { // less than half of current block left
-				if (after > 30000) {
-					after = 30000; // 30 sec
-				}
-			}
-			if (! currentBlock) { // completely out
-				if (after > 2000) {
-					after = 2000; // 2 sec
-				}
-			}
-	
-			setTimeout(function(){
-				ajax(config.server, {blocks: config.max - Pool.get().length}, handleSuccess, handleError);
-			}, after);
-		}
-	
-		function ajax(url, data, success, error, sync) {
-			var xhr = new XMLHttpRequest(), query = [], params, key;
-			for (key in data) {
-				if (data.hasOwnProperty(key)) {
-					query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
-				}
-			}
-			params = query.join('&');
-			xhr.open('get', url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : ''), !sync);
-			xhr.addEventListener('readystatechange', function(){
-				if (this.readyState === 4) {
-					this.status === 200 ? success(this.responseText, this) : error(this.status, this);
-				}
-			});
-			xhr.addEventListener('error', function () {
-				error(this, this.status);
-			});
-			xhr.send();
-		}
-	
-		return {
-			fetch: function Server_fetch() {
-				if (typeof window != 'object') {return;}
-				if (retries && ((new Date().getTime() - started < THROTTLE) ||
-								(currentId && (currentId < (IDSIZE/2))))) {
-					return; // already fetching and still recent or not urgent
-				}
-				var pool = Pool.get();
-				if (pool.length < config.min) {
-					retries = 3;
-					started = Date.now();
-					ajax(config.server, {blocks: config.max - pool.length}, handleSuccess, handleError);
-				}
-			}
-		};
-	})();
-	
-	function merge() {
-		var res={}, i, arg, key;
-		for (i=0; arg=arguments[i++];) {
-			for (key in arg) {res[key] = arg[key];}
-		}
-		return res;
-	}
-	
-	function getConfig(cfg, def) {
-		var options = {},
-			config = merge(def, cfg);
-		var script = typeof document == 'object' && document.querySelector('script[data-suid-server]');
-		if (!script) {script = typeof document == 'object' && document.querySelector('script[data-suid-options]');}
-		if (script) {
-			var attr = script.getAttribute('data-suid-options');
-			if (attr) {
-				try {
-					options = JSON.parse(attr.split('\'').join('"'));
-				}
-				catch(error) {
-					log && log.error('Unable to parse suid options as JSON: \'' + attr + '\'. Error was: ', error);
-				}
-			}
-			options.url = script.getAttribute('data-suid-server');
-			config = merge(config, options);
-		}
-		config.configured = cfg || script;
-		return config;
-	}
-	
-	if (config.configured) {Suid.configure(config);}
-	else {Suid.ready();}
-	
-	log && log.info('Suid.js started.');
-	
-	// EXPOSE
-	return Suid;
-	
-	}));
-
-
-/***/ },
-/* 19 */
 /***/ function(module, exports) {
 
 	module.exports = require("react-redux");
 
 /***/ },
-/* 20 */
+/* 19 */
 /***/ function(module, exports) {
 
 	module.exports = require("redux-load-api");
+
+/***/ },
+/* 20 */
+/***/ function(module, exports) {
+
+	module.exports = require("ws.suid");
 
 /***/ },
 /* 21 */
@@ -1658,7 +1159,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -1672,7 +1173,7 @@
 	
 	var _class, _temp;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -1701,6 +1202,7 @@
 			_this.onScroll = _this.onScroll.bind(_this);
 			return _this;
 		} // function(index)
+	
 	
 		(0, _createClass3.default)(Scroller, [{
 			key: 'getState',
@@ -2035,6 +1537,7 @@
 	}, _temp);
 	exports.default = Scroller;
 	
+	
 	function arraysEqual(a, b) {
 		if (!a || !b) return false;
 		if (a.length != b.length) return false;
@@ -2060,7 +1563,7 @@
 	}
 	
 	function getScrollPos(horizontal, element) {
-		var res = undefined;
+		var res = void 0;
 	
 		var _ref = horizontal ? { axis: 'X', dir: 'Left' } : { axis: 'Y', dir: 'Top' };
 	
@@ -2131,7 +1634,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -2145,7 +1648,7 @@
 	
 	var _class, _class2, _temp;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -2358,7 +1861,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -2380,7 +1883,7 @@
 	
 	var _class, _temp, _class2, _temp2;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -2397,6 +1900,7 @@
 	var string = _react.PropTypes.string;
 	var node = _react.PropTypes.node;
 	var bool = _react.PropTypes.bool;
+	
 	
 	function simpleComponent(defaultClass) {
 		var result = function result(props) {
@@ -2553,7 +2057,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -2567,7 +2071,7 @@
 	
 	var _class, _temp, _class2, _temp2, _class3, _temp3;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -2852,7 +2356,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -2866,7 +2370,7 @@
 	
 	var _dec, _class, _class2, _temp;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -2876,9 +2380,9 @@
 	
 	var _reactRouter = __webpack_require__(21);
 	
-	var _reduxLoadApi = __webpack_require__(20);
+	var _reduxLoadApi = __webpack_require__(19);
 	
-	var _reactRedux = __webpack_require__(19);
+	var _reactRedux = __webpack_require__(18);
 	
 	var _reactMdl = __webpack_require__(13);
 	
@@ -3162,9 +2666,9 @@
 	
 	var _PasswordCredential2 = _interopRequireDefault(_PasswordCredential);
 	
-	var _suid = __webpack_require__(18);
+	var _ws = __webpack_require__(20);
 	
-	var _suid2 = _interopRequireDefault(_suid);
+	var _ws2 = _interopRequireDefault(_ws);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -3174,7 +2678,7 @@
 		var groups = arguments.length <= 4 || arguments[4] === undefined ? [] : arguments[4];
 		(0, _classCallCheck3.default)(this, Account);
 	
-		this.id = id && new _suid2.default(id) || new _suid2.default(0);
+		this.id = id && new _ws2.default(id) || new _ws2.default(0);
 		this.version = null;
 		this.name = name;
 		this.credentials = credentials;
@@ -3211,7 +2715,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -3225,7 +2729,7 @@
 	
 	var _class, _temp;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -3480,16 +2984,16 @@
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
-	var _suid = __webpack_require__(18);
+	var _ws = __webpack_require__(20);
 	
-	var _suid2 = _interopRequireDefault(_suid);
+	var _ws2 = _interopRequireDefault(_ws);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Role = exports.Role = (0, _Entity2.default)(_class = function Role(id, name) {
 		(0, _classCallCheck3.default)(this, Role);
 	
-		this.id = new _suid2.default(id);
+		this.id = new _ws2.default(id);
 		this.name = name;
 	}) || _class;
 	
@@ -3531,7 +3035,7 @@
 	
 	var _extends3 = _interopRequireDefault(_extends2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -3553,7 +3057,7 @@
 	
 	var _class, _class2, _temp;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -3571,9 +3075,9 @@
 	
 	var _Entity = __webpack_require__(16);
 	
-	var _suid = __webpack_require__(18);
+	var _ws = __webpack_require__(20);
 	
-	var _suid2 = _interopRequireDefault(_suid);
+	var _ws2 = _interopRequireDefault(_ws);
 	
 	var _PasswordCredential = __webpack_require__(25);
 	
@@ -3785,7 +3289,7 @@
 				this.setBusy();
 				return this.dispatch(function () {
 					return new _promise2.default(function (resolve, reject) {
-						var account = new _Account2.default(_suid2.default.next(), username, [new _PasswordCredential2.default(_suid2.default.next(), password)]);
+						var account = new _Account2.default(_ws2.default.next(), username, [new _PasswordCredential2.default(_ws2.default.next(), password)]);
 	
 						_picolog2.default.log('register: creating account', account);
 						return _this7.fetch('/accounts', {
@@ -3909,6 +3413,7 @@
 	
 	exports.default = Auth;
 	
+	
 	function encode(challenge, username, password) {
 		if (challenge.contentType === 'application/x-www-form-urlencoded') {
 			return urlEncode(challenge, username, password);
@@ -3964,7 +3469,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -3982,7 +3487,7 @@
 	
 	var _dec, _dec2, _class, _class2, _temp;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -3990,9 +3495,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(19);
+	var _reactRedux = __webpack_require__(18);
 	
-	var _reduxLoadApi = __webpack_require__(20);
+	var _reduxLoadApi = __webpack_require__(19);
 	
 	var _api = __webpack_require__(15);
 	
@@ -4016,6 +3521,7 @@
 	var object = _react.PropTypes.object;
 	var array = _react.PropTypes.array;
 	var any = _react.PropTypes.any;
+	
 	
 	function load(filter) {
 		filter && _api2.default.brands.search.setFilter(filter);
@@ -4097,7 +3603,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -4111,7 +3617,7 @@
 	
 	var _class, _temp;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -4260,7 +3766,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -4334,7 +3840,7 @@
 	
 	var _class;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -4384,7 +3890,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -4453,7 +3959,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -4467,7 +3973,7 @@
 	
 	var _class, _temp;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -4489,12 +3995,13 @@
 	
 	var _reactRouter = __webpack_require__(21);
 	
-	var _reactRedux = __webpack_require__(19);
+	var _reactRedux = __webpack_require__(18);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var string = _react.PropTypes.string;
 	var object = _react.PropTypes.object;
+	
 	
 	/**
 	 * Wrapper component containing HTML metadata and boilerplate tags.
@@ -4605,7 +4112,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -4623,7 +4130,7 @@
 	
 	var _dec, _dec2, _class, _class2, _temp;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -4631,9 +4138,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(19);
+	var _reactRedux = __webpack_require__(18);
 	
-	var _reduxLoadApi = __webpack_require__(20);
+	var _reduxLoadApi = __webpack_require__(19);
 	
 	var _api = __webpack_require__(15);
 	
@@ -4653,6 +4160,7 @@
 	var array = _react.PropTypes.array;
 	var object = _react.PropTypes.object;
 	var any = _react.PropTypes.any;
+	
 	
 	function load(params) {
 		_picolog2.default.log('load', params);
@@ -4750,7 +4258,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -4764,7 +4272,7 @@
 	
 	var _class, _temp;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -4916,7 +4424,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -4976,7 +4484,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -5044,7 +4552,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -5112,7 +4620,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -5196,7 +4704,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -5210,7 +4718,7 @@
 	
 	var _dec, _dec2, _class, _class2, _temp;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -5218,9 +4726,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(19);
+	var _reactRedux = __webpack_require__(18);
 	
-	var _reduxLoadApi = __webpack_require__(20);
+	var _reduxLoadApi = __webpack_require__(19);
 	
 	var _api = __webpack_require__(15);
 	
@@ -5244,6 +4752,7 @@
 	var object = _react.PropTypes.object;
 	var array = _react.PropTypes.array;
 	var any = _react.PropTypes.any;
+	
 	
 	function load(params) {
 		_picolog2.default.log('StoreBrowser.load', params);
@@ -5324,7 +4833,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -5509,7 +5018,7 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(6);
+	var _createClass2 = __webpack_require__(5);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
@@ -5583,7 +5092,7 @@
 	
 	var _class;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -5625,7 +5134,7 @@
 	});
 	exports.routes = undefined;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -5734,7 +5243,7 @@
 	
 	var _httpProxy2 = _interopRequireDefault(_httpProxy);
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -5748,7 +5257,7 @@
 	
 	var _reactRouter = __webpack_require__(21);
 	
-	var _reduxLoadApi = __webpack_require__(20);
+	var _reduxLoadApi = __webpack_require__(19);
 	
 	var _config = __webpack_require__(33);
 	
@@ -5758,6 +5267,7 @@
 	
 	__webpack_require__(61);
 	global.fetch = __webpack_require__(71);
+	
 	
 	var express = new _express2.default();
 	var httpServer = new _http2.default.Server(express);
@@ -5918,7 +5428,7 @@
 	
 	exports.createStore = createStore;
 	
-	var _picolog = __webpack_require__(5);
+	var _picolog = __webpack_require__(6);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -5985,6 +5495,7 @@
 		window.app = app;
 	}
 	exports.default = store;
+	
 	
 	if (false) {
 		module.hot.accept('./components/App/api', function () {
@@ -6054,7 +5565,7 @@
 		},
 		"dependencies": {
 			"babel": "^6.5.2",
-			"babel-polyfill": "^6.3.14",
+			"babel-polyfill": "^6.6.1",
 			"babel-preset-es2015": "^6.5.0",
 			"babel-preset-react": "^6.5.0",
 			"babel-preset-stage-0": "^6.5.0",
@@ -6082,38 +5593,36 @@
 			"redux-logger": "^2.5.2",
 			"redux-responsive": "^1.1.0",
 			"redux-thunk": "^1.0.3",
-			"serialize-javascript": "^1.1.2"
+			"serialize-javascript": "^1.1.2",
+			"ws.suid": "^0.10.1"
 		},
 		"devDependencies": {
 			"app-root-path": "^1.0.0",
-			"babel": "^6.5.2",
-			"babel-core": "^6.4.0",
-			"babel-loader": "^6.2.1",
-			"babel-plugin-react-transform": "^2.0.0",
+			"babel-core": "^6.6.5",
+			"babel-loader": "^6.2.4",
+			"babel-plugin-react-transform": "^2.0.2",
 			"babel-plugin-transform-class-properties": "^6.4.0",
 			"babel-plugin-transform-decorators-legacy": "^1.3.4",
-			"babel-plugin-transform-runtime": "^6.4.0",
+			"babel-plugin-transform-runtime": "^6.6.0",
 			"babel-preset-es2015": "^6.5.0",
 			"babel-preset-react": "^6.3.13",
 			"babel-preset-stage-0": "^6.3.13",
-			"chai": "^3.4.1",
+			"chai": "^3.5.0",
 			"eventsource-polyfill": "^0.9.6",
 			"json-loader": "^0.5.4",
-			"just-wait": "^1.0.4",
-			"mocha": "^2.3.4",
+			"just-wait": "^1.0.5",
+			"mocha": "^2.4.5",
 			"mocha-loader": "^0.7.1",
 			"parallelshell": "^2.0.0",
-			"picolog": "^1.0.0",
-			"react-addons-test-utils": "^0.14.6",
+			"react-addons-test-utils": "^0.14.7",
 			"react-mdl": "^1.0.4",
 			"react-shallow-testutils": "^1.0.0",
-			"react-transform-hmr": "^1.0.1",
-			"rimraf": "^2.5.0",
-			"source-map-support": "^0.4.0",
-			"webpack": "^1.12.10",
-			"webpack-dev-middleware": "^1.4.0",
+			"react-transform-hmr": "^1.0.4",
+			"rimraf": "^2.5.2",
+			"webpack": "^1.12.14",
+			"webpack-dev-middleware": "^1.5.1",
 			"webpack-dev-server": "^1.14.1",
-			"webpack-hot-middleware": "^2.6.0"
+			"webpack-hot-middleware": "^2.9.1"
 		},
 		"author": {
 			"name": "Stijn de Witt",

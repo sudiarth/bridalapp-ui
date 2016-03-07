@@ -1,5 +1,5 @@
 ﻿import Entity, { fromJSON } from '../Entity/Entity';
-import Suid from '../../suid';
+import Suid from 'ws.suid';
 
 @Entity
 export class Role {

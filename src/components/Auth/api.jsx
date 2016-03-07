@@ -6,7 +6,7 @@ import { remote } from 'redux-fetch-api';
 import { TextfieldApi } from '../Mdl/api';
 import { fromJSON } from '../Entity/Entity';
 
-import Suid from '../../suid';
+import Suid from 'ws.suid';
 import PasswordCredential from './PasswordCredential';
 import Account from './Account';
 

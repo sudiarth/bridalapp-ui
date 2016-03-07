@@ -31,22 +31,31 @@ describe('SearchApi', () => {
 		expect(search.getState().results.length).to.equal(0);
 	});
 
-	it('has methods to inspect it\'s state slice', () => {
+	it('has enumerable properties `pending`, `busy`, `done`, `error`, `filter` and `results`.', () => {
 		let search = new SearchApi();
-		expect(search).to.have.property('results');
-		expect(search.results).to.be.a('function');
+		const keys = Object.keys(search);
+		expect(keys).to.contain(`pending`);
+		expect(keys).to.contain(`busy`);
+		expect(keys).to.contain(`done`);
+		expect(keys).to.contain(`error`);
+		expect(keys).to.contain(`filter`);
+		expect(keys).to.contain(`results`);
 	});
 
 	it('has methods to dispatch actions to manipulate it\'s state slice', () => {
 		let search = new SearchApi();
 		expect(search).to.have.property('search');
 		expect(search.search).to.be.a('function');
+		expect(search).to.have.property('setFilter');
+		expect(search.setFilter).to.be.a('function');
+		expect(search).to.have.property('setResults');
+		expect(search.setResults).to.be.a('function');
 	});
 
 	describe('results', () => {
 		it('returns the value of the property `results` in the state slice', () => {
 			let search = new SearchApi({results:[]});
-			expect(search.results()).to.equal(search.getState().results);
+			expect(search.results).to.equal(search.getState().results);
 		});
 	});
 
@@ -88,17 +97,17 @@ describe('SearchApi', () => {
 		expect(dispatched).to.equal(1);
 
 		it('creates and dispatches an action \'SEARCH\'', () => {
-			expect(test.search.busy()).to.equal(false);
+			expect(test.search.busy).to.equal(false);
 			promise = test.search.search();
 			expect(dispatched >= 2);
 		});
 
-		it('results in `.busy()` returning `true`', () => {
-			expect(test.search.busy()).to.equal(true);
+		it('results in `.busy` returning `true`', () => {
+			expect(test.search.busy).to.equal(true);
 		});
 
-		it('results in `.done()` returning `false`', () => {
-			expect(test.search.done()).to.equal(false);
+		it('results in `.done` returning `false`', () => {
+			expect(test.search.done).to.equal(false);
 		});
 
 		it('returns a promise', () => {
@@ -107,20 +116,20 @@ describe('SearchApi', () => {
 			expect(promise.then).to.be.a('function');
 		});
 
-		it('results in `.busy()` returning `false` when the promise fulfills', (done) => {
+		it('results in `.busy` returning `false` when the promise fulfills', (done) => {
 			promise
 				.then(() => {
-					expect(test.search.busy()).to.equal(false);
+					expect(test.search.busy).to.equal(false);
 					done();
 				})
 				.catch(done);
 
 		});
 
-		it('results in `.done()` returning `true` when the promise fulfills', (done) => {
+		it('results in `.done` returning `true` when the promise fulfills', (done) => {
 			promise
 				.then(() => {
-					expect(test.search.done()).to.equal(true);
+					expect(test.search.done).to.equal(true);
 					done();
 				})
 				.catch(done);
@@ -130,7 +139,7 @@ describe('SearchApi', () => {
 		it('results in `.results()` returning the search results when the promise fulfills', (done) => {
 			promise
 				.then(() => {
-					expect(test.search.results().length).to.equal(3);
+					expect(test.search.results.length).to.equal(3);
 					done();
 				})
 				.catch(done);

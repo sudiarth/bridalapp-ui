@@ -3,7 +3,7 @@ import Role from './Role';
 import Group from './Group';
 import PasswordCredential from './PasswordCredential';
 
-import Suid from '../../suid';
+import Suid from 'ws.suid';
 
 @Entity
 export class Account {

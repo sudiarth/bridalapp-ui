@@ -13,9 +13,9 @@ describe('ProductSearch', () => {
 	});
 
 	it('accepts a state slice', () => {
-		expect(test.pending()).to.equal(true);
-		expect(test.filter().a).to.equal('test');
-		expect(test.filter().category).to.equal('cat');
+		expect(test.pending).to.equal(true);
+		expect(test.filter.a).to.equal('test');
+		expect(test.filter.category).to.equal('cat');
 	});
 
 	it('has overridden `url(filter)`', () => {
@@ -25,7 +25,7 @@ describe('ProductSearch', () => {
 
 	describe('url(filter)', () => {
 		it('returns a custom search url', () => {
-			const url = test.url(test.filter());
+			const url = test.url(test.filter);
 			expect(url).to.equal('/cat?a=test');
 		});
 	});
@@ -44,10 +44,10 @@ describe('ProductsApi', () => {
 		expect(products.getState()).to.have.a.property('search');
 		expect(products.getState().search).to.have.a.property('async');
 		expect(products.getState().search.async).to.equal('DONE');
-		expect(products.search.done()).to.equal(true);
-		expect(products.search.results()).to.have.a.property('length');
-		expect(products.search.results().length).to.equal(1);
-		expect(products.search.results()[0]).to.equal('Yeah!');
+		expect(products.search.done).to.equal(true);
+		expect(products.search.results).to.have.a.property('length');
+		expect(products.search.results.length).to.equal(1);
+		expect(products.search.results[0]).to.equal('Yeah!');
 	});
 
 	it('has a nested `search` api', () => {

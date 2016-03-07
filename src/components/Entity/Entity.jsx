@@ -1,5 +1,5 @@
 ﻿import log from 'picolog';
-import Suid from '../../suid';
+import Suid from 'ws.suid';
 
 export function Entity(target) {
 	return register(target.name, target);
