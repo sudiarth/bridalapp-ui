@@ -2,7 +2,7 @@
 var log = require('picolog');
 var fs = require('fs');
 var path = require('path');
-var appRoot = require('app-root-path').toString();
+var appRoot = path.resolve(__dirname, '../');
 var webpack = require('webpack');
 
 var cfg = require('../config');

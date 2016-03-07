@@ -1,7 +1,7 @@
 ﻿var fs = require('fs');
 var path = require('path');
 var webpack = require('webpack');
-var appRoot = require('app-root-path').toString();
+var appRoot = path.resolve(__dirname, '../');
 
 var cfg = require('../config');
 

@@ -5542,6 +5542,7 @@
 			"url": "https://github.com/download/bridalapp-ui"
 		},
 		"scripts": {
+			"clean-node-modules": "rimraf node_modules",
 			"clean-server": "rimraf hmr && rimraf server.js",
 			"clean-client": "rimraf public/assets/bridalapp-ui.js",
 			"clean": "npm run clean-server && npm run clean-client",
@@ -5564,7 +5565,6 @@
 			"npm": ">= 1.0.0"
 		},
 		"dependencies": {
-			"babel": "^6.5.2",
 			"babel-polyfill": "^6.6.1",
 			"babel-preset-es2015": "^6.5.0",
 			"babel-preset-react": "^6.5.0",
@@ -5597,7 +5597,6 @@
 			"ws.suid": "^0.10.1"
 		},
 		"devDependencies": {
-			"app-root-path": "^1.0.0",
 			"babel-core": "^6.6.5",
 			"babel-loader": "^6.2.4",
 			"babel-plugin-react-transform": "^2.0.2",
