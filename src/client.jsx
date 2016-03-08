@@ -1,7 +1,7 @@
 import log from 'picolog';
 log.info('Starting BridalApp UI');
 import { Api, link } from 'redux-apis';
-import { CALCULATE_RESPONSIVE_STATE } from 'redux-responsive';
+// import { CALCULATE_RESPONSIVE_STATE } from 'redux-responsive';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -21,7 +21,7 @@ var jsx = (
 );
 
 ReactDOM.render(jsx, document.getElementById('bridalapp'));
-
+/*
 function updateResponsiveState() {
 	const {innerWidth, innerHeight, matchMedia} = window;
 	store.dispatch({
@@ -38,7 +38,7 @@ window.addEventListener('load', () => {
 	clearInterval(interval);
 	updateResponsiveState();
 });
-
+*/
 
 if (module.hot) {
     module.hot.accept('./routes', function(){

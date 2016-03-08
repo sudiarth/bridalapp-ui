@@ -3,7 +3,7 @@ import React, {Component, PropTypes} from 'react';
 const { string, object } = PropTypes;
 import ReactDOM from 'react-dom/server';
 import serialize from 'serialize-javascript';
-import DocumentMeta from 'react-document-meta';
+// import DocumentMeta from 'react-document-meta';
 import { RouterContext } from 'react-router';
 import { Provider } from 'react-redux';
 
@@ -44,7 +44,7 @@ export class Html extends Component {
 			<html lang={this.props.lang}>
 				<head>
 					<meta name="viewport" content="width=device-width, initial-scale=1" />
-					{DocumentMeta.renderAsReact()}
+					{/* DocumentMeta.renderAsReact() */}
 					<link rel="shortcut icon" href="/favicon.ico" />
 					<link rel="stylesheet" href="https://cdn.rawgit.com/tleunen/react-mdl/v1.4.0/extra/material.min.css" />
 					<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />

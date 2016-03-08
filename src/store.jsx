@@ -2,7 +2,7 @@
 import { createStore as reduxCreateStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
-import { createResponsiveStateReducer, responsiveStoreEnhancer } from 'redux-responsive';
+// import { createResponsiveStateReducer, responsiveStoreEnhancer } from 'redux-responsive';
 import { link, namedLink } from 'redux-apis';
 
 let app = require('./components/App/api').app;
@@ -11,6 +11,7 @@ const data = typeof window == 'object' && window.__data || undefined;
 
 function createReducer() {
 	return combineReducers({
+/*
 		browser: createResponsiveStateReducer({
 			// Breakpoints for responsive layout. Chosen to group similar devices.
 			// Note that these are *CSS pixels* we are talking about, not *physical pixels*.
@@ -31,13 +32,19 @@ function createReducer() {
 			xl: 1600,	// < 2560: HD monitor
 			xxl: 2560,	// Projection screens, VR devices?
 		}),
+*/
 		app: app.reducer,
 	});
 }
 
 const storeEnhancer = typeof window == 'object'
+		? compose(applyMiddleware(thunk, createLogger({logger: log})))
+		: compose(applyMiddleware(thunk));
+/*
+const storeEnhancer = typeof window == 'object'
 		? compose(responsiveStoreEnhancer, applyMiddleware(thunk, createLogger({logger: log})))
 		: compose(responsiveStoreEnhancer, applyMiddleware(thunk));
+*/
 
 export function createStore() {
 	const store = reduxCreateStore(createReducer(), data, storeEnhancer);
@@ -46,8 +53,6 @@ export function createStore() {
 }
 
 export const store = createStore();
-
-// link the store to the app
 
 
 if (typeof window == 'object') {

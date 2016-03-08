@@ -3985,13 +3985,9 @@
 	
 	var _server2 = _interopRequireDefault(_server);
 	
-	var _serializeJavascript = __webpack_require__(78);
+	var _serializeJavascript = __webpack_require__(76);
 	
 	var _serializeJavascript2 = _interopRequireDefault(_serializeJavascript);
-	
-	var _reactDocumentMeta = __webpack_require__(73);
-	
-	var _reactDocumentMeta2 = _interopRequireDefault(_reactDocumentMeta);
 	
 	var _reactRouter = __webpack_require__(21);
 	
@@ -4001,7 +3997,7 @@
 	
 	var string = _react.PropTypes.string;
 	var object = _react.PropTypes.object;
-	
+	// import DocumentMeta from 'react-document-meta';
 	
 	/**
 	 * Wrapper component containing HTML metadata and boilerplate tags.
@@ -4044,7 +4040,6 @@
 						'head',
 						null,
 						_react2.default.createElement('meta', { name: 'viewport', content: 'width=device-width, initial-scale=1' }),
-						_reactDocumentMeta2.default.renderAsReact(),
 						_react2.default.createElement('link', { rel: 'shortcut icon', href: '/favicon.ico' }),
 						_react2.default.createElement('link', { rel: 'stylesheet', href: 'https://cdn.rawgit.com/tleunen/react-mdl/v1.4.0/extra/material.min.css' }),
 						_react2.default.createElement('link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' }),
@@ -5432,53 +5427,60 @@
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _redux = __webpack_require__(74);
+	var _redux = __webpack_require__(73);
 	
-	var _reduxThunk = __webpack_require__(77);
+	var _reduxThunk = __webpack_require__(75);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _reduxLogger = __webpack_require__(75);
+	var _reduxLogger = __webpack_require__(74);
 	
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
-	
-	var _reduxResponsive = __webpack_require__(76);
 	
 	var _reduxApis = __webpack_require__(10);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var app = __webpack_require__(15).app;
+	// import { createResponsiveStateReducer, responsiveStoreEnhancer } from 'redux-responsive';
+	
 	
 	var data = (typeof window === 'undefined' ? 'undefined' : (0, _typeof3.default)(window)) == 'object' && window.__data || undefined;
 	
 	function createReducer() {
 		return (0, _redux.combineReducers)({
-			browser: (0, _reduxResponsive.createResponsiveStateReducer)({
-				// Breakpoints for responsive layout. Chosen to group similar devices.
-				// Note that these are *CSS pixels* we are talking about, not *physical pixels*.
-				// Read more here: http://www.quirksmode.org/blog/archives/2010/04/a_pixel_is_not.html
-				// E.G. the iPhone 4 screen has a resolution of 640x960 physical pixels, but only 320x480
-				// CSS pixels; manufacturers choose a `devicePixelRatio` suitable for their device, because
-				// if we render text at the normal size on these device's high DPI screens, it would become
-				// illegibly small. As such, these numbers are unlikely to radically change, even if
-				// physical resolutions keep improving, because they are more related to the dimensions of
-				// the screen in centimeters than to the resolution in pixels.
-				// SEE: http://www.mydevice.io/devices/
-				// < 320: unsupported
-				xxs: 320, // < 360: small phones, portrait (e.g. iPhone 4)
-				xs: 360, // < 480: large phones/phablets, portrait (e.g. Samsung Galaxy S5, iPhone 6 Plus)
-				sm: 480, // < 720: small tablets, portrait
-				md: 720, // < 1025: large tablets, portrait
-				lg: 1025, // < 1600: small monitor, landscape (cutoff at 1025 i.s.o 1024 to exclude tablets with 1024x1440 resolution)
-				xl: 1600, // < 2560: HD monitor
-				xxl: 2560 }),
-			// Projection screens, VR devices?
+			/*
+	  		browser: createResponsiveStateReducer({
+	  			// Breakpoints for responsive layout. Chosen to group similar devices.
+	  			// Note that these are *CSS pixels* we are talking about, not *physical pixels*.
+	  			// Read more here: http://www.quirksmode.org/blog/archives/2010/04/a_pixel_is_not.html
+	  			// E.G. the iPhone 4 screen has a resolution of 640x960 physical pixels, but only 320x480
+	  			// CSS pixels; manufacturers choose a `devicePixelRatio` suitable for their device, because
+	  			// if we render text at the normal size on these device's high DPI screens, it would become
+	  			// illegibly small. As such, these numbers are unlikely to radically change, even if
+	  			// physical resolutions keep improving, because they are more related to the dimensions of
+	  			// the screen in centimeters than to the resolution in pixels.
+	  			// SEE: http://www.mydevice.io/devices/
+	  						// < 320: unsupported
+	  			xxs: 320,	// < 360: small phones, portrait (e.g. iPhone 4)
+	  			xs: 360,	// < 480: large phones/phablets, portrait (e.g. Samsung Galaxy S5, iPhone 6 Plus)
+	  			sm: 480,	// < 720: small tablets, portrait
+	  			md: 720,	// < 1025: large tablets, portrait
+	  			lg: 1025,	// < 1600: small monitor, landscape (cutoff at 1025 i.s.o 1024 to exclude tablets with 1024x1440 resolution)
+	  			xl: 1600,	// < 2560: HD monitor
+	  			xxl: 2560,	// Projection screens, VR devices?
+	  		}),
+	  */
 			app: app.reducer
 		});
 	}
 	
-	var storeEnhancer = (typeof window === 'undefined' ? 'undefined' : (0, _typeof3.default)(window)) == 'object' ? (0, _redux.compose)(_reduxResponsive.responsiveStoreEnhancer, (0, _redux.applyMiddleware)(_reduxThunk2.default, (0, _reduxLogger2.default)({ logger: _picolog2.default }))) : (0, _redux.compose)(_reduxResponsive.responsiveStoreEnhancer, (0, _redux.applyMiddleware)(_reduxThunk2.default));
+	var storeEnhancer = (typeof window === 'undefined' ? 'undefined' : (0, _typeof3.default)(window)) == 'object' ? (0, _redux.compose)((0, _redux.applyMiddleware)(_reduxThunk2.default, (0, _reduxLogger2.default)({ logger: _picolog2.default }))) : (0, _redux.compose)((0, _redux.applyMiddleware)(_reduxThunk2.default));
+	/*
+	const storeEnhancer = typeof window == 'object'
+			? compose(responsiveStoreEnhancer, applyMiddleware(thunk, createLogger({logger: log})))
+			: compose(responsiveStoreEnhancer, applyMiddleware(thunk));
+	*/
 	
 	function createStore() {
 		var store = (0, _redux.createStore)(createReducer(), data, storeEnhancer);
@@ -5487,8 +5489,6 @@
 	}
 	
 	var store = exports.store = createStore();
-	
-	// link the store to the app
 	
 	if ((typeof window === 'undefined' ? 'undefined' : (0, _typeof3.default)(window)) == 'object') {
 		window.store = store;
@@ -5574,12 +5574,10 @@
 			"classnames": "^2.2.3",
 			"compression": "^1.6.1",
 			"express": "^4.0.0",
-			"fs": "0.0.2",
 			"http-proxy": "^1.12.0",
 			"node-fetch": "^1.3.3",
 			"picolog": "^1.0.3",
 			"react": "^0.14.7",
-			"react-document-meta": "^2.0.1",
 			"react-dom": "^0.14.7",
 			"react-mdl": "^1.4.0",
 			"react-redux": "^4.0.6",
@@ -5590,7 +5588,6 @@
 			"redux-fetch-api": "^1.0.0",
 			"redux-load-api": "^1.0.0",
 			"redux-logger": "^2.5.2",
-			"redux-responsive": "^1.1.0",
 			"redux-thunk": "^1.0.3",
 			"serialize-javascript": "^1.1.2",
 			"ws.suid": "^0.10.1"
@@ -5708,34 +5705,22 @@
 /* 73 */
 /***/ function(module, exports) {
 
-	module.exports = require("react-document-meta");
+	module.exports = require("redux");
 
 /***/ },
 /* 74 */
 /***/ function(module, exports) {
 
-	module.exports = require("redux");
+	module.exports = require("redux-logger");
 
 /***/ },
 /* 75 */
 /***/ function(module, exports) {
 
-	module.exports = require("redux-logger");
-
-/***/ },
-/* 76 */
-/***/ function(module, exports) {
-
-	module.exports = require("redux-responsive");
-
-/***/ },
-/* 77 */
-/***/ function(module, exports) {
-
 	module.exports = require("redux-thunk");
 
 /***/ },
-/* 78 */
+/* 76 */
 /***/ function(module, exports) {
 
 	module.exports = require("serialize-javascript");
