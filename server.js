@@ -5602,6 +5602,7 @@
 			"babel-preset-es2015": "^6.5.0",
 			"babel-preset-react": "^6.3.13",
 			"babel-preset-stage-0": "^6.3.13",
+			"babel-register": "^6.6.5",
 			"chai": "^3.5.0",
 			"eventsource-polyfill": "^0.9.6",
 			"json-loader": "^0.5.4",
