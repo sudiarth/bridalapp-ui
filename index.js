@@ -5,12 +5,21 @@ app.set('port', (process.env.PORT || 80));
 
 app.use(express.static(__dirname + '/public'));
 
-// views is directory for all template files
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-
-app.get('/', function(request, response) {
-  response.render('pages/index');
+app.get('/', function(req, res) {
+	res.writeHead(200, {'Content-Type': 'text/html; charset=UTF-8'});
+	res.end(
+`<!DOCTYPE html>
+<html>
+<head>
+	<title>Status</title>
+</head>
+<body>
+	<h1 style="color:green">ONLINE</h1>
+	<p>${cfg.server.name} is ONLINE</p>
+</body>
+</html>
+`
+	);
 });
 
 app.listen(app.get('port'), function() {
