@@ -76,7 +76,7 @@ describe('SearchApi', () => {
 							],
 						})
 					},
-					0
+					1
 				)
 			});
 		}
@@ -100,14 +100,6 @@ describe('SearchApi', () => {
 			expect(test.search.busy).to.equal(false);
 			promise = test.search.search();
 			expect(dispatched >= 2);
-		});
-
-		it('results in `.busy` returning `true`', () => {
-			expect(test.search.busy).to.equal(true);
-		});
-
-		it('results in `.done` returning `false`', () => {
-			expect(test.search.done).to.equal(false);
 		});
 
 		it('returns a promise', () => {

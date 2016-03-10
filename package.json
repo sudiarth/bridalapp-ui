@@ -38,7 +38,7 @@
     "release": "npm run clean && npm run build",
     "watch": "webpack --inline --watch --hide-modules --config webpack/development.server.config.js",
     "dev": "npm run -s clean && parallelshell \"npm run -s watch\" \"npm run -s start-dev\"",
-    "test": "mocha --watch --require babel-register \"src/**/*.spec.jsx\"",
+    "test": "mocha --require babel-register \"src/bridalapp-ui.spec.jsx\"",
     "--test-dev": "webpack-dev-server --inline --hot --config webpack/test.config.js --port 8081",
     "test-dev": "webpack-dev-server --output-path test --output-filename bridalapp-ui.spec.js \"mocha!./bridalapp-ui.spec.jsx\" --content-base test --port 8888 --config webpack/test.config.js"
   },
