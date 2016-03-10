@@ -301,7 +301,7 @@
 		value: true
 	});
 	
-	var _create = __webpack_require__(64);
+	var _create = __webpack_require__(63);
 	
 	var _create2 = _interopRequireDefault(_create);
 	
@@ -1614,10 +1614,6 @@
 	
 	var _promise2 = _interopRequireDefault(_promise);
 	
-	var _getIterator2 = __webpack_require__(62);
-	
-	var _getIterator3 = _interopRequireDefault(_getIterator2);
-	
 	var _keys = __webpack_require__(28);
 	
 	var _keys2 = _interopRequireDefault(_keys);
@@ -1701,32 +1697,10 @@
 			value: function url(filter) {
 				var keys = (0, _keys2.default)(filter);
 				var result = '';
-				var _iteratorNormalCompletion = true;
-				var _didIteratorError = false;
-				var _iteratorError = undefined;
-	
-				try {
-					for (var _iterator = (0, _getIterator3.default)(keys), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-						var key = _step.value;
-	
-						result += result ? '&' : '?';
-						result += encodeURIComponent(key) + '=' + encodeURIComponent(filter[key]);
-					}
-				} catch (err) {
-					_didIteratorError = true;
-					_iteratorError = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion && _iterator.return) {
-							_iterator.return();
-						}
-					} finally {
-						if (_didIteratorError) {
-							throw _iteratorError;
-						}
-					}
+				for (var i = 0, key; key = keys[i]; i++) {
+					result += result ? '&' : '?';
+					result += encodeURIComponent(key) + '=' + encodeURIComponent(filter[key]);
 				}
-	
 				return result;
 			}
 		}, {
@@ -2271,7 +2245,7 @@
 /* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(__dirname) {var path = __webpack_require__(72);
+	/* WEBPACK VAR INJECTION */(function(__dirname) {var path = __webpack_require__(71);
 	
 	var buildPath = path.resolve(__dirname);
 	var publicPath = path.resolve(__dirname, 'public');
@@ -3023,7 +2997,7 @@
 	
 	var _typeof3 = _interopRequireDefault(_typeof2);
 	
-	var _stringify = __webpack_require__(63);
+	var _stringify = __webpack_require__(62);
 	
 	var _stringify2 = _interopRequireDefault(_stringify);
 	
@@ -3985,7 +3959,7 @@
 	
 	var _server2 = _interopRequireDefault(_server);
 	
-	var _serializeJavascript = __webpack_require__(76);
+	var _serializeJavascript = __webpack_require__(75);
 	
 	var _serializeJavascript2 = _interopRequireDefault(_serializeJavascript);
 	
@@ -4623,7 +4597,7 @@
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _get2 = __webpack_require__(65);
+	var _get2 = __webpack_require__(64);
 	
 	var _get3 = _interopRequireDefault(_get2);
 	
@@ -5218,23 +5192,23 @@
 	
 	var _extends3 = _interopRequireDefault(_extends2);
 	
-	var _chalk = __webpack_require__(66);
+	var _chalk = __webpack_require__(65);
 	
 	var _chalk2 = _interopRequireDefault(_chalk);
 	
-	var _express = __webpack_require__(68);
+	var _express = __webpack_require__(67);
 	
 	var _express2 = _interopRequireDefault(_express);
 	
-	var _compression = __webpack_require__(67);
+	var _compression = __webpack_require__(66);
 	
 	var _compression2 = _interopRequireDefault(_compression);
 	
-	var _http = __webpack_require__(69);
+	var _http = __webpack_require__(68);
 	
 	var _http2 = _interopRequireDefault(_http);
 	
-	var _httpProxy = __webpack_require__(70);
+	var _httpProxy = __webpack_require__(69);
 	
 	var _httpProxy2 = _interopRequireDefault(_httpProxy);
 	
@@ -5261,7 +5235,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	__webpack_require__(61);
-	global.fetch = __webpack_require__(71);
+	global.fetch = __webpack_require__(70);
 	
 	
 	var express = new _express2.default();
@@ -5427,13 +5401,13 @@
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _redux = __webpack_require__(73);
+	var _redux = __webpack_require__(72);
 	
-	var _reduxThunk = __webpack_require__(75);
+	var _reduxThunk = __webpack_require__(74);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _reduxLogger = __webpack_require__(74);
+	var _reduxLogger = __webpack_require__(73);
 	
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 	
@@ -5640,88 +5614,82 @@
 /* 62 */
 /***/ function(module, exports) {
 
-	module.exports = require("babel-runtime/core-js/get-iterator");
+	module.exports = require("babel-runtime/core-js/json/stringify");
 
 /***/ },
 /* 63 */
 /***/ function(module, exports) {
 
-	module.exports = require("babel-runtime/core-js/json/stringify");
+	module.exports = require("babel-runtime/core-js/object/create");
 
 /***/ },
 /* 64 */
 /***/ function(module, exports) {
 
-	module.exports = require("babel-runtime/core-js/object/create");
+	module.exports = require("babel-runtime/helpers/get");
 
 /***/ },
 /* 65 */
 /***/ function(module, exports) {
 
-	module.exports = require("babel-runtime/helpers/get");
+	module.exports = require("chalk");
 
 /***/ },
 /* 66 */
 /***/ function(module, exports) {
 
-	module.exports = require("chalk");
+	module.exports = require("compression");
 
 /***/ },
 /* 67 */
 /***/ function(module, exports) {
 
-	module.exports = require("compression");
+	module.exports = require("express");
 
 /***/ },
 /* 68 */
 /***/ function(module, exports) {
 
-	module.exports = require("express");
+	module.exports = require("http");
 
 /***/ },
 /* 69 */
 /***/ function(module, exports) {
 
-	module.exports = require("http");
+	module.exports = require("http-proxy");
 
 /***/ },
 /* 70 */
 /***/ function(module, exports) {
 
-	module.exports = require("http-proxy");
+	module.exports = require("node-fetch");
 
 /***/ },
 /* 71 */
 /***/ function(module, exports) {
 
-	module.exports = require("node-fetch");
+	module.exports = require("path");
 
 /***/ },
 /* 72 */
 /***/ function(module, exports) {
 
-	module.exports = require("path");
+	module.exports = require("redux");
 
 /***/ },
 /* 73 */
 /***/ function(module, exports) {
 
-	module.exports = require("redux");
+	module.exports = require("redux-logger");
 
 /***/ },
 /* 74 */
 /***/ function(module, exports) {
 
-	module.exports = require("redux-logger");
-
-/***/ },
-/* 75 */
-/***/ function(module, exports) {
-
 	module.exports = require("redux-thunk");
 
 /***/ },
-/* 76 */
+/* 75 */
 /***/ function(module, exports) {
 
 	module.exports = require("serialize-javascript");

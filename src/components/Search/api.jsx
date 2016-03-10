@@ -34,7 +34,7 @@ export class SearchApi extends Async {
 	url(filter) {
 		const keys = Object.keys(filter);
 		let result = '';
-		for (let key of keys) {
+		for (let i=0,key; key=keys[i]; i++) {
 			result += result ? '&' : '?';
 			result += encodeURIComponent(key) + '=' + encodeURIComponent(filter[key]);
 		}
