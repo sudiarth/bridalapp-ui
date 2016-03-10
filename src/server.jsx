@@ -107,7 +107,12 @@ express.get(/\/.*/, (req, res) => {
 	});
 });
 
-var server = httpServer.listen(cfg.server.port, cfg.server.host, function(error) {
+
+var server = cfg.server.host
+	? httpServer.listen(cfg.server.port, cfg.server.host, serverStartup)
+	: httpServer.listen(cfg.server.port, serverStartup);
+
+function serverStartup(error) {
 	if (error) {throw error;}
 	var addr = httpServer.address();
 	log.warn();
@@ -120,7 +125,7 @@ var server = httpServer.listen(cfg.server.port, cfg.server.host, function(error)
 	log.warn(gb(' √  ') + g('Listening for connections at ') + gb(cfg.server.protocol + addr.address + (addr.port == 80 ? '' : ':' + addr.port)));
 	log.warn(gb(' √  %s started succesfully ') + g('on %s.'), cfg.server.name, Date(Date.now()));
 	log.warn('');
-});
+}
 
 var msg;
 var SIGNALS = ['SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT', 'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'];

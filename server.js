@@ -2269,7 +2269,7 @@
 			name: 'BridalApp UI Server',
 			protocol: 'http://',
 			protocol: ({"NODE_ENV":"production"}).OPENSHIFT_NODEJS_PROTOCOL || 'http://',
-			host: ({"NODE_ENV":"production"}).OPENSHIFT_NODEJS_IP || '0.0.0.0',
+			host: ({"NODE_ENV":"production"}).OPENSHIFT_NODEJS_IP || undefined,
 			port: ({"NODE_ENV":"production"}).OPENSHIFT_NODEJS_PORT || ({"NODE_ENV":"production"}).PORT || 80,
 			path: ({"NODE_ENV":"production"}).OPENSHIFT_NODEJS_PATH || '/',
 			entry: './src/server',
@@ -5323,7 +5323,9 @@
 		});
 	});
 	
-	var server = httpServer.listen(_config2.default.server.port, _config2.default.server.host, function (error) {
+	var server = _config2.default.server.host ? httpServer.listen(_config2.default.server.port, _config2.default.server.host, serverStartup) : httpServer.listen(_config2.default.server.port, serverStartup);
+	
+	function serverStartup(error) {
 		if (error) {
 			throw error;
 		}
@@ -5338,7 +5340,7 @@
 		_picolog2.default.warn(gb(' √  ') + g('Listening for connections at ') + gb(_config2.default.server.protocol + addr.address + (addr.port == 80 ? '' : ':' + addr.port)));
 		_picolog2.default.warn(gb(' √  %s started succesfully ') + g('on %s.'), _config2.default.server.name, Date(Date.now()));
 		_picolog2.default.warn('');
-	});
+	}
 	
 	var msg;
 	var SIGNALS = ['SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT', 'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'];

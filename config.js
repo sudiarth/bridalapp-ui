@@ -22,7 +22,7 @@ var cfg = {
 		name: 'BridalApp UI Server',
 		protocol: 'http://',
 		protocol: process.env.OPENSHIFT_NODEJS_PROTOCOL || 'http://',
-		host: process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
+		host: process.env.OPENSHIFT_NODEJS_IP || undefined,
 		port: process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 80,
 		path: process.env.OPENSHIFT_NODEJS_PATH || '/',
 		entry: './src/server',
