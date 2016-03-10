@@ -23,7 +23,7 @@ var cfg = {
 		protocol: 'http://',
 		protocol: process.env.OPENSHIFT_NODEJS_PROTOCOL || 'http://',
 		host: process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
-		port: process.env.OPENSHIFT_NODEJS_PORT || 80,
+		port: process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 80,
 		path: process.env.OPENSHIFT_NODEJS_PATH || '/',
 		entry: './src/server',
 		output: {
