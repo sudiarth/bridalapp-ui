@@ -5238,8 +5238,12 @@
 	global.fetch = __webpack_require__(70);
 	
 	
-	var express = new _express2.default();
-	var httpServer = new _http2.default.Server(express);
+	var app = (0, _express2.default)();
+	app.set('port', _config2.default.server.port);
+	app.set('host', _config2.default.server.host);
+	
+	//const express = new Express();
+	var httpServer = new _http2.default.Server(app);
 	
 	var g = _chalk2.default.green,
 	    gb = _chalk2.default.green.bold,
@@ -5252,7 +5256,7 @@
 	    r = _chalk2.default.red,
 	    rb = _chalk2.default.red.bold;
 	
-	express.use((0, _compression2.default)());
+	app.use((0, _compression2.default)());
 	
 	// if the server is started in hot mode, we include webpack-dev-middleware
 	// and webpack-hot-middleware to serve a hot bundle to the client. In
@@ -5265,20 +5269,20 @@
 		var stats = { colors: true, chunks: false, hash: false, version: false };
 		var clientCfg = require('../webpack/development.client.config');
 		var clientCompiler = webpack(clientCfg);
-		express.use(devMiddleware(clientCompiler, { stats: stats, publicPath: clientCfg.output.publicPath }));
-		express.use(hotMiddleware(clientCompiler));
+		app.use(devMiddleware(clientCompiler, { stats: stats, publicPath: clientCfg.output.publicPath }));
+		app.use(hotMiddleware(clientCompiler));
 	} else {}
 	
 	// We point to our static assets
-	express.use(_express2.default.static(_config2.default.publicPath));
+	app.use(_express2.default.static(_config2.default.publicPath));
 	
 	// polled by OpenShift haproxy load balancer to test server availability
-	express.get('/status', function (req, res) {
+	app.get('/status', function (req, res) {
 		res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8' });
 		res.end('<!DOCTYPE html>\n<html>\n<head>\n\t<title>Status</title>\n</head>\n<body>\n\t<h1 style="color:green">ONLINE</h1>\n\t<p>' + _config2.default.server.name + ' is ONLINE</p>\n</body>\n</html>');
 	});
 	
-	express.get(/\/.*/, function (req, res) {
+	app.get(/\/.*/, function (req, res) {
 		// require again on each request, to enable hot-reload in development mode.
 		// In production, this will just grab the module from require.cache.
 		var store = __webpack_require__(59).createStore();
@@ -5323,9 +5327,7 @@
 		});
 	});
 	
-	var server = _config2.default.server.host ? httpServer.listen(_config2.default.server.port, _config2.default.server.host, serverStartup) : httpServer.listen(_config2.default.server.port, serverStartup);
-	
-	function serverStartup(error) {
+	var server = httpServer.listen(app.get('port'), app.get('host'), 511, function (error) {
 		if (error) {
 			throw error;
 		}
@@ -5340,7 +5342,7 @@
 		_picolog2.default.warn(gb(' √  ') + g('Listening for connections at ') + gb(_config2.default.server.protocol + addr.address + (addr.port == 80 ? '' : ':' + addr.port)));
 		_picolog2.default.warn(gb(' √  %s started succesfully ') + g('on %s.'), _config2.default.server.name, Date(Date.now()));
 		_picolog2.default.warn('');
-	}
+	});
 	
 	var msg;
 	var SIGNALS = ['SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT', 'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'];

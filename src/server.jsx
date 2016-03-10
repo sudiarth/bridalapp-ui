@@ -1,7 +1,7 @@
 ﻿require('babel-polyfill');
 global.fetch = require('node-fetch');
 import chalk from 'chalk';
-import Express from 'express';
+import express from 'express';
 import compress from 'compression';
 import http from 'http';
 import httpProxy from 'http-proxy';
@@ -13,15 +13,19 @@ import { load } from 'redux-load-api';
 
 import cfg from '../config';
 
-const express = new Express();
-const httpServer = new http.Server(express);
+var app = express();
+app.set('port', cfg.server.port);
+app.set('host', cfg.server.host);
+
+//const express = new Express();
+const httpServer = new http.Server(app);
 
 const g=chalk.green, gb=chalk.green.bold,  y=chalk.yellow, yb=chalk.yellow.bold,
 	w=chalk.white, wb=chalk.white.bold, gr=chalk.grey,  grb=chalk.grey.bold,
 	r=chalk.red, rb=chalk.red.bold;
 
 
-express.use(compress());
+app.use(compress());
 
 // if the server is started in hot mode, we include webpack-dev-middleware
 // and webpack-hot-middleware to serve a hot bundle to the client. In
@@ -34,17 +38,17 @@ if (module.hot) {
 	const stats = {colors:true, chunks:false, hash:false, version:false};
 	const clientCfg = require('../webpack/development.client.config');
 	const clientCompiler = webpack(clientCfg);
-	express.use(devMiddleware(clientCompiler, {stats, publicPath:clientCfg.output.publicPath}));
-	express.use(hotMiddleware(clientCompiler));
+	app.use(devMiddleware(clientCompiler, {stats, publicPath:clientCfg.output.publicPath}));
+	app.use(hotMiddleware(clientCompiler));
 }
 else {
 }
 
 // We point to our static assets
-express.use(Express.static(cfg.publicPath));
+app.use(express.static(cfg.publicPath));
 
 // polled by OpenShift haproxy load balancer to test server availability
-express.get('/status', (req, res) => {
+app.get('/status', (req, res) => {
 	res.writeHead(200, {'Content-Type': 'text/html; charset=UTF-8'});
 	res.end(`<!DOCTYPE html>
 <html>
@@ -58,7 +62,7 @@ express.get('/status', (req, res) => {
 </html>`);
 });
 
-express.get(/\/.*/, (req, res) => {
+app.get(/\/.*/, (req, res) => {
 	// require again on each request, to enable hot-reload in development mode.
 	// In production, this will just grab the module from require.cache.
 	const store = require('./store').createStore();
@@ -108,11 +112,7 @@ express.get(/\/.*/, (req, res) => {
 });
 
 
-var server = cfg.server.host
-	? httpServer.listen(cfg.server.port, cfg.server.host, serverStartup)
-	: httpServer.listen(cfg.server.port, serverStartup);
-
-function serverStartup(error) {
+var server = httpServer.listen(app.get('port'), app.get('host'), 511, function(error) {
 	if (error) {throw error;}
 	var addr = httpServer.address();
 	log.warn();
@@ -125,7 +125,7 @@ function serverStartup(error) {
 	log.warn(gb(' √  ') + g('Listening for connections at ') + gb(cfg.server.protocol + addr.address + (addr.port == 80 ? '' : ':' + addr.port)));
 	log.warn(gb(' √  %s started succesfully ') + g('on %s.'), cfg.server.name, Date(Date.now()));
 	log.warn('');
-}
+});
 
 var msg;
 var SIGNALS = ['SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT', 'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'];
