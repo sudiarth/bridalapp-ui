@@ -1,4 +1,5 @@
-﻿import './components/RightDrawer/api.spec';
+﻿import 'babel-polyfill';
+import './components/RightDrawer/api.spec';
 import './components/Search/api.spec';
 import './components/Brands/api.spec';
 import './components/Products/api.spec';
