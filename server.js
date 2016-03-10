@@ -2270,7 +2270,7 @@
 			protocol: 'http://',
 			protocol: ({"NODE_ENV":"production"}).OPENSHIFT_NODEJS_PROTOCOL || 'http://',
 			host: ({"NODE_ENV":"production"}).OPENSHIFT_NODEJS_IP || '0.0.0.0',
-			port: ({"NODE_ENV":"production"}).OPENSHIFT_NODEJS_PORT || 80,
+			port: ({"NODE_ENV":"production"}).OPENSHIFT_NODEJS_PORT || ({"NODE_ENV":"production"}).PORT || 80,
 			path: ({"NODE_ENV":"production"}).OPENSHIFT_NODEJS_PATH || '/',
 			entry: './src/server',
 			output: {
