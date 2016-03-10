@@ -1,1 +1,0 @@
-BridalApp UI Server

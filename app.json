@@ -1,8 +1,0 @@
-{
-  "name": "BridalApp",
-  "description": "A platform connecting brides with bridal stores and brands",
-  "repository": "https://github.com/download/bridalapp-ui",
-  "logo": "https://cdn.rawgit.com/download/bridalapp-static/1.0.1/bridalapp/icon-bridalapp.png",
-  "keywords": ["BridalApp"],
-  "image": "heroku/nodejs"
-}
