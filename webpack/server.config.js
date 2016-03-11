@@ -87,6 +87,7 @@ module.exports = {
 	node: {
 		__dirname: true,
 		__filename: true,
+		process: false,
 	},
 
 	// Options affecting the output.
