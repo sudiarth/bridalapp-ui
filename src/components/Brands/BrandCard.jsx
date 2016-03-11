@@ -28,8 +28,8 @@ export class BrandCard extends Component {
 	render() {
 		const { brand: { id, name } } = this.props;
 		const img = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
-		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.0/products/${id}/Brand`;
-		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.0/brands/${id}/logo-brand-name.png`;
+		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/products/${id}/Brand`;
+		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/brands/${id}/logo-brand-name.png`;
 		const thumbs = `${prdUrl}/thumbs.jpg`;
 		const thumbnail = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
 		const images = [

@@ -31,8 +31,8 @@ export class ProductCard extends Component {
 		const { product: { id, brandId, name, description } } = this.props;
 		const { flipCard } = this.refs;
 		const img = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
-		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.0/products/${brandId}/${encodeURIComponent(name)}`;
-		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.0/brands/${brandId}/logo-brand-name.png`;
+		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/products/${brandId}/${encodeURIComponent(name)}`;
+		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/brands/${brandId}/logo-brand-name.png`;
 		const thumbs = `${prdUrl}/thumbs.jpg`;
 		const thumbnail = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
 		const size = typeof window == 'object' && window.innerWidth < 480 ? {width:'100%'} : {height:'100%'};

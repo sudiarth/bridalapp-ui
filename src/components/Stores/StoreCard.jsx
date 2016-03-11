@@ -30,8 +30,8 @@ export class StoreCard extends Component {
 
 	render() {
 		const { store: { id, name, description, address1, address2, postalCode, city, state, countryCode, telephone, website, premium } } = this.props;
-		const logo = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.0/stores/${id}/logo.png`;
-		const thumb = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.0/stores/${id}/thumb.jpg`;
+		const logo = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/stores/${id}/logo.png`;
+		const thumb = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/stores/${id}/thumb.jpg`;
 		const style = true ? {} : {'-webkit-filter':'grayscale(1)', filter:'grayscale(1)'};
 		// src="data:image/gif;base64,R0lGODlhAwABAIAAAP///////yH5BAEKAAEALAAAAAADAAEAAAICjAsAOw=="
 		return (
