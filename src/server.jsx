@@ -1,6 +1,8 @@
 import express from 'express';
 const app = express();
 
+console.info('process.env.PORT=' + process.env.PORT);
+
 app.set('port', (process.env.PORT || 80));
 
 app.use(express.static(__dirname + '/public'));
