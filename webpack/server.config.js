@@ -87,7 +87,6 @@ module.exports = {
 	node: {
 		__dirname: true,
 		__filename: true,
-		process: false,
 	},
 
 	// Options affecting the output.
@@ -131,6 +130,6 @@ module.exports = {
 		//                but increases the overall size. (recommended)
 		new webpack.optimize.OccurenceOrderPlugin(true),
 
-		new webpack.DefinePlugin({'process.env': {'NODE_ENV': JSON.stringify('production')}}),
+//		new webpack.DefinePlugin({'process.env': {'NODE_ENV': JSON.stringify('production')}}),
 	],
 };

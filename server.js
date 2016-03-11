@@ -62,9 +62,9 @@
 	
 	var app = (0, _express2.default)();
 	
-	console.info('process.env.PORT=' + ({"NODE_ENV":"production"}).PORT);
+	console.info('process.env.PORT=' + process.env.PORT);
 	
-	app.set('port', ({"NODE_ENV":"production"}).PORT || 80);
+	app.set('port', process.env.PORT || 80);
 	
 	app.use(_express2.default.static(__dirname + '/public'));
 	
