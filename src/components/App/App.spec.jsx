@@ -7,8 +7,9 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import Api from 'redux-apis';
 
+import store from '../../store';
+const app = store.app;
 import App from './App';
-import app from './api';
 
 log.debug('app=', app);
 

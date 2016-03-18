@@ -2,6 +2,7 @@
 const { any, bool, string, object, shape } = PropTypes;
 import classNames from 'classnames';
 import { CardTitle, CardText } from 'react-mdl';
+import Suid from 'ws.suid';
 import { StatefulFlipCard, FrontFace, BackFace } from '../Mdl/mdl-extras';
 
 export class StoreCard extends Component {
@@ -29,13 +30,15 @@ export class StoreCard extends Component {
 	}
 
 	render() {
-		const { store: { id, name, description, address1, address2, postalCode, city, state, countryCode, telephone, website, premium } } = this.props;
-		const logo = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/stores/${id}/logo.png`;
-		const thumb = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/stores/${id}/thumb.jpg`;
+		const { store: { id, name, description, address1, address2, postalCode, city, state, countryCode, telephone, website, premium, published } } = this.props;
+		const sid = Suid(id).toString();
+		const logo = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.4/stores/${sid}/logo.png`;
+		const thumb = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.4/stores/${sid}/thumb.jpg`;
 		const style = true ? {} : {'-webkit-filter':'grayscale(1)', filter:'grayscale(1)'};
+		const classes = classNames('Store', {'premium':premium, 'unpublished':!published});
 		// src="data:image/gif;base64,R0lGODlhAwABAIAAAP///////yH5BAEKAAEALAAAAAADAAEAAAICjAsAOw=="
 		return (
-			<StatefulFlipCard className="Store" key={id}>
+			<StatefulFlipCard className={classes} key={sid}>
 				<FrontFace>
 					<CardTitle>
 						{this.state.logoMissing ?

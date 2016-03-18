@@ -1,13 +1,13 @@
 ﻿import log from 'picolog';
 import Api, { link } from 'redux-apis';
 import { remote, endpoint, fetcher } from 'redux-fetch-api';
+import Suid from 'ws.suid';
 
 import Auth from '../Auth/api';
 import BrandsApi   from '../Brands/api';
 import ProductsApi from '../Products/api';
 import StoresApi from '../Stores/api';
 import { DrawerApi, LightboxApi } from '../Mdl/api';
-import Suid from 'ws.suid';
 
 const API_URL = apiUrl();
 log.info('Using BridalApp API Server url: ', API_URL);
@@ -47,40 +47,43 @@ export class AppApi extends Api {
 	}
 }
 
-export const app = new AppApi();
-export default app;
-
-
 // A version of fetch that sets cors headers and intercepts 401 Unauthorized responses.
 // J2EE servers will, after a succesful login, send a 302 redirect with the original url.
 // This function capitalizes on that to do transparent interception
 function authenticatedCrossOriginFetchWithTimeout(url, opts) {
 	log.log('authenticatedCrossOriginFetchWithTimeout', url);
 	opts = {credentials:'include', mode:'cors', ...opts};
-	return new Promise((resolve, reject)=>{
+
+	if (typeof global == 'object' && global.session) {
+		opts.headers = opts.headers || {};
+		opts.headers['Cookie'] = 'JSESSIONID=' + global.session;
+	}
+	const result = new Promise((resolve, reject)=>{
 		const timeout = setTimeout(() => {reject(Error(`timed out after 30s.`))}, 30000);
-		fetch(url, opts).then(response => {
-			clearTimeout(timeout);
-			if (response.status && response.status === 401) {
-				// auth needed
-				if (typeof window == 'object') {
-					// client, allow user to login
-					return response.json()
-						.then(json => app.auth.challenge(json.challenge, resolve, reject))
-						.catch(reject);
+		fetch(url, opts)
+			.then(response => {
+				clearTimeout(timeout);
+				if (response.status && response.status === 401) {
+					// auth needed
+					if (typeof window == 'object') {
+						// client, allow user to login
+						return response.json()
+							.then(json => this.auth.challenge(json.challenge, resolve, reject))
+							.catch(reject);
+					}
+					// server, reject with error
+					return response.text().then(text => {
+						const error = Error(text);
+						error.status = response.status;
+						error.statusText = response.statusText;
+						reject(error);
+					})
 				}
-				// server, reject with error
-				return response.text().then(text => {
-					const error = Error(text);
-					error.status = response.status;
-					error.statusText = response.statusText;
-					reject(error);
-				})
-			}
-			resolve(response);
-		})
-		.catch(reject);
+				resolve(response);
+			})
+			.catch(reject);
 	});
+	return result;
 }
 
 function apiUrl() {

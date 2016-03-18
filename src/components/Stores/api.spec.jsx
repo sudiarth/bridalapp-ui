@@ -19,10 +19,10 @@ describe('StoresApi', () => {
 		expect(stores.getState()).to.have.a.property('search');
 		expect(stores.getState().search).to.have.a.property('async');
 		expect(stores.getState().search.async).to.equal(Async.DONE);
-		expect(stores.search.done()).to.equal(true);
-		expect(stores.search.results()).to.have.a.property('length');
-		expect(stores.search.results().length).to.equal(1);
-		expect(stores.search.results()[0]).to.equal('Yeah!');
+		expect(stores.search.done).to.equal(true);
+		expect(stores.search.results).to.have.a.property('length');
+		expect(stores.search.results.length).to.equal(1);
+		expect(stores.search.results[0]).to.equal('Yeah!');
 	});
 
 	it('has a nested `search` api', () => {

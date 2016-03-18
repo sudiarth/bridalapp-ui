@@ -4,16 +4,23 @@ const { bool, object, array, any } = PropTypes;
 import { connect } from 'react-redux';
 import { onload } from 'redux-load-api';
 
-import app from '../App/api';
+import store from '../../store';
+const app = store.app;
 import Scroller from '../Scroller/Scroller';
 import Card, { Front, Back } from '../Card/Card';
 import StoreCard from './StoreCard'
 
 function load(params) {
-	log.log('StoreBrowser.load', params);
+	log.log('load', params);
+	params && app.stores.search.setFilter(params);
 	return app.stores.search.search()
+		.then(results => {
+			log.log('load: search returned ' + results.length + ' stores.');
+			return results;
+		})
 		.catch((error) => {
 			log.error('Searching stores failed.', error);
+			return error;
 		});
 }
 

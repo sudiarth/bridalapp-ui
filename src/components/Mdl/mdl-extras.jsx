@@ -144,17 +144,14 @@ export class StatefulFlipCard extends Component {
 
 	render() {
 		const { flipped, className, children, ...others } = this.props;
-		let front, back, backProps, backChilds;
-		const childs = [];
+		let front, backProps, backChilds;
 		for (let i=0, elem; elem=children[i]; i++) {
 			if (elem.type === FrontFace) {front = elem;}
 			else if (elem.type === BackFace) {
-				back = elem;
-				const { children, ...others } = back.props;
+				const { children, ...others } = elem.props;
 				backProps = others;
 				backChilds = children;
 			}
-			else childs.push(elem);
 		}
 
 		return (

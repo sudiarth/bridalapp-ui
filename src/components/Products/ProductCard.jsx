@@ -2,19 +2,25 @@
 import React, { Component, PropTypes } from 'react';
 const { any, bool, string, object, func, shape } = PropTypes;
 import classNames from 'classnames';
+import Suid from 'ws.suid';
 
-import { Card, CardTitle } from 'react-mdl';
+import { Card, CardTitle, FABButton, Icon } from 'react-mdl';
 import { StatefulFlipCard, FrontFace, BackFace } from '../Mdl/mdl-extras';
 
 export class ProductCard extends Component {
 	static propTypes = {
 		product: shape({
 			id: any,
-			brandId: any,
 			name: string,
+			brandId: any,
+			brandName: string,
 			description: string,
+			published: bool,
 		}).isRequired,
 		onOpenLightbox: func.isRequired,
+		mayPublish: bool.isRequired,
+		onPublish: func.isRequired,
+		onUnpublish: func.isRequired,
 	};
 
 	constructor(...props) {
@@ -28,11 +34,15 @@ export class ProductCard extends Component {
 	}
 
 	render() {
-		const { product: { id, brandId, name, description } } = this.props;
+		const { product: { id, name, brandId, brandName, description, published },
+				mayPublish, onPublish, onUnpublish } = this.props;
+		const pid = Suid(id).toString();
+		const bid = Suid(brandId).toString();
+		log.debug('render', id, name, brandName);
 		const { flipCard } = this.refs;
 		const img = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
-		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/products/${brandId}/${encodeURIComponent(name)}`;
-		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/brands/${brandId}/logo-brand-name.png`;
+		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/products/${bid}/${encodeURIComponent(name)}`;
+		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/brands/${bid}/logo-brand-name.png`;
 		const thumbs = `${prdUrl}/thumbs.jpg`;
 		const thumbnail = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
 		const size = typeof window == 'object' && window.innerWidth < 480 ? {width:'100%'} : {height:'100%'};
@@ -43,12 +53,19 @@ export class ProductCard extends Component {
 			{src: `${prdUrl}/detail-2-large.jpg`, className:'detail-2', alt:{src:img, style:{...size, backgroundImage:`url(${thumbs})`, backgroundSize:'600%', backgroundPosition:'100% 200%'}}},
 			{src: `${prdUrl}/detail-3-large.jpg`, className:'detail-3', alt:{src:img, style:{...size, backgroundImage:`url(${thumbs})`, backgroundSize:'600%', backgroundPosition:'200% 100%'}}},
 		];
-
+		const classes = classNames('Product', {'unpublished':!published});
 		return (
-			<StatefulFlipCard className="Product" key={id}>
+			<StatefulFlipCard className={classes} key={id}>
 				<FrontFace>
 					<div className="content">
 						<img className="ProductImage" src={img} style={{backgroundImage: `url(${thumbs})`, height:'100%'}} />
+						{mayPublish ?
+							(published ?
+								<FABButton onClick={onUnpublish}><Icon name="visibility" /></FABButton>
+							:
+								<FABButton onClick={onPublish}><Icon name="visibility_off" /></FABButton>
+							)
+						: ''}
 					</div>
 				</FrontFace>
 				<BackFace>

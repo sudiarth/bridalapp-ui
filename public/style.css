@@ -151,8 +151,35 @@ img {
 }
 
 .mdl-layout__drawer .mdl-layout__title {
-    padding: 0px 16px 16px 24px;
-    height: 56px;
+	padding: 0px 6px 16px 16px;
+	height: 56px;
+}
+
+.mdl-layout__drawer .mdl-layout__title h4 {
+	margin: 12px 0 0 0;
+}
+
+.mdl-layout__drawer .mdl-layout__title h4 p {
+	margin: 0 0 24px 0;
+	font-size: 12px;
+	line-height: 36px;
+	display: inline-block;
+	width: 120px;
+}
+
+.mdl-layout__drawer .mdl-layout__title h4 b {
+	display: inline-block;
+	max-width: 225px;
+	font-size: 15px;
+	line-height: 24px;
+	margin: 0 0 0 6px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.mdl-layout__drawer .mdl-layout__title h4 button {
+	float: right;
 }
 
 .mdl-layout__drawer-right {
@@ -683,12 +710,7 @@ div.mdl-dialog .mdl-dialog__actions {
 	background-size: contain;
 	background-repeat: no-repeat;
 	margin: 2px auto;
-    filter: gray;
-    -webkit-filter: grayscale(0);
-/*
-    filter: grayscale(100%);
-    filter: gray;
-*/
+	opacity: 0.7;
 }
 
 @media (min-width:360px) {
@@ -700,6 +722,7 @@ div.mdl-dialog .mdl-dialog__actions {
 .mdl-card .StoreLogoAlt {
 	margin: 12px 0;
 	height: 80px;
+	opacity: 0.7;
 }
 
 @media (min-width:360px) {
@@ -719,11 +742,13 @@ div.mdl-dialog .mdl-dialog__actions {
 	background-size: contain;
 	background-repeat: no-repeat;
 	margin: 0 auto;
+	opacity: 0.7;
 }
 
 .mdl-card .StoreDescription {
 	width: 90%;
     margin: 0 auto;
+	opacity: 0.7;
 }
 
 @media (max-width: 320px) {
@@ -735,6 +760,33 @@ div.mdl-dialog .mdl-dialog__actions {
 		box-sizing: border-box;
 	}
 }
+
+.mdl-card.premium .StoreLogo {
+	opacity: 1;
+}
+
+.mdl-card.premium .StoreLogoAlt {
+	opacity: 1;
+}
+
+.mdl-card.premium .StoreThumb {
+	opacity: 1;
+}
+
+.mdl-card.premium .StoreDescription {
+	opacity: 1;
+}
+
+
+.mdl-card.unpublished .mdl-card__face {
+	opacity: 0.5;
+}
+
+
+
+
+
+
 /* Theme */
 .mdl-card>.mdl-card__face {
 	border-radius: 6px;
@@ -758,6 +810,8 @@ div.mdl-dialog .mdl-dialog__actions {
 	color: #9E6A81;
 }
 .mdl-button.mdl-button--colored {color: #ec80ae;}
+.mdl-button.mdl-button--primary {color: #ec80ae;}
+
 .mdl-button--raised.mdl-button--colored {
 	background: #ec80ae;
 	color: #fff;

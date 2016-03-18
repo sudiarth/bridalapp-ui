@@ -3,6 +3,7 @@ global.fetch = require('node-fetch');
 import chalk from 'chalk';
 import Express from 'express';
 import compress from 'compression';
+import cookieParser from 'cookie-parser';
 import http from 'http';
 import httpProxy from 'http-proxy';
 import log from 'picolog';
@@ -12,6 +13,7 @@ import { match } from 'react-router';
 import { load } from 'redux-load-api';
 
 import cfg from '../config';
+import store from './store';
 
 const express = new Express();
 const httpServer = new http.Server(express);
@@ -20,8 +22,12 @@ const g=chalk.green, gb=chalk.green.bold,  y=chalk.yellow, yb=chalk.yellow.bold,
 	w=chalk.white, wb=chalk.white.bold, gr=chalk.grey,  grb=chalk.grey.bold,
 	r=chalk.red, rb=chalk.red.bold;
 
-
+// Enable gzip compresion
 express.use(compress());
+
+// parses request cookies
+express.use(cookieParser());
+
 
 // if the server is started in hot mode, we include webpack-dev-middleware
 // and webpack-hot-middleware to serve a hot bundle to the client. In
@@ -36,8 +42,6 @@ if (module.hot) {
 	const clientCompiler = webpack(clientCfg);
 	express.use(devMiddleware(clientCompiler, {stats, publicPath:clientCfg.output.publicPath}));
 	express.use(hotMiddleware(clientCompiler));
-}
-else {
 }
 
 // We point to our static assets
@@ -59,12 +63,13 @@ express.get('/status', (req, res) => {
 });
 
 express.get(/\/.*/, (req, res) => {
+	// Reset the store prior to each request
+	store.dispatch({type:'@@bridalapp/RESET'});
 	// require again on each request, to enable hot-reload in development mode.
 	// In production, this will just grab the module from require.cache.
-	const store = require('./store').createStore();
 	const routes = require('./routes').routes;
 	const Html = require('./components/Html/Html').Html;
-
+	// match the current URL against defined routes
 	match({routes:routes, location:req.originalUrl}, (error, redirectLocation, renderProps) => {
 		if (redirectLocation) {
 			res.redirect(redirectLocation.pathname + redirectLocation.search);
@@ -84,11 +89,17 @@ express.get(/\/.*/, (req, res) => {
 		else {
 			log.debug(chalk.styles.gray.open, 'Rendering using props: ', renderProps, chalk.styles.gray.close);
 
+			// Store session cookie so we can attach it to fetch calls
+			global.session = req.cookies && req.cookies.BASESSION;
+			global.session && log.log('stored session cookie: ' + global.session);
+			const initialized = Promise.resolve(global.session ? store.app.auth.loadSession() : 'guest');
+			initialized.then(session => log.info('SESSION LOADED:', session));
 			// pre-load onload actions
-			const components = renderProps.routes.map(x => x.component);
-			log.log('########################### components: ', components);
-			load(renderProps.routes.map(x => x.component), renderProps.params).then(() => {
+			log.debug('pre-loading onload actions of components on route');
+			const loaded = load(renderProps.routes.map(x => x.component), renderProps.params);
+			Promise.all([initialized, loaded]).then(() => {
 				// do awesome stuff knowing all promises (if any) are resolved
+				log.debug('pre-load complete, rendering markup');
 				res.status(200);
 				res.send('<!DOCTYPE html>\n' +
 					ReactDOM.renderToString(
@@ -96,9 +107,11 @@ express.get(/\/.*/, (req, res) => {
 					)
 				);
 				res.end();
+				log.debug('rendering complete, deleting session cookie');
+				delete global.session;
 			})
 			.catch((error) => {
-				log.error('Error loading data for route ', req.url, ': ', error, error.stack);
+				log.error('Error loading data for route ' + req.originalUrl + ': ', error, error.stack);
 				res.status(500);
 				res.send('Server error.');
 				res.end();

@@ -4,11 +4,12 @@ const { bool, number, object, func, array, shape, any } = PropTypes;
 import { Link } from 'react-router';
 import { onload } from 'redux-load-api';
 import { connect } from 'react-redux';
-import { Layout, Header, Navigation, Content, Button } from 'react-mdl';
+import { Layout, Header, Navigation, Content, Button, Icon } from 'react-mdl';
+
+import store from '../../store';
+const app = store.app;
 import { LayoutTitle, Drawer, Lightbox } from '../Mdl/mdl-extras';
-//import { Lightbox } from '../Gallery/Lightbox';
 import AuthDialog from '../Auth/AuthDialog';
-import app from './api';
 
 @connect(app.connector)
 export class App extends Component {
@@ -31,7 +32,7 @@ export class App extends Component {
 
 	componentDidMount() {
 		log.debug('componentDidMount');
-		app.auth.loadUser();
+//		app.auth.loadUser();
 	}
 
 	render() {
@@ -54,13 +55,11 @@ export class App extends Component {
 							}}>{auth.loggedIn && auth.user.name || 'anon'}</p>
 						</Navigation> : undefined}
 
-						{false ? <Navigation className="RightDrawer">
+						<Navigation className="RightDrawer">
 							{!rightDrawer.open ? (
-								<i className="material-icons" onClick={rightDrawer.onActivate}>account_circle</i>
-							) : (
-								<span></span>
-							)}
-						</Navigation> : undefined}
+								<Icon name="account_circle" onClick={rightDrawer.onActivate} />
+							) : <i></i>}
+						</Navigation>
 					</div>
 				</header>
 
@@ -76,17 +75,24 @@ export class App extends Component {
 				</Drawer>
 
 				<Drawer right modal autoClose {...rightDrawer}>
-					<LayoutTitle>{auth.user ?
-						<h4>{auth.user.name} <Button onClick={auth.onLogout}>Logout</Button></h4>
+					<LayoutTitle className={auth.user ? 'logged-in' : ''}>{auth.user ?
+						<h4>
+							<p>Logged in</p>
+							<Button colored onClick={auth.onLogout}>Logout</Button>
+							<Icon name="account_circle" /><b title={auth.user.name}>{auth.user.name}</b>
+						</h4>
 						:
-						<Button onClick={auth.onProvoke}>Login</Button>
+						<h4>
+							<p>Not logged in</p>
+							<Button colored raised onClick={auth.onProvoke}>Login</Button>
+						</h4>
 					}</LayoutTitle>
-					<Navigation>
+					{false ? <Navigation>
 						<Link to="/">Home</Link>
 						<Link to="/products">Products</Link>
 						<Link to="/stores">Stores</Link>
 						<Link to="/brands">Brands</Link>
-					</Navigation>
+					</Navigation> : ''}
 				</Drawer>
 
 				<Content className="main">
@@ -108,9 +114,7 @@ export class App extends Component {
 					<Navigation className="RightDrawer">
 						{!rightDrawer.open ? (
 							<i className="material-icons" onClick={()=>api.rightDrawer.open()}>account_circle</i>
-						) : (
-							<span></span>
-						)}
+						) : ''}
 					</Navigation>
 				</Header>
 				<Drawer api={api.leftDrawer} onClose={()=>api.leftDrawer.close()} open={leftDrawer.open}>
@@ -147,13 +151,5 @@ export class App extends Component {
 */
 	}
 }
-
-/*
-				{auth.challenge ? <div className="LoginDialog">LOGIN DIALOG</div>:''}
-				{auth.challenge ? <LayoutObfuscator className="is-visible" onClick={() => {
-					log.debug('login dialog obfuscator clicked');
-					api.auth.cancel();
-				}} /> :''}
-*/
 
 export default App;

@@ -2,7 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 const { any, bool, string, object, func, shape } = PropTypes;
 import classNames from 'classnames';
-
+import Suid from 'ws.suid';
 import { Card, CardTitle } from 'react-mdl';
 import { StatefulFlipCard, FrontFace, BackFace } from '../Mdl/mdl-extras';
 
@@ -26,10 +26,11 @@ export class BrandCard extends Component {
 	}
 
 	render() {
-		const { brand: { id, name } } = this.props;
+		const { brand: { id, name, published } } = this.props;
+		const bid = Suid(id).toString();
 		const img = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
-		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/products/${id}/Brand`;
-		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/brands/${id}/logo-brand-name.png`;
+		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/products/${bid}/Brand`;
+		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/brands/${bid}/logo-brand-name.png`;
 		const thumbs = `${prdUrl}/thumbs.jpg`;
 		const thumbnail = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
 		const images = [
@@ -39,9 +40,10 @@ export class BrandCard extends Component {
 			{src: `${prdUrl}/detail-2-large.jpg`, className:'detail-2'},
 			{src: `${prdUrl}/detail-3-large.jpg`, className:'detail-3'},
 		];
+		const classes = classNames('Product', {'unpublished':!published});
 
 		return (
-			<StatefulFlipCard className="Product" key={id}>
+			<StatefulFlipCard className={classes} key={bid}>
 				<FrontFace>
 					<div className="content">
 						<img className="ProductImage" src={img} style={{backgroundImage: `url(${thumbs})`, height:'100%'}} />

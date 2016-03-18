@@ -8,7 +8,7 @@ import Suid from 'ws.suid';
 @Entity
 export class Account {
 	constructor(id, name, credentials=[], roles=[Role.USER], groups=[]) {
-		this.id = id && new Suid(id) || new Suid(0);
+		this.id = id || 0;
 		this.version = null;
 		this.name = name;
 		this.credentials = credentials;

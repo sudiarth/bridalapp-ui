@@ -1,17 +1,15 @@
 ﻿import log from 'picolog';
-import { createStore as reduxCreateStore, applyMiddleware, combineReducers, compose } from 'redux';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
 // import { createResponsiveStateReducer, responsiveStoreEnhancer } from 'redux-responsive';
 import { link, namedLink } from 'redux-apis';
 
-let app = require('./components/App/api').app;
+import { fromJSON } from './components/Entity/Entity';
 
-const data = typeof window == 'object' && window.__data || undefined;
-
-function createReducer() {
-	return combineReducers({
-/*
+function createReducer(app) {
+	const rootReducer = combineReducers({
+		/*
 		browser: createResponsiveStateReducer({
 			// Breakpoints for responsive layout. Chosen to group similar devices.
 			// Note that these are *CSS pixels* we are talking about, not *physical pixels*.
@@ -32,43 +30,46 @@ function createReducer() {
 			xl: 1600,	// < 2560: HD monitor
 			xxl: 2560,	// Projection screens, VR devices?
 		}),
-*/
+		*/
 		app: app.reducer,
 	});
+
+	return function(state, action) {
+		const currentState = action.type === '@@bridalapp/RESET' ? undefined : state;
+		return rootReducer(currentState, action);
+	}
 }
 
 const storeEnhancer = typeof window == 'object'
 		? compose(applyMiddleware(thunk, createLogger({logger: log})))
 		: compose(applyMiddleware(thunk));
-/*
-const storeEnhancer = typeof window == 'object'
-		? compose(responsiveStoreEnhancer, applyMiddleware(thunk, createLogger({logger: log})))
-		: compose(responsiveStoreEnhancer, applyMiddleware(thunk));
-*/
 
-export function createStore() {
-	const store = reduxCreateStore(createReducer(), data, storeEnhancer);
-	link(store, app, namedLink('app'));
-	return store;
-}
 
-export const store = createStore();
+let AppApi = require('./components/App/api').AppApi;
+let app = new AppApi();
+export const store = createStore(
+	createReducer(app),
+	typeof window == 'object' && window.__data && fromJSON(window.__data) || undefined,
+	storeEnhancer
+);
+store.app = link(store, app);
+export default store;
 
 
 if (typeof window == 'object') {
-	window.store = store;
-	window.app = app;
+	window.bridalapp = store.app;
 }
-export default store;
 
 if (module.hot) {
 	module.hot.accept('./components/App/api', () => {
 
 		const msg = 'Hot-reloading \'./components/App/api\'',
 			args = typeof window=='object'? [`%c${msg}`,'color:green'] : [msg];
-		app = require('./components/App/api').app;
-		store.replaceReducer(createReducer());
-		link(store, app, namedLink('app'));
-		if (typeof window == 'object') {window.app = app;}
+
+		AppApi = require('./components/App/api').AppApi;
+		app = new AppApi();
+		store.replaceReducer(createReducer(app));
+		store.app = link(store, app);
+		if (typeof window == 'object') {window.bridalapp = app;}
 	});
 }

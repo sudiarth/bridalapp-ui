@@ -9,6 +9,7 @@ import { fromJSON } from '../Entity/Entity';
 import Suid from 'ws.suid';
 import PasswordCredential from './PasswordCredential';
 import Account from './Account';
+import Role from './Role';
 
 export class LoginDialogApi extends Api {
 	constructor(...args) {
@@ -60,6 +61,19 @@ export class Auth extends Async {
 		Object.defineProperty(this, 'loggedIn', {enumerable:true, get: () => !!this.user});
 		Object.defineProperty(this, 'challenged', {enumerable:true, get: () => !!(this.challenge() && this.challenge().url && !this.challenge().accepted)});
 		Object.defineProperty(this, 'user', {enumerable:true, get: () => this.getState().user});
+		Object.defineProperty(this, 'mayPublish', {enumerable:true, get: () => {
+			const { user } = this.getState();
+			if (user) {
+				for (let i=0, role; role=user.roles[i]; i++) {
+					if (role.equals(Role.BRAUTSCHLOSS_USER) ||
+						role.equals(Role.BRAUTSCHLOSS_MANAGER) ||
+						role.equals(Role.ADMINISTRATOR)) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}});
 		Object.defineProperty(this, 'onProvoke', {enumerable:true, value: () => this.provoke()});
 		Object.defineProperty(this, 'onCancel', {enumerable:true, value: () => this.cancel()});
 		Object.defineProperty(this, 'onLogin', {enumerable:true, value: () => this.login()});
@@ -69,13 +83,14 @@ export class Auth extends Async {
 		this.registerDialog = link(this, new RegisterDialogApi())
 	}
 
-	loadUser() {
-		log.log('loadUser()');
+	loadSession() {
+		log.log('loadSession()');
 		this.setBusy();
-		return fetchUser(this).catch().then(user => {
-			this.setDone();
-			return user;
-		});
+		return fetchSessionInfo(this)
+			.then(session => {
+				this.setDone();
+				return session;
+			});
 	}
 
 	login(username, password) {
@@ -92,10 +107,11 @@ export class Auth extends Async {
 			})
 			.then(response => {
 				log.debug('remoteLogin => ', response);
-				return fetchUser(auth).then(() => {
-					auth.setDone();
-					challenge.resolve(response);
-				});
+				return fetchSessionInfo(auth)
+					.then(() => {
+						auth.setDone();
+						challenge.resolve(response);
+					});
 			})
 			.catch(error => {
 				auth.setError(error);
@@ -114,7 +130,6 @@ export class Auth extends Async {
 				if (! this.challenge()) {
 					log.debug('Provoking login challenge');
 					return this.provoke()
-						.then(challenge => challenge.accepted = true)
 						.then(() => {
 							log.debug('Server issued a login challenge');
 							return remoteLogin(this, this.challenge()).then(resolve).catch(reject);
@@ -168,21 +183,24 @@ export class Auth extends Async {
 						resolve(result);
 					})
 					.catch(error => {
+						log.error(error);
 						this.setError(error);
 					})
 				})
 				.catch(error => {
+					log.error(error);
 					this.setError(error);
 				})
 			})
 			.catch(error => {
+				log.error(error);
 				this.setError(error);
 			})
 		})
 	}
 
 	cancel() {
-		log.debug('cancel');
+		log.log('cancel');
 		return this.dispatch(() => {
 			if (this.challenge()) {
 			const { reject } = this.challenge();
@@ -195,9 +213,9 @@ export class Auth extends Async {
 	}
 
 	provoke() {
+		log.log('provoke');
 		// provoke a login challenge, async
 		// provoke a challenge by fetching url
-		log.debug('Provoking a login challenge by fetching protected resource.');
 		return this.dispatch(()=>{
 			return new Promise((accept, deny) => {
 				// set up intermediate challenge to make accept and deny survive the round-trip
@@ -205,18 +223,22 @@ export class Auth extends Async {
 				// this fetch will result in 401 and be intercepted, after which
 				// challenge will be called again with the actual server challenge
 				this.fetch('/challenge')
-					.catch(error => log.log('Provoking login challenge failed.', error))
+					.catch(error => {
+						log.log('Provoking login challenge failed.', error);
+						return error;
+					})
 					.catch(deny);
 			});
 		});
 	}
 
 	challenge(challenge, resolve, reject) {
-		log.debug('challenge', challenge, resolve, reject);
 		// paramless invocation is sync
 		if (!challenge) {return this.getState().challenge}
 		// only accept challenges on the client side
 		if (typeof window != 'object') {reject(new Error('Unauthorized'));}
+
+		log.log('challenge', challenge, resolve, reject);
 
 		// reject any old login challenge
 		const c = this.getState().challenge;
@@ -228,12 +250,10 @@ export class Auth extends Async {
 		log.debug('dispatching challenge', challenge);
 		this.dispatch(this.createAction(Auth.CHALLENGE)(challenge));
 
-		// If there is an old, forced challenge
-		if (c && !c.url) {
-			// save whether it was manually provoked
-			challenge.provoked = c.provoked;
+		// If there is an old, forced challenge and new challenge is login challenge
+		if (c && !c.url && c.resolve && challenge.url) {
 			// if new challenge is login challenge (does have url), forcing challenge is now resolved
-			if (challenge.url) {c.resolve && c.resolve(challenge);}
+			c.resolve(challenge);
 		}
 	}
 }
@@ -248,26 +268,37 @@ function encode(challenge, username, password) {
 	}
 }
 
-function fetchUser(auth) {
-	log.debug('fetchUser');
-	return auth.fetch('/logged-in-account')
+function fetchSessionInfo(auth) {
+	log.debug('fetchSessionInfo');
+	return auth.fetch('/session')
 		.then(response => {
-			log.log('fetchUser => response=', response);
-			return response.status == 200 && response.json();
+			log.log('fetchSessionInfo => response=', response);
+			return response.status == 200 && response.text();
 		})
-		.then(user => {
-			log.debug('fetchUser => user=', user);
+		.then(text => {
+			log.log('fetchSessionInfo => text=', text);
+			return fromJSON(text);
+		})
+		.then(session => {
+			log.log('fetchSessionInfo => session=', session);
+			const { user, sessionId } = session;
+			log.log('fetchSessionInfo => sessionId=', sessionId);
+			log.log('fetchSessionInfo => user=', user);
+			if (typeof document == 'object') {
+				const maxAge = sessionId ? 10 * 24 * 60 * 60 : 0;
+				document.cookie = `BASESSION=${sessionId}; Max-Age=${maxAge}; path=/`;
+				log.debug('fetchSessionInfo => cookie ' + (maxAge ? 'set' : 'cleared'));
+			}
 			if (user && !auth.loggedIn) {
-				log.debug('Dispatching LOGGED_IN action', user);
+				log.debug('fetchSessionInfo => Dispatching LOGGED_IN action', user);
 				auth.dispatch(auth.createAction(Auth.LOGGED_IN)(user));
 			}
 			else if (!user && auth.loggedIn) {
-				log.debug('Dispatching LOGGED_OUT action');
+				log.debug('fetchSessionInfo => Dispatching LOGGED_OUT action');
 				auth.dispatch(auth.createAction(Auth.LOGGED_OUT)());
 			}
-			return user;
+			return session;
 		})
-		.catch(error => log.error('fetchUser aborted due to error.', error));
 }
 
 function urlEncode(challenge, username, password) {
