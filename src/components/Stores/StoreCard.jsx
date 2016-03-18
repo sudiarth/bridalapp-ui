@@ -32,8 +32,8 @@ export class StoreCard extends Component {
 	render() {
 		const { store: { id, name, description, address1, address2, postalCode, city, state, countryCode, telephone, website, premium, published } } = this.props;
 		const sid = Suid(id).toString();
-		const logo = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.4/stores/${sid}/logo.png`;
-		const thumb = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.4/stores/${sid}/thumb.jpg`;
+		const logo = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.5/stores/${sid}/logo.png`;
+		const thumb = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.5/stores/${sid}/thumb.jpg`;
 		const style = true ? {} : {'-webkit-filter':'grayscale(1)', filter:'grayscale(1)'};
 		const classes = classNames('Store', {'premium':premium, 'unpublished':!published});
 		// src="data:image/gif;base64,R0lGODlhAwABAIAAAP///////yH5BAEKAAEALAAAAAADAAEAAAICjAsAOw=="

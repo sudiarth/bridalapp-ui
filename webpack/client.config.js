@@ -85,6 +85,11 @@ module.exports = {
 		//                but increases the overall size. (recommended)
 		new webpack.optimize.OccurenceOrderPlugin(true),
 
+		new webpack.optimize.UglifyJsPlugin({
+			sourceMap: false,
+			mangle: false
+		}),
+
 		new webpack.DefinePlugin({'process.env': {'NODE_ENV': JSON.stringify('production')}}),
 	],
 };

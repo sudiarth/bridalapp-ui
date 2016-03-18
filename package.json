@@ -1,6 +1,6 @@
 {
   "name": "bridalapp-ui",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "User Interface for BridalApp",
   "keywords": [
     "OpenShift",
@@ -31,7 +31,7 @@
     "start": "node server.js",
     "start-dev": "just-wait -p \"server.js\" && npm run start",
     "build-server": "webpack --config webpack/server.config.js",
-    "build-client": "webpack -p --config webpack/client.config.js",
+    "build-client": "webpack --config webpack/client.config.js",
     "build": "npm run build-server && npm run build-client",
     "release-server": "npm run clean-server && npm run build-server",
     "release-client": "npm run clean-client && npm run build-client",

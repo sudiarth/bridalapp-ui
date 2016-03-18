@@ -3879,8 +3879,8 @@
 	
 				var bid = (0, _ws2.default)(id).toString();
 				var img = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
-				var prdUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/products/' + bid + '/Brand';
-				var brandUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/brands/' + bid + '/logo-brand-name.png';
+				var prdUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.5/products/' + bid + '/Brand';
+				var brandUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.5/brands/' + bid + '/logo-brand-name.png';
 				var thumbs = prdUrl + '/thumbs.jpg';
 				var thumbnail = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
 				var images = [{ src: prdUrl + '/back-large.jpg', className: 'back' }, { src: prdUrl + '/front-large.jpg', className: 'front' }, { src: prdUrl + '/detail-1-large.jpg', className: 'detail-1' }, { src: prdUrl + '/detail-2-large.jpg', className: 'detail-2' }, { src: prdUrl + '/detail-3-large.jpg', className: 'detail-3' }];
@@ -4593,8 +4593,8 @@
 				var flipCard = this.refs.flipCard;
 	
 				var img = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
-				var prdUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/products/' + bid + '/' + encodeURIComponent(name);
-				var brandUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.1/brands/' + bid + '/logo-brand-name.png';
+				var prdUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.5/products/' + bid + '/' + encodeURIComponent(name);
+				var brandUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.5/brands/' + bid + '/logo-brand-name.png';
 				var thumbs = prdUrl + '/thumbs.jpg';
 				var thumbnail = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
 				var size = (typeof window === 'undefined' ? 'undefined' : (0, _typeof3.default)(window)) == 'object' && window.innerWidth < 480 ? { width: '100%' } : { height: '100%' };
@@ -5187,8 +5187,8 @@
 				var published = _props$store.published;
 	
 				var sid = (0, _ws2.default)(id).toString();
-				var logo = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.4/stores/' + sid + '/logo.png';
-				var thumb = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.4/stores/' + sid + '/thumb.jpg';
+				var logo = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.5/stores/' + sid + '/logo.png';
+				var thumb = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.5/stores/' + sid + '/thumb.jpg';
 				var style = true ? {} : { '-webkit-filter': 'grayscale(1)', filter: 'grayscale(1)' };
 				var classes = (0, _classnames2.default)('Store', { 'premium': premium, 'unpublished': !published });
 				// src="data:image/gif;base64,R0lGODlhAwABAIAAAP///////yH5BAEKAAEALAAAAAADAAEAAAICjAsAOw=="
@@ -5729,7 +5729,7 @@
 
 	module.exports = {
 		"name": "bridalapp-ui",
-		"version": "1.0.2",
+		"version": "1.0.3",
 		"description": "User Interface for BridalApp",
 		"keywords": [
 			"OpenShift",
@@ -5760,7 +5760,7 @@
 			"start": "node server.js",
 			"start-dev": "just-wait -p \"server.js\" && npm run start",
 			"build-server": "webpack --config webpack/server.config.js",
-			"build-client": "webpack -p --config webpack/client.config.js",
+			"build-client": "webpack --config webpack/client.config.js",
 			"build": "npm run build-server && npm run build-client",
 			"release-server": "npm run clean-server && npm run build-server",
 			"release-client": "npm run clean-client && npm run build-client",
