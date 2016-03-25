@@ -3,8 +3,7 @@ import React, { Component, PropTypes } from 'react';
 const { any, bool, string, object, func, shape } = PropTypes;
 import classNames from 'classnames';
 import Suid from 'ws.suid';
-
-import { Card, CardTitle, FABButton, Icon } from 'react-mdl';
+import { CardTitle, CardText, FABButton, Icon } from 'react-mdl';
 import { StatefulFlipCard, FrontFace, BackFace } from '../Mdl/mdl-extras';
 
 export class ProductCard extends Component {
@@ -28,21 +27,34 @@ export class ProductCard extends Component {
 	}
 
 	thumbnailClicked(images, index, event) {
+		log.log('thumbnailClicked', images, index, event);
 		const { onOpenLightbox } = this.props;
 		if (onOpenLightbox) {onOpenLightbox(images, index, event);}
 		if (event) {event.preventDefault(); event.stopPropagation();}
 	}
 
+	publishClicked(item, event) {
+		log.log('publishClicked', item, event);
+		event.preventDefault(); // prevent card flip
+		this.props.onPublish(item);
+	}
+
+	unpublishClicked(item, event) {
+		log.log('unpublishClicked', item, event);
+		event.preventDefault(); // prevent card flip
+		this.props.onUnpublish(item);
+	}
+
 	render() {
-		const { product: { id, name, brandId, brandName, description, published },
-				mayPublish, onPublish, onUnpublish } = this.props;
+		log.debug('render', this.props);
+		const { product, mayPublish } = this.props;
+		const { id, name, brandId, brandName, description, published } = product;
 		const pid = Suid(id).toString();
 		const bid = Suid(brandId).toString();
-		log.debug('render', id, name, brandName);
 		const { flipCard } = this.refs;
 		const img = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
-		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.5/products/${bid}/${encodeURIComponent(name)}`;
-		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.5/brands/${bid}/logo-brand-name.png`;
+		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.8/products/${bid}/${encodeURIComponent(name)}`;
+		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.8/brands/${bid}/logo-brand-name.png`;
 		const thumbs = `${prdUrl}/thumbs.jpg`;
 		const thumbnail = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
 		const size = typeof window == 'object' && window.innerWidth < 480 ? {width:'100%'} : {height:'100%'};
@@ -60,11 +72,13 @@ export class ProductCard extends Component {
 					<div className="content">
 						<img className="ProductImage" src={img} style={{backgroundImage: `url(${thumbs})`, height:'100%'}} />
 						{mayPublish ?
-							(published ?
-								<FABButton onClick={onUnpublish}><Icon name="visibility" /></FABButton>
+							<div className="ModActions">
+							{published ?
+								<FABButton className="Unpublish" onClick={this.unpublishClicked.bind(this, product)}><Icon name="visibility_off" /></FABButton>
 							:
-								<FABButton onClick={onPublish}><Icon name="visibility_off" /></FABButton>
-							)
+								<FABButton className="Publish" onClick={this.publishClicked.bind(this, product)}><Icon name="visibility" /></FABButton>
+							}
+							</div>
 						: ''}
 					</div>
 				</FrontFace>
@@ -81,7 +95,7 @@ export class ProductCard extends Component {
 							/>
 						))}</div>
 					</div>
-					<div className="ProductDescription">{description || ''}</div>
+					<CardText className="ProductDescription">{description || ''}</CardText>
 				</BackFace>
 			</StatefulFlipCard>
 		);

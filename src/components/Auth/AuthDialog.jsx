@@ -27,7 +27,7 @@ export class AuthDialog extends Component {
 	}
 
 	render() {
-		log.log('render', this.props);
+		log.debug('render', this.props);
 		const { className, defaultClass, challenged, onCancel, onLogin, onRegister, loginDialog, registerDialog, ...props } = this.props;
 		const classes = classNames(className, defaultClass);
 		return (

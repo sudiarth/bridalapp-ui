@@ -4,7 +4,7 @@ import Async from 'redux-async-api';
 import { remote } from 'redux-fetch-api';
 
 import { TextfieldApi } from '../Mdl/api';
-import { fromJSON } from '../Entity/Entity';
+import { fromJSON, toJSON } from '../Entity/Entity';
 
 import Suid from 'ws.suid';
 import PasswordCredential from './PasswordCredential';
@@ -61,19 +61,6 @@ export class Auth extends Async {
 		Object.defineProperty(this, 'loggedIn', {enumerable:true, get: () => !!this.user});
 		Object.defineProperty(this, 'challenged', {enumerable:true, get: () => !!(this.challenge() && this.challenge().url && !this.challenge().accepted)});
 		Object.defineProperty(this, 'user', {enumerable:true, get: () => this.getState().user});
-		Object.defineProperty(this, 'mayPublish', {enumerable:true, get: () => {
-			const { user } = this.getState();
-			if (user) {
-				for (let i=0, role; role=user.roles[i]; i++) {
-					if (role.equals(Role.BRAUTSCHLOSS_USER) ||
-						role.equals(Role.BRAUTSCHLOSS_MANAGER) ||
-						role.equals(Role.ADMINISTRATOR)) {
-						return true;
-					}
-				}
-			}
-			return false;
-		}});
 		Object.defineProperty(this, 'onProvoke', {enumerable:true, value: () => this.provoke()});
 		Object.defineProperty(this, 'onCancel', {enumerable:true, value: () => this.cancel()});
 		Object.defineProperty(this, 'onLogin', {enumerable:true, value: () => this.login()});
@@ -172,7 +159,7 @@ export class Auth extends Async {
 					headers: {
 						'Content-Type': 'application/json',
 					},
-					body: JSON.stringify(account),
+					body: toJSON(account),
 				})
 				.then(response => response.text())
 				.then(text => fromJSON(text))
@@ -223,6 +210,12 @@ export class Auth extends Async {
 				// this fetch will result in 401 and be intercepted, after which
 				// challenge will be called again with the actual server challenge
 				this.fetch('/challenge')
+					.then(response => {
+						if (response && response.status == 200) {
+							return fetchSessionInfo(this);
+						}
+						return response;
+					})
 					.catch(error => {
 						log.log('Provoking login challenge failed.', error);
 						return error;
@@ -272,29 +265,29 @@ function fetchSessionInfo(auth) {
 	log.debug('fetchSessionInfo');
 	return auth.fetch('/session')
 		.then(response => {
-			log.log('fetchSessionInfo => response=', response);
+			log.trace('fetchSessionInfo => response=', response);
 			return response.status == 200 && response.text();
 		})
 		.then(text => {
-			log.log('fetchSessionInfo => text=', text);
+			log.trace('fetchSessionInfo => text=', text);
 			return fromJSON(text);
 		})
 		.then(session => {
-			log.log('fetchSessionInfo => session=', session);
+			log.trace('fetchSessionInfo => session=', session);
 			const { user, sessionId } = session;
-			log.log('fetchSessionInfo => sessionId=', sessionId);
-			log.log('fetchSessionInfo => user=', user);
+			log.trace('fetchSessionInfo => sessionId=', sessionId);
+			log.trace('fetchSessionInfo => user=', user);
 			if (typeof document == 'object') {
 				const maxAge = sessionId ? 10 * 24 * 60 * 60 : 0;
 				document.cookie = `BASESSION=${sessionId}; Max-Age=${maxAge}; path=/`;
 				log.debug('fetchSessionInfo => cookie ' + (maxAge ? 'set' : 'cleared'));
 			}
 			if (user && !auth.loggedIn) {
-				log.debug('fetchSessionInfo => Dispatching LOGGED_IN action', user);
+				log.trace('fetchSessionInfo => Dispatching LOGGED_IN action', user);
 				auth.dispatch(auth.createAction(Auth.LOGGED_IN)(user));
 			}
 			else if (!user && auth.loggedIn) {
-				log.debug('fetchSessionInfo => Dispatching LOGGED_OUT action');
+				log.trace('fetchSessionInfo => Dispatching LOGGED_OUT action');
 				auth.dispatch(auth.createAction(Auth.LOGGED_OUT)());
 			}
 			return session;

@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 const { any, bool, string, object, func, shape } = PropTypes;
 import classNames from 'classnames';
 import Suid from 'ws.suid';
-import { Card, CardTitle } from 'react-mdl';
+import { CardTitle, FABButton, Icon } from 'react-mdl';
 import { StatefulFlipCard, FrontFace, BackFace } from '../Mdl/mdl-extras';
 
 export class BrandCard extends Component {
@@ -13,6 +13,9 @@ export class BrandCard extends Component {
 			name: string,
 		}).isRequired,
 		onOpenLightbox: func.isRequired,
+		mayPublish: bool.isRequired,
+		onPublish: func.isRequired,
+		onUnpublish: func.isRequired,
 	};
 
 	constructor(...props) {
@@ -25,12 +28,23 @@ export class BrandCard extends Component {
 		if (event) {event.preventDefault(); event.stopPropagation();}
 	}
 
+	publishClicked(item, event) {
+		event.preventDefault(); // prevent card flip
+		this.props.onPublish(item);
+	}
+
+	unpublishClicked(item, event) {
+		event.preventDefault(); // prevent card flip
+		this.props.onUnpublish(item);
+	}
+
 	render() {
-		const { brand: { id, name, published } } = this.props;
+		const { brand, mayPublish, } = this.props;
+		const { id, name, published } = brand;
 		const bid = Suid(id).toString();
 		const img = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
-		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.5/products/${bid}/Brand`;
-		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.5/brands/${bid}/logo-brand-name.png`;
+		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.8/products/${bid}/Brand`;
+		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.8/brands/${bid}/logo-brand-name.png`;
 		const thumbs = `${prdUrl}/thumbs.jpg`;
 		const thumbnail = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
 		const images = [
@@ -47,6 +61,15 @@ export class BrandCard extends Component {
 				<FrontFace>
 					<div className="content">
 						<img className="ProductImage" src={img} style={{backgroundImage: `url(${thumbs})`, height:'100%'}} />
+						{mayPublish ?
+							<div className="ModActions">
+							{published ?
+								<FABButton className="Unpublish" onClick={this.unpublishClicked.bind(this, brand)}><Icon name="visibility_off" /></FABButton>
+							:
+								<FABButton className="Publish" onClick={this.publishClicked.bind(this, brand)}><Icon name="visibility" /></FABButton>
+							}
+							</div>
+						: ''}
 					</div>
 				</FrontFace>
 				<BackFace>

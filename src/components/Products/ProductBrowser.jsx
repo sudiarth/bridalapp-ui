@@ -1,22 +1,19 @@
 import log from 'picolog';
 import React, { Component, PropTypes } from 'react';
-const { bool, array, object, func, any } = PropTypes;
+const { bool, array, object, func, shape, any } = PropTypes;
 import { connect } from 'react-redux';
 import { onload } from 'redux-load-api';
 
 import store from '../../store';
 const app = store.app;
+import Role from '../Auth/Role';
 import Scroller from '../Scroller/Scroller';
 import ProductCard from './ProductCard';
 
-
 function load(params) {
 	log.log('load', params);
-	const { category } = params;
-	if (category) {
-		app.products.search.setFilter({...app.products.search.filter, category:category});
-	}
-	return app.products.search.search()
+	app.products.setFilter({...app.products.filter, ...params});
+	return app.products.search()
 		.then((results) => {
 			log.log('load: search returned ' + results.length + ' products.');
 			return results;
@@ -28,64 +25,59 @@ function load(params) {
 }
 
 @onload(load)
-@connect((state, props) => ({
-	...props,
-	...app.products.search,
-	lightbox: app.lightbox,
-	mayPublish: app.auth.mayPublish,
-}))
+@connect((state, props) => ({...props, ...app.products, lightbox:app.lightbox, user:app.auth.user}))
 export default class ProductBrowser extends React.Component {
 	static propTypes = {
 		params: object.isRequired,
 		lightbox: object.isRequired,
 		filter: object.isRequired,
-		results: array.isRequired,
-		pending: bool,
+		items: array.isRequired,
+		pending: bool.isRequired,
 		error: any,
-		mayPublish: bool,
-		onFilter: func,
-		onSearch: func,
-		onResults: func,
+		onFilterChange: func.isRequired,
+		onSearch: func.isRequired,
+		onItemsChange: func.isRequired,
+		onPublish: func.isRequired,
+		onUnpublish: func.isRequired,
+		user: object,
 	};
 
 	componentDidMount() {
 		log.debug('componentDidMount()');
-		const { pending, error, params } = this.props;
+		const { params, pending, error } = this.props;
 		if (pending || error) {load(params);}
 	}
 
-	publish(product, idx) {
-		const { mayPublish, results, onResults } = this.props;
-		if (mayPublish && !product.published) {
-			const newProduct = product.clone();
-			newProduct.published = 1;
-			newProduct.rollback = product;
-			newResults = [ ...results ];
-			newResults[idx] = newProduct;
-			onResults(newResults);
+	mayPublish(item) {
+		const { user } = this.props;
+		log.trace('mayPublish', user, this);
+		if (user) {
+			for (let i=0, role; role=user.roles[i]; i++) {
+				if (role.equals(Role.BRAUTSCHLOSS_USER) ||
+					role.equals(Role.BRAUTSCHLOSS_MANAGER) ||
+					role.equals(Role.ADMINISTRATOR)) {
+					return true;
+				}
+			}
 		}
-	}
-
-	unpublish(product, idx) {
+		return false;
 	}
 
 	render() {
 		log.debug('render', this.props);
-		const { mayPublish, lightbox, filter, results } = this.props;
+		const { onPublish, onUnpublish, lightbox, filter, items } = this.props;
 		return (
 			<Scroller
 				className={'ProductBrowser ' + filter.category}
 				bufferBefore={8}
-				items={results}
+				items={items}
 				itemSize={580}
 				bufferAfter={12}
 				renderItem ={ (item, idx) => (
-					<ProductCard
-						mayPublish={mayPublish}
-						onPublish={() => {log.info('Publish clicked')}}
-						onUnpublish={() => {log.info('Unpublish clicked')}}
-						product={item}
-						{...lightbox}
+					<ProductCard product={item} {...lightbox}
+						mayPublish={this.mayPublish(item)}
+						onPublish={onPublish}
+						onUnpublish={onUnpublish}
 					/>
 				)}
 			/>

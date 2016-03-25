@@ -15,20 +15,15 @@ import StoreBrowser from './components/Stores/StoreBrowser';
 
 export const routes = (
 	<Route path="/" component={App}>
-		<IndexRedirect to="/products/Wedding+Dresses" />
-		<Route path="/products" component={Products} >
-			<IndexRedirect to="/products/Wedding+Dresses" />
-			<Route path="edit/:productId" component={ProductEdit} />
-			<Route path="details/:productId" component={ProductDetails} />
-			<Route path="details/:brandName/:productName" component={ProductDetails} />
-
-			<Route path="/products/:category" component={ProductBrowser} />
-		</Route>
+		<IndexRedirect to="/Wedding+Dresses" />
 		<Route path="/brands" component={Brands} >
 			<IndexRoute component={BrandBrowser} />
 		</Route>
 		<Route path="/stores" component={Stores} >
 			<IndexRoute component={StoreBrowser} />
+		</Route>
+		<Route component={Products} >
+			<Route path="/:category" component={ProductBrowser} />
 		</Route>
 	</Route>
 );

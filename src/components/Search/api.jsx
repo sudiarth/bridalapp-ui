@@ -3,6 +3,7 @@ import { link } from 'redux-apis';
 import Async from 'redux-async-api';
 import { remote } from 'redux-fetch-api';
 
+import { fromJSON } from '../Entity/Entity';
 
 @remote
 export class SearchApi extends Async {
@@ -21,9 +22,9 @@ export class SearchApi extends Async {
 		this.setHandler(SearchApi.SET_RESULTS, (state, action) => ({...state, results: action.payload}));
 		Object.defineProperty(this, 'filter', {enumerable:true, get:() => this.getState().filter});
 		Object.defineProperty(this, 'results', {enumerable:true, get:() => this.getState().results});
-		Object.defineProperty(this, 'onFilter', {enumerable:true, value:() => this.setFilter.bind(this)});
-		Object.defineProperty(this, 'onSearch', {enumerable:true, value:() => this.search.bind(this)});
-		Object.defineProperty(this, 'onResults', {enumerable:true, value:() => this.setResults.bind(this)});
+		Object.defineProperty(this, 'onFilter', {enumerable:true, value:this.setFilter.bind(this)});
+		Object.defineProperty(this, 'onSearch', {enumerable:true, value:this.search.bind(this)});
+		Object.defineProperty(this, 'onResults', {enumerable:true, value:this.setResults.bind(this)});
 	}
 
 	setFilter(filter) {
@@ -31,6 +32,7 @@ export class SearchApi extends Async {
 	}
 
 	setResults(results) {
+		log.info('setResults');
 		this.dispatch(this.createAction(SearchApi.SET_RESULTS)(results));
 	}
 
@@ -53,7 +55,7 @@ export class SearchApi extends Async {
 				.then(response => {
 					log.log('search: got response with status ', response.status);
 					if (response && response.status === 200) {
-						return response.json();
+						return response.text();
 					}
 					else {
 						log.log('search: Got an error response ', response.status, response.statusText);
@@ -68,6 +70,7 @@ export class SearchApi extends Async {
 						});
 					}
 				})
+				.then(text => fromJSON(text))
 				.then(json => {
 					log.log('search: OK got ' + json.length + ' results');
 					this.setDone();

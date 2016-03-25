@@ -2,13 +2,16 @@
 import { Api, link } from 'redux-apis';
 import { remote } from 'redux-fetch-api';
 
-import SearchApi from '../Search/api';
+import PublicationApi from '../Publication/api';
+import Store from './Store';
 
 @remote
-export class StoresApi extends Api {
+export class StoresApi extends PublicationApi {
+	static INITIAL_STATE = {
+		...PublicationApi.INITIAL_STATE,
+	}
 	constructor(state) {
 		super(state);
-		this.search = link(this, new SearchApi())
 	}
 }
 export default StoresApi;

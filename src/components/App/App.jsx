@@ -68,7 +68,7 @@ export class App extends Component {
 						<img className="logo" src="https://cdn.rawgit.com/download/bridalapp-static/1.0.0/bridalapp/logo-bridalapp.png" />
 					</LayoutTitle>
 					<Navigation>
-						<Link to="/products">Wedding Dresses</Link>
+						<Link to="/Wedding+Dresses">Wedding Dresses</Link>
 						<Link to="/stores">Bridal Stores</Link>
 						<Link to="/brands">Bridal Brands</Link>
 					</Navigation>

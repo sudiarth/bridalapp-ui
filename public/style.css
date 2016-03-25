@@ -59,7 +59,6 @@ img {
 	transform: rotateY(0deg) translateZ(1px);
 }
 
-
 .react-mdl-header-tabs-hack {
 	margin:0;
 	padding:0;
@@ -601,6 +600,17 @@ div.mdl-dialog .mdl-dialog__actions {
 	padding: 0 0 8px 0;
 }
 
+/* Card Actions */
+.mdl-card .ModActions {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+}
+
+.mdl-card .ModActions button {
+	background: rgba(158,158,158,.5);
+}
+
 /* Product cards */
 
 .mdl-card.Product .content {
@@ -779,10 +789,14 @@ div.mdl-dialog .mdl-dialog__actions {
 
 
 .mdl-card.unpublished .mdl-card__face {
-	opacity: 0.5;
+	background: #f0f0f0;
 }
 
-
+.mdl-card.unpublished img,
+.mdl-card.unpublished h3,
+.mdl-card.unpublished p {
+	opacity: 0.5;
+}
 
 
 
