@@ -5,8 +5,9 @@ import classNames from 'classnames';
 import Suid from 'ws.suid';
 import { CardTitle, CardText, FABButton, Icon } from 'react-mdl';
 import { StatefulFlipCard, FrontFace, BackFace } from '../Mdl/mdl-extras';
+import Publication from '../Publication/Publication';
 
-export class ProductCard extends Component {
+export class ProductCard extends Publication {
 	static propTypes = {
 		product: shape({
 			id: any,
@@ -16,39 +17,40 @@ export class ProductCard extends Component {
 			description: string,
 			published: bool,
 		}).isRequired,
-		onOpenLightbox: func.isRequired,
-		mayPublish: bool.isRequired,
-		onPublish: func.isRequired,
-		onUnpublish: func.isRequired,
-	};
+	}
+
+	static contextTypes = {
+		auth: shape({
+			user: object,
+		}).isRequired,
+
+		lightbox: shape({
+			onOpenLightbox: func.isRequired,
+		}).isRequired,
+	}
+
 
 	constructor(...props) {
 		super(...props);
+		this.state = {size: {height:'100%'}};
+	}
+
+	componentDidMount() {
+		this.setState({size: window.innerWidth < 480 ? {width:'100%'} : {height:'100%'}});
 	}
 
 	thumbnailClicked(images, index, event) {
 		log.log('thumbnailClicked', images, index, event);
-		const { onOpenLightbox } = this.props;
-		if (onOpenLightbox) {onOpenLightbox(images, index, event);}
+		const { lightbox: { onOpenLightbox } } = this.context;
+		onOpenLightbox(images, index, event);
 		if (event) {event.preventDefault(); event.stopPropagation();}
-	}
-
-	publishClicked(item, event) {
-		log.log('publishClicked', item, event);
-		event.preventDefault(); // prevent card flip
-		this.props.onPublish(item);
-	}
-
-	unpublishClicked(item, event) {
-		log.log('unpublishClicked', item, event);
-		event.preventDefault(); // prevent card flip
-		this.props.onUnpublish(item);
 	}
 
 	render() {
 		log.debug('render', this.props);
-		const { product, mayPublish } = this.props;
+		const { product } = this.props;
 		const { id, name, brandId, brandName, description, published } = product;
+		const { size } = this.state;
 		const pid = Suid(id).toString();
 		const bid = Suid(brandId).toString();
 		const { flipCard } = this.refs;
@@ -57,7 +59,6 @@ export class ProductCard extends Component {
 		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.8/brands/${bid}/logo-brand-name.png`;
 		const thumbs = `${prdUrl}/thumbs.jpg`;
 		const thumbnail = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
-		const size = typeof window == 'object' && window.innerWidth < 480 ? {width:'100%'} : {height:'100%'};
 		const images = [
 			{src: `${prdUrl}/back-large.jpg`, className:'back', alt:{src:img, style:{...size, backgroundImage:`url(${thumbs})`, backgroundSize:'300%', backgroundPosition:'100% 0'}}},
 			{src: `${prdUrl}/front-large.jpg`, className:'front', alt:{src:img, style:{...size, backgroundImage:`url(${thumbs})`, backgroundSize:'150%', backgroundPosition:'0 0'}}},
@@ -71,7 +72,7 @@ export class ProductCard extends Component {
 				<FrontFace>
 					<div className="content">
 						<img className="ProductImage" src={img} style={{backgroundImage: `url(${thumbs})`, height:'100%'}} />
-						{mayPublish ?
+						{this.mayPublish(product) ?
 							<div className="ModActions">
 							{published ?
 								<FABButton className="Unpublish" onClick={this.unpublishClicked.bind(this, product)}><Icon name="visibility_off" /></FABButton>

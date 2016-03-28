@@ -755,6 +755,13 @@ div.mdl-dialog .mdl-dialog__actions {
 	opacity: 0.7;
 }
 
+.mdl-card .StoreThumbAlt {
+	width: 90%;
+	height: 150px;
+	margin: 0 auto;
+	background-color: #e8e8e8;
+}
+
 .mdl-card .StoreDescription {
 	width: 90%;
     margin: 0 auto;

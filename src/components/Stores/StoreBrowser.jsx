@@ -6,7 +6,6 @@ import { onload } from 'redux-load-api';
 
 import store from '../../store';
 const app = store.app;
-import Role from '../Auth/Role';
 import Scroller from '../Scroller/Scroller';
 import StoreCard from './StoreCard'
 
@@ -25,11 +24,7 @@ function load(params) {
 }
 
 @onload(load)
-@connect((state, props) => ({
-	...props,
-	...app.stores.connector(),
-	user: app.auth.user,
-}))
+@connect(app.stores.connector)
 export default class StoreBrowser extends React.Component {
 	static propTypes = {
 		params: object.isRequired,
@@ -40,9 +35,9 @@ export default class StoreBrowser extends React.Component {
 		onFilterChange: func.isRequired,
 		onSearch: func.isRequired,
 		onItemsChange: func.isRequired,
+		onMayPublish: func.isRequired,
 		onPublish: func.isRequired,
 		onUnpublish: func.isRequired,
-		user: object,
 	}
 
 	componentDidMount() {
@@ -51,24 +46,9 @@ export default class StoreBrowser extends React.Component {
 		if (pending || error) {load(params);}
 	}
 
-	mayPublish(item) {
-		const { user } = this.props;
-		log.trace('mayPublish', user, this);
-		if (user) {
-			for (let i=0, role; role=user.roles[i]; i++) {
-				if (role.equals(Role.BRAUTSCHLOSS_USER) ||
-					role.equals(Role.BRAUTSCHLOSS_MANAGER) ||
-					role.equals(Role.ADMINISTRATOR)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	render() {
 		log.debug('render', this.props);
-		const { items, onPublish, onUnpublish } = this.props;
+		const { items, onMayPublish, onPublish, onUnpublish } = this.props;
 		return (
 			<Scroller
 				className="StoreBrowser"
@@ -77,7 +57,7 @@ export default class StoreBrowser extends React.Component {
 				bufferAfter={8}
 				renderItem ={ (item, idx) => (
 					<StoreCard store={item}
-						mayPublish={this.mayPublish(item)}
+						onMayPublish={onMayPublish}
 						onPublish={onPublish}
 						onUnpublish={onUnpublish}
 					/>

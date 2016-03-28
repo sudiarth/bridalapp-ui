@@ -91,9 +91,9 @@ express.get(/\/.*/, (req, res) => {
 
 			// Store session cookie so we can attach it to fetch calls
 			global.session = req.cookies && req.cookies.BASESSION;
-			global.session && log.log('stored session cookie: ' + global.session);
+			global.session && log.debug('stored session cookie: ' + global.session);
 			const initialized = Promise.resolve(global.session ? store.app.auth.loadSession() : 'guest');
-			initialized.then(session => log.info('SESSION LOADED:', session));
+			initialized.then(session => log.debug('loaded session: ', session));
 			// pre-load onload actions
 			log.debug('pre-loading onload actions of components on route');
 			const loaded = load(renderProps.routes.map(x => x.component), renderProps.params);

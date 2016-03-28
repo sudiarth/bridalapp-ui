@@ -26,11 +26,10 @@ function load(params) {
 }
 
 @onload(load)
-@connect((state, props) => ({...props, ...app.brands, lightbox:app.lightbox, user:app.auth.user}))
+@connect(app.brands.connector)
 export default class BrandBrowser extends React.Component {
 	static propTypes = {
 		params: object.isRequired,
-		lightbox: object.isRequired,
 		filter: object.isRequired,
 		items: array.isRequired,
 		pending: bool.isRequired,
@@ -38,11 +37,10 @@ export default class BrandBrowser extends React.Component {
 		onFilterChange: func.isRequired,
 		onSearch: func.isRequired,
 		onItemsChange: func.isRequired,
+		onMayPublish: func.isRequired,
 		onPublish: func.isRequired,
 		onUnpublish: func.isRequired,
-		user: object,
 	}
-
 
 	componentDidMount() {
 		log.debug('componentDidMount()');
@@ -50,24 +48,9 @@ export default class BrandBrowser extends React.Component {
 		if (pending || error) {load(params);}
 	}
 
-	mayPublish(item) {
-		const { user } = this.props;
-		log.trace('mayPublish', user, this);
-		if (user) {
-			for (let i=0, role; role=user.roles[i]; i++) {
-				if (role.equals(Role.BRAUTSCHLOSS_USER) ||
-					role.equals(Role.BRAUTSCHLOSS_MANAGER) ||
-					role.equals(Role.ADMINISTRATOR)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	render() {
 		log.debug('render', this.props);
-		const { items, lightbox, onPublish, onUnpublish } = this.props;
+		const { items, onMayPublish, onPublish, onUnpublish } = this.props;
 		return (
 			<Scroller
 				className={'BrandBrowser '}
@@ -75,8 +58,8 @@ export default class BrandBrowser extends React.Component {
 				items={items}
 				bufferAfter={4}
 				renderItem ={ (item, idx) => (
-					<BrandCard brand={item} {...lightbox}
-						mayPublish={this.mayPublish(item)}
+					<BrandCard brand={item}
+						onMayPublish={onMayPublish}
 						onPublish={onPublish}
 						onUnpublish={onUnpublish}
 					/>

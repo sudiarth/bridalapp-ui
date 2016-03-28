@@ -1,6 +1,6 @@
 ﻿import log from 'picolog';
 import React, { Component, PropTypes } from 'react';
-const { bool, number, object, func, array, shape, any } = PropTypes;
+const { bool, number, string, object, func, array, shape, any } = PropTypes;
 import { Link } from 'react-router';
 import { onload } from 'redux-load-api';
 import { connect } from 'react-redux';
@@ -15,19 +15,48 @@ import AuthDialog from '../Auth/AuthDialog';
 export class App extends Component {
 	static propTypes = {
 		auth: shape({
-			loggedIn: bool,
-			user: object,
-			challenged: bool,
-			load: func,
-		}),
+			loggedIn: bool.isRequired,
+			challenged: bool.isRequired,
+			onProvoke: func,
+			onLogin: func,
+			onLogout: func,
+			onRegister: func,
+			onCancel: func,
+			user: shape({
+				id: any.isRequired,
+				name: string.isRequired,
+			}),
+		}).isRequired,
 		leftDrawer: object,
 		rightDrawer: object,
 		lightbox: object,
 	};
 
+	static childContextTypes = {
+		auth: shape({
+			loggedIn: bool.isRequired,
+			challenged: bool.isRequired,
+			onProvoke: func,
+			onLogin: func,
+			onLogout: func,
+			onRegister: func,
+			onCancel: func,
+			user: shape({
+				id: any.isRequired,
+				name: string.isRequired,
+			}),
+		}).isRequired,
+		lightbox: object,
+	}
+
 	constructor(props) {
 		log.debug('constructor', props);
 		super(props);
+	}
+
+	getChildContext() {
+		const { auth, lightbox } = this.props;
+		return { auth, lightbox };
 	}
 
 	componentDidMount() {

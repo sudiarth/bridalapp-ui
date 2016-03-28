@@ -6,7 +6,6 @@ import { onload } from 'redux-load-api';
 
 import store from '../../store';
 const app = store.app;
-import Role from '../Auth/Role';
 import Scroller from '../Scroller/Scroller';
 import ProductCard from './ProductCard';
 
@@ -25,11 +24,10 @@ function load(params) {
 }
 
 @onload(load)
-@connect((state, props) => ({...props, ...app.products, lightbox:app.lightbox, user:app.auth.user}))
+@connect(app.products.connector)
 export default class ProductBrowser extends React.Component {
 	static propTypes = {
 		params: object.isRequired,
-		lightbox: object.isRequired,
 		filter: object.isRequired,
 		items: array.isRequired,
 		pending: bool.isRequired,
@@ -37,10 +35,10 @@ export default class ProductBrowser extends React.Component {
 		onFilterChange: func.isRequired,
 		onSearch: func.isRequired,
 		onItemsChange: func.isRequired,
+		onMayPublish: func.isRequired,
 		onPublish: func.isRequired,
 		onUnpublish: func.isRequired,
-		user: object,
-	};
+	}
 
 	componentDidMount() {
 		log.debug('componentDidMount()');
@@ -48,24 +46,9 @@ export default class ProductBrowser extends React.Component {
 		if (pending || error) {load(params);}
 	}
 
-	mayPublish(item) {
-		const { user } = this.props;
-		log.trace('mayPublish', user, this);
-		if (user) {
-			for (let i=0, role; role=user.roles[i]; i++) {
-				if (role.equals(Role.BRAUTSCHLOSS_USER) ||
-					role.equals(Role.BRAUTSCHLOSS_MANAGER) ||
-					role.equals(Role.ADMINISTRATOR)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	render() {
 		log.debug('render', this.props);
-		const { onPublish, onUnpublish, lightbox, filter, items } = this.props;
+		const { onMayPublish, onPublish, onUnpublish, filter, items } = this.props;
 		return (
 			<Scroller
 				className={'ProductBrowser ' + filter.category}
@@ -74,8 +57,8 @@ export default class ProductBrowser extends React.Component {
 				itemSize={580}
 				bufferAfter={12}
 				renderItem ={ (item, idx) => (
-					<ProductCard product={item} {...lightbox}
-						mayPublish={this.mayPublish(item)}
+					<ProductCard product={item}
+						onMayPublish={onMayPublish}
 						onPublish={onPublish}
 						onUnpublish={onUnpublish}
 					/>
