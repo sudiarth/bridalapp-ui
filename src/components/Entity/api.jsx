@@ -23,19 +23,25 @@ export class EntityApi extends Async {
 		this.setHandler(EntityApi.SET_FILTER, (state, action) => ({...state, filter: action.payload}));
 		this.setHandler(EntityApi.SET_ITEMS, (state, action) => ({...state, items: action.payload}));
 		this.setHandler(EntityApi.SET_PROCESSING, (state, action) => ({...state, processing: action.payload}));
-		Object.defineProperty(this, 'filter', {enumerable:true, get:() => this.getState().filter});
-		Object.defineProperty(this, 'items', {enumerable:true, get:() => this.getState().items});
-		Object.defineProperty(this, 'itemStates', {enumerable:true, get:() => this.getState().itemStates});
-		Object.defineProperty(this, 'itemState', {enumerable:true, value: this.itemState.bind(this)});
-		Object.defineProperty(this, 'onFilterChange', {enumerable:true, value:this.setFilter.bind(this)});
-		Object.defineProperty(this, 'onSearch', {enumerable:true, value:this.search.bind(this)});
-		Object.defineProperty(this, 'onItemsChange', {enumerable:true, value:this.setItems.bind(this)});
-		Object.defineProperty(this, 'onItemStatesChange', {enumerable:true, value:this.setItemStates.bind(this)});
-		Object.defineProperty(this, 'onItemStateChange', {enumerable:true, value:this.setItemState.bind(this)});
-		Object.defineProperty(this, 'onItemSave', {enumerable:true, value:this.save.bind(this)});
+		Object.defineProperties(this, {
+			filter: {enumerable:true, get:() => this.getState().filter},
+			items: {enumerable:true, get:() => this.getState().items},
+			itemStates: {enumerable:true, get:() => this.getState().itemStates}
+		})
+
+		this.onFilterChange = this.setFilter.bind(this);
+		this.onSearch = this.search.bind(this);
+		this.onItemsChange = this.setItems.bind(this);
+		this.onItemStatesChange = this.setItemStates.bind(this);
+
+		this.item = {
+			itemState: this.itemState.bind(this),
+			onItemStateChange: this.setItemState.bind(this),
+			onItemSave: this.save.bind(this),
+		}
 	}
 
-	itemState(item, newState) {
+	itemState(item) {
 		return this.items[item.id] || Async.DONE;
 	}
 

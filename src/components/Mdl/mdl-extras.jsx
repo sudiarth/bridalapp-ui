@@ -43,6 +43,15 @@ export const LayoutObfuscator = component('LayoutObfuscator', 'mdl-layout__obfus
 	}
 )
 
+export const Sprite = component('Sprite', 'material-icons-sprite', {}, 'i', {name: string.isRequired}, {},
+	(elem, props, children) => {
+		const { name, className, ...others } = props;
+		const classes = classNames(className, name);
+		return (
+			<i className={classes} {...others} />
+		)
+	}
+)
 
 /**
  * Controlled version of the MDL TextField component that adds a property `value`.
@@ -123,13 +132,21 @@ export class StatefulFlipCard extends Component {
 	static propTypes = {
 		flipped: bool,
 		className: string,
+		frontLoadDelay: number,
+		backLoadDelay: number,
 	}
 	static defaultProps = {
 		flipped: false,
+		frontLoadDelay: 250,
+		backLoadDelay: 2500,
 	}
 	constructor(...props) {
 		super(...props);
-		this.state = { flipped: this.props.flipped, loaded:false };
+		this.state = {
+			flipped: this.props.flipped,
+			backLoaded:!this.props.backLoadDelay,
+			frontLoaded:!this.props.frontLoadDelay,
+		};
 		this.flip = this.flip.bind(this);
 	}
 
@@ -139,14 +156,34 @@ export class StatefulFlipCard extends Component {
 
 	flip(event) {
 		if (event && event.defaultPrevented) {return;}
-		this.setState({ ...this.state, flipped:!this.state.flipped, loaded:true });
+		const { flipped, frontLoaded, backLoaded } = this.state;
+		this.setState({...this.state, flipped: !flipped, backLoaded: backLoaded || !flipped, frontLoaded: frontLoaded || flipped});
+	}
+
+	componentDidMount() {
+		const { frontLoadDelay, backLoadDelay } = this.props;
+		if (frontLoadDelay) {
+			this.frontLoad = setTimeout(() => {this.setState({...this.state, frontLoaded:true});}, frontLoadDelay);
+		}
+		if (backLoadDelay) {
+			this.backLoad = setTimeout(() => {this.setState({...this.state, backLoaded:true});}, backLoadDelay);
+		}
+	}
+
+	componentWillUnmount() {
+		clearTimeout(this.frontLoad);
+		clearTimeout(this.backLoad);
 	}
 
 	render() {
-		const { flipped, className, children, ...others } = this.props;
-		let front, backProps, backChilds;
+		const { className, flipped, frontLoadDelay, backLoadDelay, children, ...others } = this.props;
+		let frontProps, frontChilds, backProps, backChilds;
 		for (let i=0, elem; elem=children[i]; i++) {
-			if (elem.type === FrontFace) {front = elem;}
+			if (elem.type === FrontFace) {
+				const { children, ...others } = elem.props;
+				frontProps = others;
+				frontChilds = children;
+			}
 			else if (elem.type === BackFace) {
 				const { children, ...others } = elem.props;
 				backProps = others;
@@ -155,12 +192,13 @@ export class StatefulFlipCard extends Component {
 		}
 
 		return (
-			<FlipCard className={className} flipped={this.isFlipped()} onClick={this.flip}>
-				{front}
+			<FlipCard className={className} flipped={this.isFlipped()} onClick={this.flip} {...others} >
+				<FrontFace {...frontProps}>
+					{this.state.frontLoaded ? frontChilds : ''}
+				</FrontFace>
 				<BackFace {...backProps}>
-					{this.state.loaded || this.isFlipped() ? backChilds : ''}
+					{this.state.backLoaded ? backChilds : ''}
 				</BackFace>
-
 			</FlipCard>
 		)
 	}

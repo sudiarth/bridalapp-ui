@@ -48,19 +48,19 @@ export class Auth extends Async {
 
 	static INITIAL_STATE = {
 		...Async.INITIAL_STATE,
-		user: null,
+		session: null,
 		challenge: null,
 	};
 
 	constructor(state = Auth.INITIAL_STATE) {
 		super(state);
 		this.setHandler(Auth.CHALLENGE, (state, {payload}) => ({...state, challenge:payload}));
-		this.setHandler(Auth.LOGGED_IN,	(state, {payload}) => ({...state, user:payload, challenge:null}));
-		this.setHandler(Auth.LOGGED_OUT, (state, action) => ({...state, user:null, challenge:null}));
+		this.setHandler(Auth.LOGGED_IN,	(state, {payload}) => ({...state, session:payload, challenge:null}));
+		this.setHandler(Auth.LOGGED_OUT, (state, action) => ({...state, session:null, challenge:null}));
 		this.setHandler(Auth.CANCEL, (state, action) => ({...state, challenge:null}));
-		Object.defineProperty(this, 'loggedIn', {enumerable:true, get: () => !!this.user});
+		Object.defineProperty(this, 'loggedIn', {enumerable:true, get: () => !!this.session});
 		Object.defineProperty(this, 'challenged', {enumerable:true, get: () => !!(this.challenge() && this.challenge().url && !this.challenge().accepted)});
-		Object.defineProperty(this, 'user', {enumerable:true, get: () => this.getState().user});
+		Object.defineProperty(this, 'session', {enumerable:true, get: () => this.getState().session});
 		Object.defineProperty(this, 'onProvoke', {enumerable:true, value: () => this.provoke()});
 		Object.defineProperty(this, 'onCancel', {enumerable:true, value: () => this.cancel()});
 		Object.defineProperty(this, 'onLogin', {enumerable:true, value: () => this.login()});
@@ -71,10 +71,11 @@ export class Auth extends Async {
 	}
 
 	loadSession() {
-		log.log('loadSession()');
+		log.debug('loadSession');
 		this.setBusy();
 		return fetchSessionInfo(this)
 			.then(session => {
+				log.debug('loadSession => ', session);
 				this.setDone();
 				return session;
 			});
@@ -95,9 +96,10 @@ export class Auth extends Async {
 			.then(response => {
 				log.debug('remoteLogin => ', response);
 				return fetchSessionInfo(auth)
-					.then(() => {
+					.then(session => {
 						auth.setDone();
 						challenge.resolve(response);
+						return session;
 					});
 			})
 			.catch(error => {
@@ -107,7 +109,7 @@ export class Auth extends Async {
 		}
 
 		if (this.loggedIn) {
-			log.log('Already logged in as `' + this.user.name + '`: ', this.user);
+			log.log('Already logged in as `' + this.session.user.name + '`: ', this.session.user);
 			return
 		}
 
@@ -117,19 +119,19 @@ export class Auth extends Async {
 				if (! this.challenge()) {
 					log.debug('Provoking login challenge');
 					return this.provoke()
-						.then(() => {
+						.then(challenge => {
 							log.debug('Server issued a login challenge');
-							return remoteLogin(this, this.challenge()).then(resolve).catch(reject);
+							return remoteLogin(this, challenge).then(resolve).catch(reject);
 						});
 				}
 				return remoteLogin(this, this.challenge()).then(resolve).catch(reject);
-			}).then((results) => {log.info('Login', this.user); return results;});
+			}).then((results) => {log.debug('Login', this.session.user); return results;});
 			log.debug('Posting credentials to ', challenge.url);
 		});
 	}
 
 	logout() {
-		log.info('logout', this.user);
+		log.debug('logout', this.session.user);
 		return this.dispatch(() => {
 			this.setBusy();
 			this.cancel();
@@ -189,39 +191,56 @@ export class Auth extends Async {
 	cancel() {
 		log.log('cancel');
 		return this.dispatch(() => {
-			if (this.challenge()) {
-			const { reject } = this.challenge();
+			const c = this.challenge();
+			if (c) {
 				const error = Error('Login/registration cancelled');
 				this.setError(error);
 				this.dispatch(this.createAction(Auth.CANCEL)());
-				if (reject) {reject(error);}
+				if (c.reject) {c.reject(error);}
 			}
 		});
 	}
 
-	provoke() {
-		log.log('provoke');
+	authenticated() {
+		log.log('authenticated');
+		const auth = this;
+		return new Promise((resolve, reject) => {
+			if (auth.loggedIn) {resolve(auth.session);}
+			else auth.provoke(resolve, reject);
+		});
+	}
+
+	provoke(resolve, reject) {
+		log.log('provoke', resolve, reject);
 		// provoke a login challenge, async
 		// provoke a challenge by fetching url
-		return this.dispatch(()=>{
-			return new Promise((accept, deny) => {
-				// set up intermediate challenge to make accept and deny survive the round-trip
-				this.challenge({}, accept, deny);
-				// this fetch will result in 401 and be intercepted, after which
-				// challenge will be called again with the actual server challenge
-				this.fetch('/challenge')
-					.then(response => {
-						if (response && response.status == 200) {
-							return fetchSessionInfo(this);
-						}
-						return response;
-					})
-					.catch(error => {
-						log.log('Provoking login challenge failed.', error);
-						return error;
-					})
-					.catch(deny);
-			});
+		return new Promise((accept, deny) => {
+			// set up intermediate challenge to make accept and deny survive the round-trip
+			this.challenge({}, accept, deny);
+			// this fetch will result in 401 and be intercepted, after which
+			// challenge will be called again with the actual server challenge
+			this.fetch('/challenge')
+				.then(response => {
+					if (response && response.status == 200) {
+						return response.text();
+					}
+					return response.text().then(text => {
+						const error = new Error(text);
+						error.status = response.status;
+						error.statusText = response.statusText;
+						throw error;
+					});
+				})
+				.then(text => fromJSON(text))
+				.then(session => processSession(this, session))
+				.then(session => {
+					if (resolve) {resolve(session);}
+					return session;
+				})
+				.catch(error => {
+					log.log('Provoking login challenge failed.', error);
+					if (reject) {reject(error);}
+				})
 		});
 	}
 
@@ -252,6 +271,72 @@ export class Auth extends Async {
 }
 export default Auth;
 
+export function authenticated(target) {
+	function enhance(target) {
+		log.debug('authenticated', target);
+		Object.defineProperties(target.prototype, {
+			authenticated: {value:function() {
+				let p = this;
+				while (p = p.__parent) {
+					if (p.authenticated) {
+						return p.authenticated();
+					}
+				}
+				return Promise.reject(new Error('No authentication method'));
+			}},
+
+			getSession: {value:function() {
+				let p = this;
+				while (p = p.__parent) {
+					if (p.getSession) {
+						return p.getSession();
+					}
+				}
+				return null;
+			}},
+		});
+		log.trace('authenticated => ', target);
+		return target;
+	}
+	return target ? enhance(target) : enhance;
+}
+
+function fetchSessionInfo(auth) {
+	log.debug('fetchSessionInfo');
+	return auth.fetch('/session')
+		.then(response => {
+			log.debug('fetchSessionInfo => response.status=', response.status);
+			return response.status == 200 && response.text();
+		})
+		.then(text => {
+			log.debug('fetchSessionInfo => text=', text);
+			return fromJSON(text);
+		})
+		.then(session => processSession(auth, session))
+}
+
+function processSession(auth, session) {
+	log.debug('processSession', session);
+	const { user, sessionId } = session;
+	log.debug('processSession => sessionId=', sessionId);
+	log.debug('processSession => user=', user);
+	if (typeof document == 'object') {
+		const maxAge = sessionId ? 10 * 24 * 60 * 60 : 0;
+		document.cookie = `BASESSION=${sessionId}; Max-Age=${maxAge}; path=/`;
+		log.debug('processSession => cookie ' + (maxAge ? 'set' : 'cleared'));
+	}
+	if (user && !auth.loggedIn) {
+		log.debug('fetchSessionInfo => Dispatching LOGGED_IN action', session);
+		auth.dispatch(auth.createAction(Auth.LOGGED_IN)(session));
+	}
+	else if (!user && auth.loggedIn) {
+		log.debug('fetchSessionInfo => Dispatching LOGGED_OUT action');
+		auth.dispatch(auth.createAction(Auth.LOGGED_OUT)());
+	}
+	return session;
+}
+
+
 function encode(challenge, username, password) {
 	if (challenge.contentType === 'application/x-www-form-urlencoded') {
 		return urlEncode(challenge, username, password);
@@ -259,39 +344,6 @@ function encode(challenge, username, password) {
 	else {
 		error = Error(`Unable to encode the given credentials. Unsupported content type '${challenge.contentType}'.`);
 	}
-}
-
-function fetchSessionInfo(auth) {
-	log.debug('fetchSessionInfo');
-	return auth.fetch('/session')
-		.then(response => {
-			log.trace('fetchSessionInfo => response=', response);
-			return response.status == 200 && response.text();
-		})
-		.then(text => {
-			log.trace('fetchSessionInfo => text=', text);
-			return fromJSON(text);
-		})
-		.then(session => {
-			log.trace('fetchSessionInfo => session=', session);
-			const { user, sessionId } = session;
-			log.trace('fetchSessionInfo => sessionId=', sessionId);
-			log.trace('fetchSessionInfo => user=', user);
-			if (typeof document == 'object') {
-				const maxAge = sessionId ? 10 * 24 * 60 * 60 : 0;
-				document.cookie = `BASESSION=${sessionId}; Max-Age=${maxAge}; path=/`;
-				log.debug('fetchSessionInfo => cookie ' + (maxAge ? 'set' : 'cleared'));
-			}
-			if (user && !auth.loggedIn) {
-				log.trace('fetchSessionInfo => Dispatching LOGGED_IN action', user);
-				auth.dispatch(auth.createAction(Auth.LOGGED_IN)(user));
-			}
-			else if (!user && auth.loggedIn) {
-				log.trace('fetchSessionInfo => Dispatching LOGGED_OUT action');
-				auth.dispatch(auth.createAction(Auth.LOGGED_OUT)());
-			}
-			return session;
-		})
 }
 
 function urlEncode(challenge, username, password) {

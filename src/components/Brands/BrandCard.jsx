@@ -16,10 +16,6 @@ export class BrandCard extends Publication {
 	}
 
 	static contextTypes = {
-		auth: shape({
-			user: object,
-		}).isRequired,
-
 		lightbox: shape({
 			onOpenLightbox: func.isRequired,
 		}).isRequired,
@@ -44,7 +40,7 @@ export class BrandCard extends Publication {
 		const { brand } = this.props;
 		const { id, name, published } = brand;
 		const { size } = this.state;
-		const bid = Suid(id).toString();
+		const bid = id.toString();
 		const img = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
 		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.8/products/${bid}/Brand`;
 		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.8/brands/${bid}/logo-brand-name.png`;

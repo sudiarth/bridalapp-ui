@@ -27,7 +27,7 @@ function load(params) {
 
 @onload(load)
 @connect(app.brands.connector)
-export default class BrandBrowser extends React.Component {
+export class BrandBrowser extends React.Component {
 	static propTypes = {
 		params: object.isRequired,
 		filter: object.isRequired,
@@ -68,3 +68,4 @@ export default class BrandBrowser extends React.Component {
 		);
 	}
 }
+export default BrandBrowser;

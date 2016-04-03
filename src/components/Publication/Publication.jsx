@@ -2,7 +2,6 @@
 import React, { Component, PropTypes } from 'react';
 const { object, func } = PropTypes;
 
-
 export class Publication extends Component {
 	static propTypes = {
 		onMayPublish: func.isRequired,
@@ -10,16 +9,12 @@ export class Publication extends Component {
 		onUnpublish: func.isRequired,
 	};
 
-	static contextTypes = {
-		auth: object.isRequired,
-	}
-
 	constructor(...props) {
 		super(...props);
 	}
 
 	mayPublish(item) {
-		return this.props.onMayPublish(this.context.auth.user, item);
+		return this.props.onMayPublish(item)
 	}
 
 	publishClicked(item, event) {

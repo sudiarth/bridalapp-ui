@@ -4,9 +4,11 @@ import { remote } from 'redux-fetch-api';
 
 import { fromJSON, indexOf } from '../Entity/Entity';
 import { EntityApi } from '../Entity/api';
+import { authenticated } from '../Auth/api';
 import Role from '../Auth/Role';
 
 @remote
+@authenticated
 export class PublicationApi extends EntityApi {
 	static INITIAL_STATE = {
 		...EntityApi.INITIAL_STATE,
@@ -14,15 +16,15 @@ export class PublicationApi extends EntityApi {
 
 	constructor(state = PublicationApi.INITIAL_STATE) {
 		super(state);
-		Object.defineProperty(this, 'onMayPublish', {enumerable:true, value:this.mayPublish.bind(this)});
-		Object.defineProperty(this, 'onPublish', {enumerable:true, value:this.publish.bind(this)});
-		Object.defineProperty(this, 'onUnpublish', {enumerable:true, value:this.unpublish.bind(this)});
+		this.item.onMayPublish = this.mayPublish.bind(this);
+		this.item.onPublish = this.publish.bind(this);
+		this.item.onUnpublish = this.unpublish.bind(this);
 	}
 
-	mayPublish(user, item) {
-		log.trace('mayPublish', user, item);
-		if (user) {
-			for (let i=0, role; role=user.roles[i]; i++) {
+	mayPublish(item) {
+		log.trace('mayPublish', item, this, this.getSession);
+		if (this.getSession()) {
+			for (let i=0, role; role=this.getSession().user.roles[i]; i++) {
 				if (role.equals(Role.BRAUTSCHLOSS_USER) ||
 					role.equals(Role.BRAUTSCHLOSS_MANAGER) ||
 					role.equals(Role.ADMINISTRATOR)) {
@@ -46,6 +48,7 @@ export class PublicationApi extends EntityApi {
 				const idx = indexOf(newItems, item);
 				newItems[idx] = saved;
 				this.setItems(newItems);
+				return saved;
 			})
 			.catch(error => {
 				log.error('Unable to change published status for item ' + item + '.', error);
@@ -54,12 +57,12 @@ export class PublicationApi extends EntityApi {
 
 	publish(item) {
 		log.log('publish', item);
-		this.setPublished(item, true);
+		return this.setPublished(item, true);
 	}
 
 	unpublish(item) {
 		log.log('unpublish', item);
-		this.setPublished(item, false);
+		return this.setPublished(item, false);
 	}
 }
 export default PublicationApi;

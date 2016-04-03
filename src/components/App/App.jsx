@@ -81,7 +81,7 @@ export class App extends Component {
 
 						{false ? <Navigation className="ActionBar">
 							<p style={{color:'black'}} onClick={()=>{
-							}}>{auth.loggedIn && auth.user.name || 'anon'}</p>
+							}}>{auth.loggedIn && auth.session.user.name || 'anon'}</p>
 						</Navigation> : undefined}
 
 						<Navigation className="RightDrawer">
@@ -104,11 +104,11 @@ export class App extends Component {
 				</Drawer>
 
 				<Drawer right modal autoClose {...rightDrawer}>
-					<LayoutTitle className={auth.user ? 'logged-in' : ''}>{auth.user ?
+					<LayoutTitle className={auth.loggedIn ? 'logged-in' : ''}>{auth.loggedIn ?
 						<h4>
 							<p>Logged in</p>
 							<Button colored onClick={auth.onLogout}>Logout</Button>
-							<Icon name="account_circle" /><b title={auth.user.name}>{auth.user.name}</b>
+							<Icon name="account_circle" /><b title={auth.session.user.name}>{auth.session.user.name}</b>
 						</h4>
 						:
 						<h4>
@@ -116,11 +116,8 @@ export class App extends Component {
 							<Button colored raised onClick={auth.onProvoke}>Login</Button>
 						</h4>
 					}</LayoutTitle>
-					{false ? <Navigation>
-						<Link to="/">Home</Link>
-						<Link to="/products">Products</Link>
-						<Link to="/stores">Stores</Link>
-						<Link to="/brands">Brands</Link>
+					{auth.loggedIn ? <Navigation>
+						<Link to="/loved/Wedding+Dresses"><Icon name="favorite" /> My Favorites</Link>
 					</Navigation> : ''}
 				</Drawer>
 
@@ -156,8 +153,8 @@ export class App extends Component {
 					</Navigation>
 				</Drawer>
 				<Drawer align="right" onClose={()=>api.rightDrawer.close()} open={rightDrawer.open}>
-					<LayoutTitle>{auth.user ?
-						<h2>{auth.user.name}</h2>
+					<LayoutTitle>{auth.loggedIn ?
+						<h2>{auth.session.user.name}</h2>
 						:
 						<Button onClick={() => {
 							api.rightDrawer.close();

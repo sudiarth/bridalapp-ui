@@ -115,7 +115,7 @@ export function register(name, type) {
 			get:function(){return this.__version;},
 			set:function(version) {Object.defineProperty(this, '__version', {value:version});},
 		});
-		const keys = Object.keys(obj);
+		const keys = obj && Object.keys(obj) || [];
 		for (let i=0,key; key=keys[i]; i++) {entity[key] = obj[key];}
 		if (keys.indexOf('version') === -1) {entity.version = null;}
 	}

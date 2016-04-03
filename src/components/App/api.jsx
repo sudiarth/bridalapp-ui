@@ -3,10 +3,13 @@ import Api, { link } from 'redux-apis';
 import { remote, endpoint, fetcher } from 'redux-fetch-api';
 import Suid from 'ws.suid';
 
-import Auth from '../Auth/api';
-import BrandsApi   from '../Brands/api';
-import ProductsApi from '../Products/api';
-import StoresApi from '../Stores/api';
+import { AuthApi } from '../Auth';
+import { Brand } from '../Brands/Brand';
+import { BrandsApi }   from '../Brands/api';
+import { Product } from '../Products/Product';
+import { ProductsApi } from '../Products/api';
+import { Store } from '../Stores/Store';
+import { StoresApi } from '../Stores/api';
 import { DrawerApi, LightboxApi } from '../Mdl/api';
 
 const API_URL = apiUrl();
@@ -25,8 +28,14 @@ export class AppApi extends Api {
 	constructor(state) {
 		super(state);
 
+		Object.defineProperties(this, {
+			Brand: {enumerable:true, get:() => Brand},
+			Product: {enumerable:true, get:() => Product},
+			Store: {enumerable:true, get:() => Store},
+		});
+
 		this.auth = remote('/auth')(
-			link(this, new Auth())
+			link(this, new AuthApi())
 		);
 
 		this.brands = remote('/brands')(
@@ -44,6 +53,15 @@ export class AppApi extends Api {
 		this.leftDrawer = link(this, new DrawerApi());
 		this.rightDrawer = link(this, new DrawerApi());
 		this.lightbox = link(this, new LightboxApi());
+	}
+
+	authenticated() {
+		log.debug('authenticated');
+		return this.auth.authenticated();
+	}
+
+	getSession() {
+		return this.auth.session;
 	}
 }
 

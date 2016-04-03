@@ -22,6 +22,13 @@ img {
 	perspective: 1000px;
 }
 
+.mdl-card.is-flippable.removing {
+	position: absolute;
+	-webkit-transition: transform 0.5s ease-in;
+	transition: transform 0.5s ease-in;
+	z-index: 100;
+}
+
 .mdl-card>.mdl-card__face {
 	box-sizing: border-box;
 	position: absolute;
@@ -154,12 +161,17 @@ img {
 	height: 56px;
 }
 
+.mdl-layout__drawer-right .mdl-layout__title {
+	height: 96px;
+}
+
+
 .mdl-layout__drawer .mdl-layout__title h4 {
 	margin: 12px 0 0 0;
 }
 
 .mdl-layout__drawer .mdl-layout__title h4 p {
-	margin: 0 0 24px 0;
+	margin: 0 0 12px 0;
 	font-size: 12px;
 	line-height: 36px;
 	display: inline-block;
@@ -320,7 +332,8 @@ div.mdl-dialog .mdl-dialog__actions {
 	box-sizing: border-box;
 	width: 100%;
 	height: 100%;
-	overflow: auto;
+	overflow-y: auto;
+	overflow-x: hidden;
 	/* padding: 10px; */
 	-webkit-overflow-scrolling: touch;
 
@@ -362,6 +375,7 @@ div.mdl-dialog .mdl-dialog__actions {
 
 .Scroller .ScrollItem {
 	width: 100%;
+	position: relative;
 }
 
 @media screen and (min-width: 768px) {
@@ -611,6 +625,18 @@ div.mdl-dialog .mdl-dialog__actions {
 	background: rgba(158,158,158,.5);
 }
 
+.mdl-card .RatingActions {
+	position: absolute;
+	width: 100%;
+	height: 56px;
+	left: 0px;
+	bottom: 24px;
+}
+
+.mdl-card .RatingActions button {
+	margin: 0 24px;
+}
+
 /* Product cards */
 
 .mdl-card.Product .content {
@@ -805,7 +831,47 @@ div.mdl-dialog .mdl-dialog__actions {
 	opacity: 0.5;
 }
 
+/* Sprite */
+i.material-icons-sprite {
+	background: url('https://cdn.rawgit.com/download/bridalapp-static/1.0.13/bridalapp/sprite.png');
+	display: block;
+	width: 24px;
+	height: 24px;
+	position: absolute;
+	left: 50%;
+	margin-left: -12px;
+	top: 50%;
+	margin-top: -12px;
+	background-size: cover;
+}
 
+i.material-icons-sprite.broken-heart {background-position: 0% 0%;}
+i.material-icons-sprite.shoe {background-position: -100% 0%;}
+i.material-icons-sprite.clothing-hanger {background-position: -200% 0%;}
+i.material-icons-sprite.bridal-dress {background-position: -300% 0%;}
+
+.mdl-button i.material-icons-sprite {
+	position: initial;
+	display: inline-block;
+	line-height: 36px;
+	vertical-align: middle;
+	margin: 0 12px 0 12px;
+	-webkit-filter: invert(100%);
+	filter: invert(100%);
+}
+
+.mdl-button--colored i.material-icons-sprite {
+	-webkit-filter: initial;
+	filter: initial;
+}
+
+.mdl-button i.material-icons {
+	margin: 0 12px 0 12px;
+}
+
+.mdl-button--fab i.material-icons {
+	margin: 0;
+}
 
 
 /* Theme */
@@ -830,8 +896,16 @@ div.mdl-dialog .mdl-dialog__actions {
 .mdl-textfield--floating-label.is-focused .mdl-textfield__label {
 	color: #9E6A81;
 }
-.mdl-button.mdl-button--colored {color: #ec80ae;}
-.mdl-button.mdl-button--primary {color: #ec80ae;}
+.mdl-button.mdl-button--colored {color:#ec80ae;}
+.mdl-button.mdl-button--primary {color:#ec80ae;}
+.mdl-button--fab.mdl-button--colored,
+.mdl-button--fab.mdl-button--colored.mdl-button--primary {color:white; background-color:#ec80ae;}
+.mdl-button--fab.mdl-button--colored:hover,
+.mdl-button--fab.mdl-button--colored:active {background-color: #ec6fa4;}
+.mdl-button--fab.mdl-button--colored.danger {background-color:#847d7d;}
+.mdl-button--fab.mdl-button--colored.danger:hover,
+.mdl-button--fab.mdl-button--colored.danger:active {background-color:#756f6f;}
+.mdl-button--fab.mdl-button--colored.success {background-color:#83cc48;}
 
 .mdl-button--raised.mdl-button--colored {
 	background: #ec80ae;
@@ -846,3 +920,4 @@ div.mdl-dialog .mdl-dialog__actions {
 .mdl-tabs__tab .mdl-tabs__ripple-container .mdl-ripple {
 	background: #ec80ae;
 }
+

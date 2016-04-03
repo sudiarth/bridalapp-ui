@@ -23,6 +23,7 @@ export const routes = (
 			<IndexRoute component={StoreBrowser} />
 		</Route>
 		<Route component={Products} >
+			<Route path="/:rating/:category" component={ProductBrowser} />
 			<Route path="/:category" component={ProductBrowser} />
 		</Route>
 	</Route>

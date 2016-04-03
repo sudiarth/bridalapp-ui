@@ -190,60 +190,72 @@ export default class Scroller extends React.Component {
 
 	static defaultProps = {
 		items: {0: []},
-		itemSize: 580,
+		itemSize: 560,
 		initialItemsInView: 20,
 //		itemsPer: 1,
 		bufferBefore: 1,
 		bufferAfter: 1,
-		scrollDebounce: 250,
+		scrollDebounce: 100,
 //		direction: 'vertical',
 		snap: false,
 	};
 
-	constructor(props) {
-		log.debug('Scroller', props);
-		super(props); // direction, itemCount, items, itemSize, itemsPer
-		this.state = this.getState(props);
+	constructor(...args) {
+		log.debug('Scroller', ...args);
+		super(...args);
+		const { items, itemSize, initialItemsInView, bufferBefore, bufferAfter } = this.props;
+		const itemsInView = Math.min(initialItemsInView, items.length);
+		const renderedItems = items.slice(0, itemsInView);
+		const sizeItems = itemsInView * itemSize;
+		this.state = {
+			horizontal: false,
+			renderedItems,
+			sizeBefore: 0,
+			sizeItems,
+			sizeAfter: (items.length - itemsInView) * itemSize,
+			itemSize,
+			firstRenderedItemIndex: 0,
+			lastRenderedItemIndex: itemsInView - 1,
+			size: sizeItems,
+		};
+
 		this.onScroll = this.onScroll.bind(this);
 	}
 
 	getState(props) {
 		// let dir = props.direction;
-		let win = typeof window == 'object' && window;
-		let w = win && window.innerWidth || 767;
-		let horizontal = win && w < 480;
-		let scroller = this.mounted ? ReactDOM.findDOMNode(this) : undefined;
-		let scrollPos = scroller ? getScrollPos(horizontal, scroller) : 0;
+		const win = typeof window == 'object' && window;
+		const w = win && window.innerWidth || 767;
+		const horizontal = win && w < 480;
+		const scroller = this.mounted ? ReactDOM.findDOMNode(this) : undefined;
+		const scrollPos = scroller ? getScrollPos(horizontal, scroller) : 0;
 
-		let initialItemsInView = this.props.initialItemsInView;
-		let items = props.items instanceof Array ? {0: props.items} : props.items;
-		let itemCount = props.itemCount !== undefined ? props.itemCount : items && items[0] && items[0].length || 0;
-		let itemSize = horizontal ? w : props.itemSize;
-		let itemsPer = !win ? 1 : (w > 1024 ? 3 : (w > 767 ? 2 : 1));
-		let bufferBefore = props.bufferBefore;
-		let bufferAfter = props.bufferAfter;
-		let containerCount = ~~(itemCount / itemsPer) + (~~(itemCount % itemsPer) ? 1 : 0);
+		const { items, bufferBefore, bufferAfter } = props;
+		const itemSize = horizontal ? w : props.itemSize;
+		const itemsPer = !win ? 1 : (w > 1024 ? 3 : (w > 767 ? 2 : 1));
+		const containerCount = ~~(items.length / itemsPer) + (~~(items.length % itemsPer) ? 1 : 0);
 
-		let scrollerSize = scroller ? getSize(horizontal, scroller) : Math.min(initialItemsInView, containerCount) * itemSize;
-		let slider = this.refs.slider;
-		let sliderOffset = scroller ? posDifference(horizontal, slider, scroller) : 0;
-		let renderedItems = [];
+		const scrollerSize = scroller ? getSize(horizontal, scroller) : Math.min(initialItemsInView, containerCount) * itemSize;
+		const slider = this.refs.slider;
+		const sliderOffset = scroller ? posDifference(horizontal, slider, scroller) : 0;
 
-		let containersBefore = ~~(scrollPos / itemSize);
-		let bufBefore = Math.min(containersBefore, bufferBefore);
-		let skippedContainers = containersBefore - bufBefore;
-		let skippedItems = skippedContainers * itemsPer;
-		let firstIdx = skippedItems;
-		let containersInView = ~~(scrollerSize / itemSize) + (~~(scrollerSize % itemSize) ? 2 : 1)
-		let lastIdx = Math.min(firstIdx + containersInView * itemsPer + bufferAfter * itemsPer, itemCount - 1);
+		const renderedItems = [];
+
+		const containersBefore = ~~(scrollPos / itemSize);
+		const bufBefore = Math.min(containersBefore, bufferBefore);
+		const skippedContainers = containersBefore - bufBefore;
+		const skippedItems = skippedContainers * itemsPer;
+		const firstIdx = skippedItems;
+		const containersInView = ~~(scrollerSize / itemSize) + (~~(scrollerSize % itemSize) ? 2 : 1)
+		const lastIdx = Math.min(firstIdx + containersInView * itemsPer + bufferAfter * itemsPer, items.length - 1);
 		for (let i=firstIdx; i<=lastIdx; i++) {
-			let item = items[0][i] || null;
+			const item = items[i] || null;
 			renderedItems.push(item);
 		}
-		let renderedContainerCount = ~~(renderedItems.length / itemsPer) + (~~(renderedItems.length % itemsPer) ? 1 : 0);
-		let sizeBefore = ~~(firstIdx / itemsPer) * itemSize;
-		let sizeItems = renderedContainerCount * itemSize;
-		let sizeAfter = containerCount * itemSize - sizeBefore - sizeItems;
+		const renderedContainerCount = ~~(renderedItems.length / itemsPer) + (~~(renderedItems.length % itemsPer) ? 1 : 0);
+		const sizeBefore = ~~(firstIdx / itemsPer) * itemSize;
+		const sizeItems = renderedContainerCount * itemSize;
+		const sizeAfter = containerCount * itemSize - sizeBefore - sizeItems;
 
 		return {
 			horizontal,
@@ -264,6 +276,8 @@ export default class Scroller extends React.Component {
 		if (this.state.size !== nextState.size) return true;
 		if (this.state.sizeBefore !== nextState.sizeBefore) return true;
 		if (this.state.sizeAfter !== nextState.sizeAfter) return true;
+		if (this.props.items !== nextProps.items) return true;
+		if (this.props.state !== nextProps.state) return true;
 		if (this.props.items.length !== nextProps.items.length) return true;
 		if (!arraysEqual(this.state.renderedItems, nextState.renderedItems)) return true;
 		if (!arraysEqual(this.props.items, nextProps.items)) return true;

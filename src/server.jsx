@@ -92,12 +92,17 @@ express.get(/\/.*/, (req, res) => {
 			// Store session cookie so we can attach it to fetch calls
 			global.session = req.cookies && req.cookies.BASESSION;
 			global.session && log.debug('stored session cookie: ' + global.session);
-			const initialized = Promise.resolve(global.session ? store.app.auth.loadSession() : 'guest');
-			initialized.then(session => log.debug('loaded session: ', session));
-			// pre-load onload actions
-			log.debug('pre-loading onload actions of components on route');
-			const loaded = load(renderProps.routes.map(x => x.component), renderProps.params);
-			Promise.all([initialized, loaded]).then(() => {
+			Promise.resolve(global.session ? store.app.auth.loadSession() : {sessionId:null, user:null})
+			.then(session => {
+				log.debug('loaded session: ', session);
+				log.debug('store.app.auth.loggedIn=', store.app.auth.loggedIn);
+				// pre-load onload actions
+				const { routes, params, location: { query } } = renderProps;
+				const loadParams = {...query, ...params};
+				log.debug('LOAD params=', loadParams);
+				return load(routes.map(x => x.component), loadParams);
+			})
+			.then(() => {
 				// do awesome stuff knowing all promises (if any) are resolved
 				log.debug('pre-load complete, rendering markup');
 				res.status(200);
@@ -107,11 +112,11 @@ express.get(/\/.*/, (req, res) => {
 					)
 				);
 				res.end();
-				log.debug('rendering complete, deleting session cookie');
-				delete global.session;
+				log.debug('rendering complete');
+				return true;
 			})
 			.catch((error) => {
-				log.error('Error loading data for route ' + req.originalUrl + ': ', error, error.stack);
+				log.error('Error rendering ' + req.originalUrl + ': ', error, error.stack);
 				res.status(500);
 				res.send('Server error.');
 				res.end();

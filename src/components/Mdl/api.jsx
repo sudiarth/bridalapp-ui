@@ -9,8 +9,10 @@ export class TextfieldApi extends Api {
 	constructor(state = TextfieldApi.INITIAL_STATE) {
 		super(state);
 		this.setHandler(TextfieldApi.SET_VALUE, (state, {payload}) => ({...state, value:payload}));
-		Object.defineProperty(this, 'value', {enumerable:true, get: () => this.getState().value});
-		Object.defineProperty(this, 'onChange', {enumerable:true, value:this.setValue.bind(this)});
+		Object.defineProperties(this, {
+			value: {enumerable:true, get: () => this.getState().value},
+			onChange: {enumerable:true, value:this.setValue.bind(this)}
+		})
 	}
 
 	setValue(value) {
@@ -28,9 +30,11 @@ export class DrawerApi extends Api {
 		super(state);
 		this.setHandler(DrawerApi.OPEN, (state, action) => ({...state, open:true}));
 		this.setHandler(DrawerApi.CLOSE, (state, action) => ({...state, open:false}));
-		Object.defineProperty(this, 'open', {enumerable:true, get: () => this.getState().open});
-		Object.defineProperty(this, 'onCancel', {enumerable:true, value:this.closeDrawer.bind(this)});
-		Object.defineProperty(this, 'onActivate', {enumerable:true, value:this.openDrawer.bind(this)});
+		Object.defineProperties(this, {
+			open: {enumerable:true, get:() => this.getState().open},
+			onCancel: {enumerable:true, value:this.closeDrawer.bind(this)},
+			onActivate: {enumerable:true, value:this.openDrawer.bind(this)}
+		})
 	}
 
 	openDrawer() {
@@ -55,21 +59,21 @@ export class LightboxApi extends Api {
 
 	constructor(state = LightboxApi.INITIAL_STATE) {
 		super(state);
-
 		this.setHandler(LightboxApi.OPEN, (state, { payload:{images, index } }) => ({ ...state, open:true, images, index }));
 		this.setHandler(LightboxApi.NEXT, ({ images, index, ...state }) => ({ ...state, images, index: index < images.length - 1 ? index + 1 : index }));
 		this.setHandler(LightboxApi.PREV, ({ index, ...state }) => ({ ...state, index: index > 0 ? index - 1 : index }));
 		this.setHandler(LightboxApi.NAV, ({ index, ...state }, {payload}) => ({ ...state, index:payload }));
 		this.setHandler(LightboxApi.CANCEL, (state, action) => ({ ...state, open:false, images:[], index:0 }));
-
-		Object.defineProperty(this, 'open', {enumerable:true, get:() => this.getState() && this.getState().open});
-		Object.defineProperty(this, 'index', {enumerable:true, get:() => this.getState() && this.getState().index});
-		Object.defineProperty(this, 'images', {enumerable:true, get:() => this.getState() && this.getState().images});
-		Object.defineProperty(this, 'onOpenLightbox', {enumerable:true, value:this.openLightbox.bind(this)});
-		Object.defineProperty(this, 'onCancel', {enumerable:true, value:this.cancel.bind(this)});
-		Object.defineProperty(this, 'onNext', {enumerable:true, value:this.next.bind(this)});
-		Object.defineProperty(this, 'onPrev', {enumerable:true, value:this.prev.bind(this)});
-		Object.defineProperty(this, 'onNav', {enumerable:true, value:this.nav.bind(this)});
+		Object.defineProperties(this, {
+			open: {enumerable:true, get:() => this.getState() && this.getState().open},
+			index: {enumerable:true, get:() => this.getState() && this.getState().index},
+			images: {enumerable:true, get:() => this.getState() && this.getState().images},
+			onOpenLightbox: {enumerable:true, value:this.openLightbox.bind(this)},
+			onCancel: {enumerable:true, value:this.cancel.bind(this)},
+			onNext: {enumerable:true, value:this.next.bind(this)},
+			onPrev: {enumerable:true, value:this.prev.bind(this)},
+			onNav: {enumerable:true, value:this.nav.bind(this)}
+		})
 	}
 
 	openLightbox(images = [], index = 0) {

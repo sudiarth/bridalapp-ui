@@ -3,12 +3,13 @@ import React, { Component, PropTypes } from 'react';
 const { any, bool, string, object, func, shape } = PropTypes;
 import classNames from 'classnames';
 import Suid from 'ws.suid';
-import { CardTitle, CardText, FABButton, Icon } from 'react-mdl';
-import { StatefulFlipCard, FrontFace, BackFace } from '../Mdl/mdl-extras';
+import { CardTitle, CardText, Button, FABButton, Icon } from 'react-mdl';
+import { StatefulFlipCard, FrontFace, BackFace, Sprite } from '../Mdl/mdl-extras';
 import Publication from '../Publication/Publication';
 
 export class ProductCard extends Publication {
 	static propTypes = {
+		className: string,
 		product: shape({
 			id: any,
 			name: string,
@@ -17,18 +18,22 @@ export class ProductCard extends Publication {
 			description: string,
 			published: bool,
 		}).isRequired,
+		rating: string,
+		onLove: func.isRequired,
+		onDislike: func.isRequired,
+		onUndoRating: func.isRequired,
+		removing: string
+	}
+
+	static defaultProps = {
+		removing: '',
 	}
 
 	static contextTypes = {
-		auth: shape({
-			user: object,
-		}).isRequired,
-
 		lightbox: shape({
 			onOpenLightbox: func.isRequired,
 		}).isRequired,
 	}
-
 
 	constructor(...props) {
 		super(...props);
@@ -36,21 +41,48 @@ export class ProductCard extends Publication {
 	}
 
 	componentDidMount() {
-		this.setState({size: window.innerWidth < 480 ? {width:'100%'} : {height:'100%'}});
+		this.setState(...this.state, {size: window.innerWidth < 480 ? {width:'100%'} : {height:'100%'}});
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (typeof window == 'object' && nextProps.removing) {
+			const node = ReactDOM.findDOMNode(this);
+			const newState = {...this.state, rect:node.getBoundingClientRect(), win:window.innerWidth};
+			this.setState(newState);
+			log.debug('componentWillReceiveProps: state=', this.state, ', newState=', newState);
+		}
 	}
 
 	thumbnailClicked(images, index, event) {
 		log.log('thumbnailClicked', images, index, event);
 		const { lightbox: { onOpenLightbox } } = this.context;
-		onOpenLightbox(images, index, event);
 		if (event) {event.preventDefault(); event.stopPropagation();}
+		onOpenLightbox(images, index, event);
+	}
+
+	dislikeClicked(product, event) {
+		log.log('dislikeClicked', product, event);
+		if (event) {event.preventDefault(); event.stopPropagation();}
+		return this.props.onDislike(product);
+	}
+
+	loveClicked(product, event) {
+		log.log('loveClicked', product, event);
+		if (event) {event.preventDefault(); event.stopPropagation();}
+		return this.props.onLove(product);
+	}
+
+	undoRatingClicked(product, event) {
+		log.log('undoRatingClicked', product, event);
+		if (event) {event.preventDefault(); event.stopPropagation();}
+		return this.props.onUndoRating(product);
 	}
 
 	render() {
 		log.debug('render', this.props);
-		const { product } = this.props;
+		const { className, product, rating, onLove, onDislike, onUndoRating, removing, ...others } = this.props;
 		const { id, name, brandId, brandName, description, published } = product;
-		const { size } = this.state;
+		const { size, rect, win } = this.state;
 		const pid = Suid(id).toString();
 		const bid = Suid(brandId).toString();
 		const { flipCard } = this.refs;
@@ -66,12 +98,38 @@ export class ProductCard extends Publication {
 			{src: `${prdUrl}/detail-2-large.jpg`, className:'detail-2', alt:{src:img, style:{...size, backgroundImage:`url(${thumbs})`, backgroundSize:'600%', backgroundPosition:'100% 200%'}}},
 			{src: `${prdUrl}/detail-3-large.jpg`, className:'detail-3', alt:{src:img, style:{...size, backgroundImage:`url(${thumbs})`, backgroundSize:'600%', backgroundPosition:'200% 100%'}}},
 		];
-		const classes = classNames('Product', {'unpublished':!published});
+		const classes = classNames('Product', className, {'unpublished':!published, 'removing':removing,
+				'loved':removing === 'loved', 'disliked':removing === 'disliked'});
+		const width = rect ? rect.right - rect.left : 0;
+		const height = rect ? rect.bottom - rect.top : 0;
+		const trans = (removing === 'disliked' || removing === 'undoRating')
+			? 0 - rect.left - width : (removing === 'loved' ? win - rect.left : '');
+		const transform = `translate3d(${trans}px, 0, 10px) scale3d(0.2, 0.2, 0.2)`
+		const style = removing ? {width:width, height:height, transform:transform, WebkitTransform:transform} : {};
 		return (
-			<StatefulFlipCard className={classes} key={id}>
+			<StatefulFlipCard className={classes} key={id} style={style}>
 				<FrontFace>
 					<div className="content">
 						<img className="ProductImage" src={img} style={{backgroundImage: `url(${thumbs})`, height:'100%'}} />
+
+						{!rating ?
+							<div className="RatingActions">
+								<FABButton colored className="Rate disliked danger" onClick={this.dislikeClicked.bind(this, product)}><Sprite name="broken-heart" /></FABButton>
+								<FABButton colored className="Rate loved" onClick={this.loveClicked.bind(this, product)}><Icon name="favorite" /></FABButton>
+							</div>
+						:
+							<div className="RatingActions">
+								<Button onClick={this.undoRatingClicked.bind(this, product)}>
+									{rating == 'disliked' ?
+										<Sprite name="broken-heart" />
+									:
+										<Icon name="favorite" />
+									}
+									undo
+								</Button>
+							</div>
+						}
+
 						{this.mayPublish(product) ?
 							<div className="ModActions">
 							{published ?
