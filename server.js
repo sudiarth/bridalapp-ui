@@ -5468,8 +5468,8 @@
 				var flipCard = this.refs.flipCard;
 	
 				var img = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
-				var prdUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.8/products/' + bid + '/' + encodeURIComponent(name);
-				var brandUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.8/brands/' + bid + '/logo-brand-name.png';
+				var prdUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.13/products/' + bid + '/' + encodeURIComponent(name);
+				var brandUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.13/brands/' + bid + '/logo-brand-name.png';
 				var thumbs = prdUrl + '/thumbs.jpg';
 				var thumbnail = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
 				var images = [{ src: prdUrl + '/back-large.jpg', className: 'back', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '300%', backgroundPosition: '100% 0' }) } }, { src: prdUrl + '/front-large.jpg', className: 'front', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '150%', backgroundPosition: '0 0' }) } }, { src: prdUrl + '/detail-1-large.jpg', className: 'detail-1', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '600%', backgroundPosition: '200% 200%' }) } }, { src: prdUrl + '/detail-2-large.jpg', className: 'detail-2', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '600%', backgroundPosition: '100% 200%' }) } }, { src: prdUrl + '/detail-3-large.jpg', className: 'detail-3', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '600%', backgroundPosition: '200% 100%' }) } }];
