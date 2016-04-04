@@ -1,6 +1,6 @@
 import log from 'picolog';
 import React, { Component, PropTypes } from 'react';
-const { bool, object, func, array, any } = PropTypes;
+const { bool, object, func, array, shape, any } = PropTypes;
 import { connect } from 'react-redux';
 import { onload } from 'redux-load-api';
 
@@ -35,9 +35,11 @@ export default class StoreBrowser extends React.Component {
 		onFilterChange: func.isRequired,
 		onSearch: func.isRequired,
 		onItemsChange: func.isRequired,
-		onMayPublish: func.isRequired,
-		onPublish: func.isRequired,
-		onUnpublish: func.isRequired,
+		item: shape({
+			onMayPublish: func.isRequired,
+			onPublish: func.isRequired,
+			onUnpublish: func.isRequired,
+		}).isRequired,
 	}
 
 	componentDidMount() {
@@ -48,19 +50,15 @@ export default class StoreBrowser extends React.Component {
 
 	render() {
 		log.debug('render', this.props);
-		const { items, onMayPublish, onPublish, onUnpublish } = this.props;
+		const { items, item } = this.props;
 		return (
 			<Scroller
 				className="StoreBrowser"
 				bufferBefore={4}
 				items={items}
 				bufferAfter={8}
-				renderItem ={ (item, idx) => (
-					<StoreCard store={item}
-						onMayPublish={onMayPublish}
-						onPublish={onPublish}
-						onUnpublish={onUnpublish}
-					/>
+				renderItem ={ (store, idx) => (
+					<StoreCard store={store} {...item} />
 				)}
 			/>
 		);

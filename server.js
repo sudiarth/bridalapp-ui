@@ -3901,6 +3901,10 @@
 	});
 	exports.BrandBrowser = undefined;
 	
+	var _extends2 = __webpack_require__(7);
+	
+	var _extends3 = _interopRequireDefault(_extends2);
+	
 	var _getPrototypeOf = __webpack_require__(2);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
@@ -3961,6 +3965,7 @@
 	var object = _react.PropTypes.object;
 	var array = _react.PropTypes.array;
 	var func = _react.PropTypes.func;
+	var shape = _react.PropTypes.shape;
 	var any = _react.PropTypes.any;
 	
 	var app = _store2.default.app;
@@ -4005,21 +4010,15 @@
 				_picolog2.default.debug('render', this.props);
 				var _props2 = this.props;
 				var items = _props2.items;
-				var onMayPublish = _props2.onMayPublish;
-				var onPublish = _props2.onPublish;
-				var onUnpublish = _props2.onUnpublish;
+				var item = _props2.item;
 	
 				return _react2.default.createElement(_Scroller2.default, {
 					className: 'BrandBrowser ',
 					bufferBefore: 2,
 					items: items,
 					bufferAfter: 4,
-					renderItem: function renderItem(item, idx) {
-						return _react2.default.createElement(_BrandCard2.default, { brand: item,
-							onMayPublish: onMayPublish,
-							onPublish: onPublish,
-							onUnpublish: onUnpublish
-						});
+					renderItem: function renderItem(brand, idx) {
+						return _react2.default.createElement(_BrandCard2.default, (0, _extends3.default)({ brand: brand }, item));
 					}
 				});
 			}
@@ -4034,9 +4033,11 @@
 		onFilterChange: func.isRequired,
 		onSearch: func.isRequired,
 		onItemsChange: func.isRequired,
-		onMayPublish: func.isRequired,
-		onPublish: func.isRequired,
-		onUnpublish: func.isRequired
+		item: shape({
+			onMayPublish: func.isRequired,
+			onPublish: func.isRequired,
+			onUnpublish: func.isRequired
+		}).isRequired
 	}, _temp)) || _class) || _class);
 	exports.default = BrandBrowser;
 
@@ -6005,6 +6006,10 @@
 	});
 	exports.default = undefined;
 	
+	var _extends2 = __webpack_require__(7);
+	
+	var _extends3 = _interopRequireDefault(_extends2);
+	
 	var _getPrototypeOf = __webpack_require__(2);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
@@ -6057,6 +6062,7 @@
 	var object = _react.PropTypes.object;
 	var func = _react.PropTypes.func;
 	var array = _react.PropTypes.array;
+	var shape = _react.PropTypes.shape;
 	var any = _react.PropTypes.any;
 	
 	var app = _store2.default.app;
@@ -6101,21 +6107,15 @@
 				_picolog2.default.debug('render', this.props);
 				var _props2 = this.props;
 				var items = _props2.items;
-				var onMayPublish = _props2.onMayPublish;
-				var onPublish = _props2.onPublish;
-				var onUnpublish = _props2.onUnpublish;
+				var item = _props2.item;
 	
 				return _react2.default.createElement(_Scroller2.default, {
 					className: 'StoreBrowser',
 					bufferBefore: 4,
 					items: items,
 					bufferAfter: 8,
-					renderItem: function renderItem(item, idx) {
-						return _react2.default.createElement(_StoreCard2.default, { store: item,
-							onMayPublish: onMayPublish,
-							onPublish: onPublish,
-							onUnpublish: onUnpublish
-						});
+					renderItem: function renderItem(store, idx) {
+						return _react2.default.createElement(_StoreCard2.default, (0, _extends3.default)({ store: store }, item));
 					}
 				});
 			}
@@ -6130,9 +6130,11 @@
 		onFilterChange: func.isRequired,
 		onSearch: func.isRequired,
 		onItemsChange: func.isRequired,
-		onMayPublish: func.isRequired,
-		onPublish: func.isRequired,
-		onUnpublish: func.isRequired
+		item: shape({
+			onMayPublish: func.isRequired,
+			onPublish: func.isRequired,
+			onUnpublish: func.isRequired
+		}).isRequired
 	}, _temp)) || _class) || _class);
 	exports.default = StoreBrowser;
 
@@ -6807,7 +6809,7 @@
 
 	module.exports = {
 		"name": "bridalapp-ui",
-		"version": "1.0.5",
+		"version": "1.0.6",
 		"description": "User Interface for BridalApp",
 		"keywords": [
 			"OpenShift",
