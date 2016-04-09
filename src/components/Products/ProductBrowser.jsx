@@ -13,7 +13,7 @@ import ProductCard from './ProductCard';
 const ANIMATION_TIME = 510;
 
 function load(params) {
-	log.log('load', params);
+	log.info('load', params);
 	app.products.setFilter({...params});
 	return app.products.search()
 		.then((results) => {
@@ -36,6 +36,7 @@ export default class ProductBrowser extends React.Component {
 		}).isRequired,
 		filter: object.isRequired,
 		items: array.isRequired,
+		stockedItems: object.isRequired,
 		pending: bool.isRequired,
 		error: any,
 		onFilterChange: func.isRequired,
@@ -48,6 +49,9 @@ export default class ProductBrowser extends React.Component {
 			onLove: func.isRequired,
 			onDislike: func.isRequired,
 			onUndoRating: func.isRequired,
+			onMayToggleStock: func.isRequired,
+			onIsStocked: func.isRequired,
+			onToggleStock: func.isRequired,
 		}).isRequired,
 	}
 
@@ -131,8 +135,8 @@ export default class ProductBrowser extends React.Component {
 	}
 
 	render() {
-		log.debug('render', this.props, this.state);
-		const { filter, items } = this.props;
+		log.info('render', this.props, this.state);
+		const { filter, items, stockedItems, item: { onIsStocked } } = this.props;
 		const item = { ...this.props.item,
 			onDislike: this.dislike.bind(this),
 			onLove: this.love.bind(this),
@@ -147,19 +151,13 @@ export default class ProductBrowser extends React.Component {
 				bufferAfter={16}
 				renderItem ={(product, idx) => {
 					const pid = product.id.toString();
-//					const cls = this.state.removing[pid] ? 'removing' : '';
-//					log.info('className=', cls, ', pid=', pid, ', removing=', this.state.removing);
-					return (idx < 10 ?
-						<ProductCard removing={this.state.removing[pid]}
-//							className={cls}
-							product={product} rating={filter.rating} {...item} frontLoadDelay={0} />
-					:
-						<ProductCard removing={this.state.removing[pid]}
-//							className={cls}
-							product={product} rating={filter.rating} {...item}  />
+					const frontLoadDelay = idx < 10 ? 0 : 500;
+					return (
+						<ProductCard product={product} rating={filter.rating} stocked={onIsStocked(product)} {...item}
+								removing={this.state.removing[pid]} frontLoadDelay={frontLoadDelay} />
 					)
 				}}
-				state={this.state.removing}
+				state={'' + this.state.removing + JSON.stringify(stockedItems)}
 			/>
 		);
 	}

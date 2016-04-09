@@ -4,7 +4,7 @@ const { any, bool, string, object, func, shape } = PropTypes;
 import classNames from 'classnames';
 import Suid from 'ws.suid';
 import { CardTitle, CardText, Button, FABButton, Icon } from 'react-mdl';
-import { StatefulFlipCard, FrontFace, BackFace, Sprite } from '../Mdl/mdl-extras';
+import { StatefulFlipCard, FrontFace, BackFace, Sprite, Switch } from '../Mdl/mdl-extras';
 import Publication from '../Publication/Publication';
 
 export class ProductCard extends Publication {
@@ -19,9 +19,12 @@ export class ProductCard extends Publication {
 			published: bool,
 		}).isRequired,
 		rating: string,
+		stocked: bool,
 		onLove: func.isRequired,
 		onDislike: func.isRequired,
 		onUndoRating: func.isRequired,
+		onMayToggleStock: func.isRequired,
+		onToggleStock: func.isRequired,
 		removing: string
 	}
 
@@ -78,17 +81,38 @@ export class ProductCard extends Publication {
 		return this.props.onUndoRating(product);
 	}
 
+	mayToggleStock(product) {
+		log.trace('mayToggleStock', product);
+		const result = this.props.onMayToggleStock(product);
+		log.trace('mayToggleStock => ' + result);
+		return result;
+	}
+
+	isStocked(product) {
+		log.trace('isStocked', product);
+		const result = this.props.onIsStocked(product);
+		log.trace('isStocked => ' + result);
+		return result;
+	}
+
+	toggleStockClicked(product, event) {
+		log.log('toggleStockClicked', product, event);
+		if (event) {event.preventDefault(); event.stopPropagation();}
+		return this.props.onToggleStock(product);
+	}
+
 	render() {
 		log.debug('render', this.props);
-		const { className, product, rating, onLove, onDislike, onUndoRating, removing, ...others } = this.props;
+		const { className, product, rating, stocked, onLove, onDislike, onUndoRating, removing, ...others } = this.props;
+		if (stocked) log.info('render', product);
 		const { id, name, brandId, brandName, description, published } = product;
 		const { size, rect, win } = this.state;
 		const pid = Suid(id).toString();
 		const bid = Suid(brandId).toString();
 		const { flipCard } = this.refs;
 		const img = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
-		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.13/products/${bid}/${encodeURIComponent(name)}`;
-		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.13/brands/${bid}/logo-brand-name.png`;
+		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.14/products/${bid}/${encodeURIComponent(name)}`;
+		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.14/brands/${bid}/logo-brand-name.png`;
 		const thumbs = `${prdUrl}/thumbs.jpg`;
 		const thumbnail = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
 		const images = [
@@ -139,6 +163,13 @@ export class ProductCard extends Publication {
 							}
 							</div>
 						: ''}
+
+						{this.mayToggleStock(product) ?
+							<div className="ActorActions">
+								<Switch on={stocked} name={'stock' + product.id} sprite="stock"
+									onChange={this.toggleStockClicked.bind(this, product)} />
+							</div>
+						: ''}
 					</div>
 				</FrontFace>
 				<BackFace>
@@ -161,3 +192,9 @@ export class ProductCard extends Publication {
 	}
 }
 export default ProductCard;
+
+//								<FABButton className="Unclaim" onClick={this.unclaimClicked.bind(this, product)}><Sprite name="disable-stock" /></FABButton>
+//								<FABButton className="Claim" onClick={this.claimClicked.bind(this, product)}><Sprite name="stock" /></FABButton>
+
+
+

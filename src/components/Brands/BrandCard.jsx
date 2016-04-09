@@ -42,8 +42,8 @@ export class BrandCard extends Publication {
 		const { size } = this.state;
 		const bid = id.toString();
 		const img = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
-		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.8/products/${bid}/Brand`;
-		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.8/brands/${bid}/logo-brand-name.png`;
+		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.14/products/${bid}/Brand`;
+		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.14/brands/${bid}/logo-brand-name.png`;
 		const thumbs = `${prdUrl}/thumbs.jpg`;
 		const thumbnail = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
 		const images = [

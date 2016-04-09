@@ -42,8 +42,8 @@ export class StoreCard extends Publication {
 		const { store } = this.props;
 		const { id, name, description, address1, address2, postalCode, city, state, countryCode, telephone, website, premium, published } = store;
 		const sid = Suid(id).toString();
-		const logo = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.8/stores/${sid}/logo.png`;
-		const thumb = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.8/stores/${sid}/thumb.jpg`;
+		const logo = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.14/stores/${sid}/logo.png`;
+		const thumb = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.14/stores/${sid}/thumb.jpg`;
 		const classes = classNames('Store', {'premium':premium, 'unpublished':!published});
 		return (
 			<StatefulFlipCard className={classes} key={sid}>

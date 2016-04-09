@@ -56,7 +56,7 @@ export class AppApi extends Api {
 	}
 
 	authenticated() {
-		log.debug('authenticated');
+		log.info('authenticated');
 		return this.auth.authenticated();
 	}
 

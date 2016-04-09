@@ -53,6 +53,43 @@ export const Sprite = component('Sprite', 'material-icons-sprite', {}, 'i', {nam
 	}
 )
 
+export const Switch = component('Switch', 'mdl-switch', {ripple:'mdl-js-ripple-efect'}, 'label',
+	{
+		name: string.isRequired,
+		icon: string,
+		sprite: string,
+		on: bool,
+	},
+	{
+		on: false
+	},
+	(elem, props, children) => {
+		const { name, icon, sprite, on, className, ...others } = props;
+		const classes = classNames(className, 'is-upgraded', {'is-checked':on, 'icon':!!icon, 'sprite':!!sprite});
+		return (
+			<label className={classes} htmlFor={name} {...others}>
+				<input type="checkbox" id={name} className="mdl-switch__input" defaultChecked={on} />
+				<span className="mdl-switch__label">
+					{icon ? <Icon name={icon} /> : ''}
+					{sprite ? <Sprite name={sprite} /> : ''}
+					{children}
+				</span>
+				<div className="mdl-switch__track"></div>
+				<div className="mdl-switch__thumb">
+					<span className="mdl-switch__focus-helper"></span>
+				</div>
+			</label>
+		)
+	}
+)
+/*
+<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
+  <input type="checkbox" id="switch-1" class="mdl-switch__input" checked>
+  <span class="mdl-switch__label"></span>
+</label>
+*/
+
+
 /**
  * Controlled version of the MDL TextField component that adds a property `value`.
  */

@@ -39,6 +39,8 @@ export class RegisterDialogApi extends Api {
 	}
 }
 
+const NULL_SESSION = {sessionId:null, user:null};
+
 @remote
 export class Auth extends Async {
 	static CHALLENGE = 'AUTH_CHALLENGE';
@@ -48,7 +50,7 @@ export class Auth extends Async {
 
 	static INITIAL_STATE = {
 		...Async.INITIAL_STATE,
-		session: null,
+		session: NULL_SESSION,
 		challenge: null,
 	};
 
@@ -56,9 +58,9 @@ export class Auth extends Async {
 		super(state);
 		this.setHandler(Auth.CHALLENGE, (state, {payload}) => ({...state, challenge:payload}));
 		this.setHandler(Auth.LOGGED_IN,	(state, {payload}) => ({...state, session:payload, challenge:null}));
-		this.setHandler(Auth.LOGGED_OUT, (state, action) => ({...state, session:null, challenge:null}));
+		this.setHandler(Auth.LOGGED_OUT, (state, {payload}) => ({...state, session:payload, challenge:null}));
 		this.setHandler(Auth.CANCEL, (state, action) => ({...state, challenge:null}));
-		Object.defineProperty(this, 'loggedIn', {enumerable:true, get: () => !!this.session});
+		Object.defineProperty(this, 'loggedIn', {enumerable:true, get: () => !!(this.session && this.session.user)});
 		Object.defineProperty(this, 'challenged', {enumerable:true, get: () => !!(this.challenge() && this.challenge().url && !this.challenge().accepted)});
 		Object.defineProperty(this, 'session', {enumerable:true, get: () => this.getState().session});
 		Object.defineProperty(this, 'onProvoke', {enumerable:true, value: () => this.provoke()});
@@ -75,7 +77,7 @@ export class Auth extends Async {
 		this.setBusy();
 		return fetchSessionInfo(this)
 			.then(session => {
-				log.debug('loadSession => ', session);
+				log.info('loadSession => ', session);
 				this.setDone();
 				return session;
 			});
@@ -125,7 +127,7 @@ export class Auth extends Async {
 						});
 				}
 				return remoteLogin(this, this.challenge()).then(resolve).catch(reject);
-			}).then((results) => {log.debug('Login', this.session.user); return results;});
+			}).then((results) => {log.debug('Login', username); return results;});
 			log.debug('Posting credentials to ', challenge.url);
 		});
 	}
@@ -137,7 +139,7 @@ export class Auth extends Async {
 			this.cancel();
 			return this.fetch('/logout').catch().then(() => {
 				this.setDone();
-				this.dispatch(this.createAction(Auth.LOGGED_OUT)());
+				this.dispatch(this.createAction(Auth.LOGGED_OUT)(NULL_SESSION));
 			})
 		});
 	}
@@ -309,17 +311,17 @@ function fetchSessionInfo(auth) {
 			return response.status == 200 && response.text();
 		})
 		.then(text => {
-			log.debug('fetchSessionInfo => text=', text);
+			log.info('fetchSessionInfo => text=', text);
 			return fromJSON(text);
 		})
 		.then(session => processSession(auth, session))
 }
 
 function processSession(auth, session) {
-	log.debug('processSession', session);
+	log.info('processSession', session);
 	const { user, sessionId } = session;
-	log.debug('processSession => sessionId=', sessionId);
-	log.debug('processSession => user=', user);
+	log.info('processSession => sessionId=', sessionId);
+	log.info('processSession => user=', user);
 	if (typeof document == 'object') {
 		const maxAge = sessionId ? 10 * 24 * 60 * 60 : 0;
 		document.cookie = `BASESSION=${sessionId}; Max-Age=${maxAge}; path=/`;
@@ -331,7 +333,10 @@ function processSession(auth, session) {
 	}
 	else if (!user && auth.loggedIn) {
 		log.debug('fetchSessionInfo => Dispatching LOGGED_OUT action');
-		auth.dispatch(auth.createAction(Auth.LOGGED_OUT)());
+		auth.dispatch(auth.createAction(Auth.LOGGED_OUT)(session));
+	}
+	else if (auth.session.sessionId !== session.sessionId) {
+		log.info('HUUH??');
 	}
 	return session;
 }

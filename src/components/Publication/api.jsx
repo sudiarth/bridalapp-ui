@@ -23,7 +23,7 @@ export class PublicationApi extends EntityApi {
 
 	mayPublish(item) {
 		log.trace('mayPublish', item, this, this.getSession);
-		if (this.getSession()) {
+		if (this.getSession().user) {
 			for (let i=0, role; role=this.getSession().user.roles[i]; i++) {
 				if (role.equals(Role.BRAUTSCHLOSS_USER) ||
 					role.equals(Role.BRAUTSCHLOSS_MANAGER) ||
