@@ -91,13 +91,11 @@ express.get(/\/.*/, (req, res) => {
 
 			// Store session cookie so we can attach it to fetch calls
 			global.session = req.cookies && req.cookies.BASESSION;
-			global.session && log.info('stored session cookie: ' + global.session);
+			global.session && log.log('stored session cookie: ' + global.session);
 			Promise.resolve(global.session ? store.app.auth.loadSession() : {sessionId:null, user:null})
 			.then(session => {
 				log.debug('loaded session: ', session);
-				log.info('store.app.auth.loggedIn=', store.app.auth.loggedIn);
-				log.info('store.app.auth.session=', store.app.auth.session);
-				log.info('store.app.getSession()=', store.app.getSession());
+				log.debug('store.app.auth.loggedIn=', store.app.auth.loggedIn);
 				// pre-load onload actions
 				const { routes, params, location: { query } } = renderProps;
 				const loadParams = {...query, ...params};

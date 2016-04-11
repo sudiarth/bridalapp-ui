@@ -2,7 +2,6 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
-// import { createResponsiveStateReducer, responsiveStoreEnhancer } from 'redux-responsive';
 import { link, namedLink } from 'redux-apis';
 
 import { fromJSON } from './components/Entity/Entity';
@@ -44,9 +43,9 @@ const storeEnhancer = typeof window == 'object'
 		? compose(applyMiddleware(thunk, createLogger({logger: log})))
 		: compose(applyMiddleware(thunk));
 
-
 let AppApi = require('./components/App/api').AppApi;
 let app = new AppApi();
+
 export const store = createStore(
 	createReducer(app),
 	typeof window == 'object' && window.__data && fromJSON(window.__data) || undefined,
@@ -55,14 +54,11 @@ export const store = createStore(
 store.app = link(store, app);
 export default store;
 
-
-if (typeof window == 'object') {
-	window.bridalapp = store.app;
-}
+if (typeof window == 'object') {window.bridalapp = app;}
+else if (typeof global == 'object') {global.bridalapp = app;}
 
 if (module.hot) {
 	module.hot.accept('./components/App/api', () => {
-
 		const msg = 'Hot-reloading \'./components/App/api\'',
 			args = typeof window=='object'? [`%c${msg}`,'color:green'] : [msg];
 
@@ -71,5 +67,6 @@ if (module.hot) {
 		store.replaceReducer(createReducer(app));
 		store.app = link(store, app);
 		if (typeof window == 'object') {window.bridalapp = app;}
+		else if (typeof global == 'object') {global.bridalapp = app;}
 	});
 }

@@ -2,5 +2,5 @@
 import Entity from '../Entity/Entity';
 
 @Entity
-export class Product {}
-export default Product;
+export class StockItem {}
+export default StockItem;

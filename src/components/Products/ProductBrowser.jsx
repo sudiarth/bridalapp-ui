@@ -5,17 +5,17 @@ import { connect } from 'react-redux';
 import { onload } from 'redux-load-api';
 
 import { fromJSON, toJSON, indexOf } from '../Entity/Entity';
+import { AppApi } from '../App/api'; // explicitly import to facilitate hot-reload
 import store from '../../store';
-const app = store.app;
 import Scroller from '../Scroller/Scroller';
 import ProductCard from './ProductCard';
 
 const ANIMATION_TIME = 510;
 
 function load(params) {
-	log.info('load', params);
-	app.products.setFilter({...params});
-	return app.products.search()
+	log.log('load', params);
+	bridalapp.products.setFilter(params);
+	return bridalapp.products.search()
 		.then((results) => {
 			log.debug('load: search returned ' + results.length + ' products.');
 			return results;
@@ -27,7 +27,7 @@ function load(params) {
 }
 
 @onload(load)
-@connect(app.products.connector)
+@connect(bridalapp.products.connector)
 export default class ProductBrowser extends React.Component {
 	static propTypes = {
 		params: object.isRequired,
@@ -69,7 +69,7 @@ export default class ProductBrowser extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		log.debug('componentWillReceiveProps', nextProps);
 		if (nextProps.location.pathname !== this.props.location.pathname || nextProps.pending || nextProps.error) {
-			this.setState({ removing:{} });
+			if (Object.keys(this.state.removing).length > 0) {this.setState({ removing:{} });}
 			load({...nextProps.location.query, ...nextProps.params});
 		}
 	}
@@ -77,7 +77,7 @@ export default class ProductBrowser extends React.Component {
 	dislike(product) {
 		log.log('dislike', product);
 		const pid = product.id.toString();
-		if (app.auth.loggedIn) {
+		if (bridalapp.auth.loggedIn) {
 			const removing = { ...this.state.removing };
 			removing[pid] = 'disliked';
 			this.setState({ ...this.state, removing });
@@ -98,7 +98,7 @@ export default class ProductBrowser extends React.Component {
 	love(product) {
 		log.log('love', product);
 		const pid = product.id.toString();
-		if (app.auth.loggedIn) {
+		if (bridalapp.auth.loggedIn) {
 			const removing = { ...this.state.removing };
 			removing[pid] = 'loved';
 			this.setState({ ...this.state, removing });
@@ -119,7 +119,7 @@ export default class ProductBrowser extends React.Component {
 	undoRating(product) {
 		log.log('undoRating', product);
 		const pid = product.id.toString();
-		if (app.auth.loggedIn) {
+		if (bridalapp.auth.loggedIn) {
 			const removing = { ...this.state.removing };
 			removing[pid] = 'undoRating';
 			this.setState({ ...this.state, removing });
@@ -135,13 +135,14 @@ export default class ProductBrowser extends React.Component {
 	}
 
 	render() {
-		log.info('render', this.props, this.state);
 		const { filter, items, stockedItems, item: { onIsStocked } } = this.props;
+		log.debug('render', Object.keys(stockedItems).join(' '));
 		const item = { ...this.props.item,
 			onDislike: this.dislike.bind(this),
 			onLove: this.love.bind(this),
 			onUndoRating: this.undoRating.bind(this),
 		}
+		const state = Object.keys(stockedItems).join(' ') + ', ' + Object.keys(this.state.removing).join(' ');
 		return (
 			<Scroller
 				className={'ProductBrowser ' + filter.category}
@@ -153,11 +154,11 @@ export default class ProductBrowser extends React.Component {
 					const pid = product.id.toString();
 					const frontLoadDelay = idx < 10 ? 0 : 500;
 					return (
-						<ProductCard product={product} rating={filter.rating} stocked={onIsStocked(product)} {...item}
+						<ProductCard product={product} rating={filter.rating} stocked={!!stockedItems[pid]} {...item}
 								removing={this.state.removing[pid]} frontLoadDelay={frontLoadDelay} />
 					)
 				}}
-				state={'' + this.state.removing + JSON.stringify(stockedItems)}
+				state={state}
 			/>
 		);
 	}

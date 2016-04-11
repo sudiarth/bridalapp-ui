@@ -35,6 +35,17 @@ export function toJSON(entity) {
 	return result;
 }
 
+export function toError(response) {
+	return (response ? response.text() : Promise.resolve('unknown error')).then(text => {
+		const error = Error(text);
+		error.message = text;
+		error.status = response && response.status || 500;
+		error.statusText = response && response.statusText || text;
+		error.toJSON = toJSON;
+		throw error;
+	})
+}
+
 export function equals(one, other) {
 	if (arguments.length === 1) {return equals(this, one);}
 	return (

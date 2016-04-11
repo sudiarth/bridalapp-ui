@@ -156,17 +156,56 @@ img {
 	cursor: pointer;
 }
 
-.mdl-layout__drawer .mdl-layout__title {
-	padding: 0px 6px 16px 16px;
+.mdl-layout__drawer>.mdl-layout__title {
+	padding: 0px 6px 0px 16px;
 	height: 56px;
+	line-height: 56px;
 }
 
-.mdl-layout__drawer-right .mdl-layout__title {
-	height: 96px;
+.mdl-layout__drawer>.mdl-layout__title .logo {
+	padding: 8px 0;
+	height: 40px;
 }
 
 .mdl-layout__drawer-right .mdl-navigation .mdl-navigation__link {
 	padding: 16px;
+}
+
+.mdl-layout__drawer-right .mdl-navigation.Session {
+	float: left;
+	padding: 0;
+}
+
+.mdl-layout__drawer-right .mdl-navigation.Session .mdl-navigation__link {
+	padding: 6px 0;
+}
+
+.mdl-layout__drawer-right .mdl-navigation.Session .mdl-navigation__link:hover {
+    background-color: transparent;
+	cursor: default;
+}
+
+.mdl-layout__drawer-right .mdl-navigation.Session .mdl-navigation__link.Profile {
+	color: black;
+	width: 154px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow-x: hidden;
+}
+
+.mdl-layout__drawer-right .mdl-button.Logout {
+	padding-left: 6px;
+	padding-right: 6px;
+	padding-top: 1px;
+	font-size: 12px;
+}
+
+.mdl-layout__drawer-right .mdl-button.Logout:hover {
+    background-color: transparent;
+}
+
+.mdl-button:hover {
+    background-color: rgba(158,158,158,.2);
 }
 
 .mdl-layout__drawer .mdl-layout__title h4 {
@@ -287,7 +326,7 @@ input.mdl-textfield__input:focus {
 	padding: 0;
 	width: 48px;
 	height: 48px;
-	background: rgba(0,0,0,0.26);
+	background: rgba(150,150,150,0.5);
 	border-radius: 6px;
 }
 
@@ -298,19 +337,22 @@ input.mdl-textfield__input:focus {
 
 .mdl-switch.sprite .mdl-switch__track,
 .mdl-switch.icon .mdl-switch__track {
-	left: 6px;
-	top: 28px;
+	left: 8px;
+	top: 27px;
+	width: 32px;
 }
 
 .mdl-switch.sprite .mdl-switch__thumb,
 .mdl-switch.icon .mdl-switch__thumb {
-	left: 5px;
-	top: 25px;
+	left: 8px;
+	top: 27px;
+	height: 14px;
+	width: 14px;
 }
 
 .mdl-switch.sprite.is-checked .mdl-switch__thumb,
 .mdl-switch.icon.is-checked .mdl-switch__thumb {
-	left: 23px;
+	left: 26px;
 }
 
 /* Dialogs */
@@ -965,9 +1007,9 @@ i.material-icons-sprite.disable-stock {background-position: -400% 0%;}
 }
 
 .mdl-switch.is-checked .mdl-switch__track {
-    background: rgba(200,80,140,.5);
+	background: #ec80ae;
 }
 
 .mdl-switch.is-checked .mdl-switch__thumb {
-    background: #ec80ae;
+    background: white;
 }

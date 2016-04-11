@@ -3,10 +3,15 @@ import Api, { link } from 'redux-apis';
 import { remote, endpoint, fetcher } from 'redux-fetch-api';
 import Suid from 'ws.suid';
 
-import { AuthApi } from '../Auth';
+import { Role } from '../Auth/Role';
+import { Group } from '../Auth/Group';
+import { Account } from '../Auth/Account';
+import { AuthApi } from '../Auth/api';
 import { Brand } from '../Brands/Brand';
-import { BrandsApi }   from '../Brands/api';
+import { BrandsApi } from '../Brands/api';
 import { Product } from '../Products/Product';
+import { Rating } from '../Products/Rating';
+import { StockItem } from '../Products/StockItem';
 import { ProductsApi } from '../Products/api';
 import { Store } from '../Stores/Store';
 import { StoresApi } from '../Stores/api';
@@ -24,14 +29,30 @@ Suid.config({server: SUID_URL});
 @fetcher(authenticatedCrossOriginFetchWithTimeout)
 @remote(API_URL)
 export class AppApi extends Api {
+	static INITIAL_STATE = {
+		managedStores: [],
+		managedStoreIndex: 0,
+		managedBrands: [],
+		managedBrandIndex: 0,
+	}
 
-	constructor(state) {
+	static SET_MANAGED_STORES = 'SET_MANAGED_STORES';
+	static SET_MANAGED_STORE_INDEX = 'SET_MANAGED_STORE_INDEX';
+	static SET_MANAGED_BRANDS = 'SET_MANAGED_BRANDS';
+	static SET_MANAGED_BRAND_INDEX = 'SET_MANAGED_BRAND_INDEX';
+
+	constructor(state = AppApi.INITIAL_STATE) {
 		super(state);
 
 		Object.defineProperties(this, {
-			Brand: {enumerable:true, get:() => Brand},
-			Product: {enumerable:true, get:() => Product},
-			Store: {enumerable:true, get:() => Store},
+			Account: 	{enumerable:true, value:Account},
+			Brand: 		{enumerable:true, value:Brand},
+			Group: 		{enumerable:true, value:Group},
+			Product: 	{enumerable:true, value:Product},
+			Rating: 	{enumerable:true, value:Rating},
+			Role: 		{enumerable:true, value:Role},
+			StockItem: 	{enumerable:true, value:StockItem},
+			Store: 		{enumerable:true, value:Store},
 		});
 
 		this.auth = remote('/auth')(
@@ -56,7 +77,7 @@ export class AppApi extends Api {
 	}
 
 	authenticated() {
-		log.info('authenticated');
+		log.debug('authenticated');
 		return this.auth.authenticated();
 	}
 

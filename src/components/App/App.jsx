@@ -27,26 +27,28 @@ export class App extends Component {
 				name: string.isRequired,
 			}),
 		}).isRequired,
+		stores: shape({
+			managedStore: shape({
+				id: any.isRequired,
+				name: string.isRequired,
+				city: string.isRequired,
+			}),
+		}).isRequired,
+		brands: shape({
+			managedBrand: shape({
+				id: any.isRequired,
+				name: string.isRequired,
+			}),
+		}).isRequired,
 		leftDrawer: object,
 		rightDrawer: object,
 		lightbox: object,
 	};
 
 	static childContextTypes = {
-		auth: shape({
-			loggedIn: bool.isRequired,
-			challenged: bool.isRequired,
-			onProvoke: func,
-			onLogin: func,
-			onLogout: func,
-			onRegister: func,
-			onCancel: func,
-			user: shape({
-				id: any.isRequired,
-				name: string.isRequired,
-			}),
+		lightbox: shape({
+			onOpenLightbox: func.isRequired,
 		}).isRequired,
-		lightbox: object,
 	}
 
 	constructor(props) {
@@ -55,18 +57,15 @@ export class App extends Component {
 	}
 
 	getChildContext() {
-		const { auth, lightbox } = this.props;
-		return { auth, lightbox };
-	}
-
-	componentDidMount() {
-		log.debug('componentDidMount');
-//		app.auth.loadUser();
+		const { lightbox } = this.props;
+		return { lightbox };
 	}
 
 	render() {
 		log.debug('render', this.props);
-		const { auth, leftDrawer, rightDrawer, lightbox, children } = this.props;
+		const { auth, stores, brands, leftDrawer, rightDrawer, lightbox, children } = this.props;
+		const { loggedIn, session, onProvoke, onLogout } = auth;
+		const profile = auth.loggedIn ? `/profile/${auth.session.user.name}/${auth.session.user.id}` : '';
 		return (
 			<div className="mdl-layout mdl-layout--fixed-header"><div className="mdl-layout__inner-container">
 				<header className="AppBar mdl-layout__header is-casting-shadow">
@@ -79,15 +78,8 @@ export class App extends Component {
 
 						<div className="mdl-layout-spacer"></div>
 
-						{false ? <Navigation className="ActionBar">
-							<p style={{color:'black'}} onClick={()=>{
-							}}>{auth.loggedIn && auth.session.user.name || 'anon'}</p>
-						</Navigation> : undefined}
-
 						<Navigation className="RightDrawer">
-							{!rightDrawer.open ? (
-								<Icon name="account_circle" onClick={rightDrawer.onActivate} />
-							) : <i></i>}
+							<Icon name="account_circle" onClick={rightDrawer.open ? ()=>{} : rightDrawer.onActivate} />
 						</Navigation>
 					</div>
 				</header>
@@ -104,18 +96,28 @@ export class App extends Component {
 				</Drawer>
 
 				<Drawer right modal autoClose {...rightDrawer}>
-					<LayoutTitle className={auth.loggedIn ? 'logged-in' : ''}>{auth.loggedIn ?
+					<LayoutTitle>
 						<h4>
-							<p>Logged in</p>
-							<Button colored onClick={auth.onLogout}>Logout</Button>
-							<Icon name="account_circle" /><b title={auth.session.user.name}>{auth.session.user.name}</b>
+							{auth.loggedIn
+								? <Button className="Logout" colored onClick={auth.onLogout}>Logout</Button>
+								: <Button className="Login" colored raised onClick={auth.onProvoke}>Login</Button>
+							}
+							<Navigation className="Session">
+								{auth.loggedIn
+									? <Link className="Profile" onClick={e => e.preventDefault()} to={profile}><Icon name="account_circle" /> <span title={session.user.name}>{session.user.name}</span></Link>
+									: <b>Not logged in</b>
+								}
+							</Navigation>
 						</h4>
-						:
-						<h4>
-							<p>Not logged in</p>
-							<Button colored raised onClick={auth.onProvoke}>Login</Button>
-						</h4>
-					}</LayoutTitle>
+					</LayoutTitle>
+					{stores.managedStore || brands.managedBrand ?
+						<Navigation className="test">
+							{stores.managedStore ? <Link to={`/store/${stores.managedStore.city}/${stores.managedStore.name}`}><Icon name="store" /> {stores.managedStore.name}</Link> : <i className="dummy"></i>}
+							{brands.managedBrand ? <Link to={`/brand/${brands.managedBrand.name}`}><Icon name="content_cut" /> {brands.managedBrand.name}</Link> : <i className="dummy"></i>}
+
+						</Navigation>
+					:''}
+
 					{auth.loggedIn ? <Navigation>
 						<Link to="/loved/Wedding+Dresses"><Icon name="favorite" /> My Favorites</Link>
 					</Navigation> : ''}

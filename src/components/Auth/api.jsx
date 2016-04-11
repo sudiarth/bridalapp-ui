@@ -4,7 +4,7 @@ import Async from 'redux-async-api';
 import { remote } from 'redux-fetch-api';
 
 import { TextfieldApi } from '../Mdl/api';
-import { fromJSON, toJSON } from '../Entity/Entity';
+import { fromJSON, toJSON, indexOf } from '../Entity/Entity';
 
 import Suid from 'ws.suid';
 import PasswordCredential from './PasswordCredential';
@@ -42,7 +42,7 @@ export class RegisterDialogApi extends Api {
 const NULL_SESSION = {sessionId:null, user:null};
 
 @remote
-export class Auth extends Async {
+export class AuthApi extends Async {
 	static CHALLENGE = 'AUTH_CHALLENGE';
 	static LOGGED_IN = 'LOGGED_IN';
 	static LOGGED_OUT = 'LOGGED_OUT';
@@ -54,12 +54,12 @@ export class Auth extends Async {
 		challenge: null,
 	};
 
-	constructor(state = Auth.INITIAL_STATE) {
+	constructor(state = AuthApi.INITIAL_STATE) {
 		super(state);
-		this.setHandler(Auth.CHALLENGE, (state, {payload}) => ({...state, challenge:payload}));
-		this.setHandler(Auth.LOGGED_IN,	(state, {payload}) => ({...state, session:payload, challenge:null}));
-		this.setHandler(Auth.LOGGED_OUT, (state, {payload}) => ({...state, session:payload, challenge:null}));
-		this.setHandler(Auth.CANCEL, (state, action) => ({...state, challenge:null}));
+		this.setHandler(AuthApi.CHALLENGE, (state, {payload}) => ({...state, challenge:payload}));
+		this.setHandler(AuthApi.LOGGED_IN,	(state, {payload}) => ({...state, session:payload, challenge:null}));
+		this.setHandler(AuthApi.LOGGED_OUT, (state, {payload}) => ({...state, session:payload, challenge:null}));
+		this.setHandler(AuthApi.CANCEL, (state, action) => ({...state, challenge:null}));
 		Object.defineProperty(this, 'loggedIn', {enumerable:true, get: () => !!(this.session && this.session.user)});
 		Object.defineProperty(this, 'challenged', {enumerable:true, get: () => !!(this.challenge() && this.challenge().url && !this.challenge().accepted)});
 		Object.defineProperty(this, 'session', {enumerable:true, get: () => this.getState().session});
@@ -77,7 +77,7 @@ export class Auth extends Async {
 		this.setBusy();
 		return fetchSessionInfo(this)
 			.then(session => {
-				log.info('loadSession => ', session);
+				log.log('loadSession => ', session);
 				this.setDone();
 				return session;
 			});
@@ -139,7 +139,7 @@ export class Auth extends Async {
 			this.cancel();
 			return this.fetch('/logout').catch().then(() => {
 				this.setDone();
-				this.dispatch(this.createAction(Auth.LOGGED_OUT)(NULL_SESSION));
+				this.dispatch(this.createAction(AuthApi.LOGGED_OUT)(NULL_SESSION));
 			})
 		});
 	}
@@ -197,7 +197,7 @@ export class Auth extends Async {
 			if (c) {
 				const error = Error('Login/registration cancelled');
 				this.setError(error);
-				this.dispatch(this.createAction(Auth.CANCEL)());
+				this.dispatch(this.createAction(AuthApi.CANCEL)());
 				if (c.reject) {c.reject(error);}
 			}
 		});
@@ -262,7 +262,7 @@ export class Auth extends Async {
 		challenge.resolve = resolve;
 		challenge.reject = reject;
 		log.debug('dispatching challenge', challenge);
-		this.dispatch(this.createAction(Auth.CHALLENGE)(challenge));
+		this.dispatch(this.createAction(AuthApi.CHALLENGE)(challenge));
 
 		// If there is an old, forced challenge and new challenge is login challenge
 		if (c && !c.url && c.resolve && challenge.url) {
@@ -270,8 +270,34 @@ export class Auth extends Async {
 			c.resolve(challenge);
 		}
 	}
+
+	is(role) {
+		log.debug('is', role);
+		const roles = this.session.user && this.session.user.roles || [];
+		return indexOf(roles, role) !== -1;
+	}
+
+	isAny(roles) {
+		log.debug('isAny');
+		for (let i=0, role; role=roles[i]; i++) {
+			if (this.is(role)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	isAll(roles) {
+		log.debug('isAll');
+		for (let i=0, role; role=roles[i]; i++) {
+			if (!this.is(role)) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
-export default Auth;
+export default AuthApi;
 
 export function authenticated(target) {
 	function enhance(target) {
@@ -296,6 +322,15 @@ export function authenticated(target) {
 				}
 				return null;
 			}},
+
+			auth: {get: function() {
+				let p = this;
+				while (p = p.__parent) {
+					if (p.auth) {
+						return p.auth;
+					}
+				}
+			}}
 		});
 		log.trace('authenticated => ', target);
 		return target;
@@ -311,17 +346,17 @@ function fetchSessionInfo(auth) {
 			return response.status == 200 && response.text();
 		})
 		.then(text => {
-			log.info('fetchSessionInfo => text=', text);
+			log.log('fetchSessionInfo => text=', text);
 			return fromJSON(text);
 		})
 		.then(session => processSession(auth, session))
 }
 
 function processSession(auth, session) {
-	log.info('processSession', session);
+	log.debug('processSession', session);
 	const { user, sessionId } = session;
-	log.info('processSession => sessionId=', sessionId);
-	log.info('processSession => user=', user);
+	log.log('processSession => sessionId=', sessionId);
+	log.log('processSession => user=', user);
 	if (typeof document == 'object') {
 		const maxAge = sessionId ? 10 * 24 * 60 * 60 : 0;
 		document.cookie = `BASESSION=${sessionId}; Max-Age=${maxAge}; path=/`;
@@ -329,14 +364,11 @@ function processSession(auth, session) {
 	}
 	if (user && !auth.loggedIn) {
 		log.debug('fetchSessionInfo => Dispatching LOGGED_IN action', session);
-		auth.dispatch(auth.createAction(Auth.LOGGED_IN)(session));
+		auth.dispatch(auth.createAction(AuthApi.LOGGED_IN)(session));
 	}
 	else if (!user && auth.loggedIn) {
 		log.debug('fetchSessionInfo => Dispatching LOGGED_OUT action');
-		auth.dispatch(auth.createAction(Auth.LOGGED_OUT)(session));
-	}
-	else if (auth.session.sessionId !== session.sessionId) {
-		log.info('HUUH??');
+		auth.dispatch(auth.createAction(AuthApi.LOGGED_OUT)(session));
 	}
 	return session;
 }

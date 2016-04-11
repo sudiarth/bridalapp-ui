@@ -4,8 +4,10 @@ const { bool, object, func, array, shape, any } = PropTypes;
 import { connect } from 'react-redux';
 import { onload } from 'redux-load-api';
 
+import { AppApi } from '../App/api'; // explicitly import to facilitate hot-reloading.
 import store from '../../store';
 const app = store.app;
+
 import Scroller from '../Scroller/Scroller';
 import StoreCard from './StoreCard'
 

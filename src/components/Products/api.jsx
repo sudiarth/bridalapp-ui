@@ -3,11 +3,12 @@ import { link } from 'redux-apis';
 import { remote } from 'redux-fetch-api';
 import Suid from 'ws.suid';
 
-import { fromJSON, toJSON, indexOf } from '../Entity/Entity';
-import { authenticated, Role } from '../Auth';
+import { fromJSON, toJSON, toError, indexOf } from '../Entity/Entity';
+import { Role } from '../Auth/Role';
 import { PublicationApi } from '../Publication/api';
-import Product from './Product';
-import Rating from './Rating';
+import { Product } from './Product';
+import { StockItem } from './StockItem';
+import { Rating } from './Rating';
 
 @remote
 export class ProductsApi extends PublicationApi {
@@ -41,22 +42,27 @@ export class ProductsApi extends PublicationApi {
 	}
 
 	search() {
-		log.info('search');
+		log.log('search');
+		const store = this.getParent().stores.managedStore;
+		const storeLoaded = (store
+			? Promise.resolve(store)
+			: (this.auth.isAny(Role.STORE_ROLES)
+				? this.getParent().stores.loadManagedStores().then(() => this.getParent().stores.managedStore)
+				: Promise.resolve(null)
+			)
+		)
 
-		const roles = this.getSession().user && this.getSession().user.roles;
-		log.info('roles:', roles);
-		if (roles) {
-			log.info('YEAH');
-			for (let i=0,role; role=roles && roles[i]; i++) {
-				if (role.equals(Role.STORE_USER) || role.equals(Role.STORE_MANAGER)) {
-					return this.loadStock().then(() => super.search());
-				}
-			}
-		}
-		else {
-			log.info(this.getSession(), this.getSession() && this.getSession().user);
-		}
-		return super.search();
+		const stockLoaded = storeLoaded.then(store => {
+			log.debug('storeLoaded: ', store);
+			return store
+			? this.loadStock(store)
+			: Promise.resolve({})
+		})
+
+		return stockLoaded.then(stock => {
+			log.debug('stockLoaded: ', stock);
+			return super.search()
+		})
 	}
 
 	rate(product, rating) {
@@ -68,17 +74,7 @@ export class ProductsApi extends PublicationApi {
 			},
 			body: toJSON(rating),
 		})
-		.then(response => {
-			if (response && response.status == 200) {
-				return response.text();
-			}
-			return response.text().then(text => {
-				const error = Error(text);
-				error.status = response.status;
-				error.statusText = response.statusText;
-				throw error;
-			});
-		})
+		.then(response => response && response.status === 200 ? response.text() : toError(response))
 		.then(text => fromJSON(text))
 		.catch(error => {
 			log.error('Unable to create rating for product ' + product.id.toString() + ' ' + product.name + ' by ' + product.brandName + '.', error);
@@ -94,17 +90,7 @@ export class ProductsApi extends PublicationApi {
 			},
 			body: toJSON(product),
 		})
-		.then(response => {
-			if (response && response.status == 200) {
-				return response.text();
-			}
-			return response.text().then(text => {
-				const error = Error(text);
-				error.status = response.status;
-				error.statusText = response.statusText;
-				throw error;
-			});
-		})
+		.then(response => response && response.status === 200 ? response.text() : toError(response))
 		.then(text => fromJSON(text))
 		.catch(error => {
 			log.error('Unable to delete rating for product ' + product.id.toString() + ' ' + product.name + ' by ' + product.brandName + '.', error);
@@ -133,55 +119,34 @@ export class ProductsApi extends PublicationApi {
 		return this.unrate(product);
 	}
 
-	loadStock() {
-		log.info('loadStock');
-		return this.fetch('/stock')
-			.then(response => response && response.status === 200
-				? response.text()
-				: new Promise((ok, err) => {
-					response.text().then(text => {
-						const error = Error(text);
-						error.message = text;
-						error.status = response.status;
-						error.statusText = response.statusText;
-						err(error);
-					});
-				})
-			)
+	loadStock(store) {
+		log.debug('loadStock', store);
+		return this.fetch(`/stock?storeId=${store.id.toString()}`)
+			.then(response => response && response.status === 200 ? response.text() : toError(response))
 			.then(text => fromJSON(text))
 			.then(json => {
-				log.info('loadStock: OK got ' + json.length + ' results');
+				log.log('loadStock: OK got ' + json.length + ' results');
 				const stock = {};
 				for (let i=0, stockItem; stockItem=json[i]; i++) {
 					stock[stockItem.productId.toString()] = stockItem;
 				}
 				this.setStock(stock);
-				log.info('loadStock: this.stockedItems=', this.stockedItems);
+				log.debug('loadStock: this.stockedItems=', this.stockedItems);
 				return stock;
 			})
-			.catch(error => {
-				log.error('loadStock: error=', error);
-			});
+			.catch(error => log.error('loadStock: error=', error));
 	}
 
 	setStock(stock) {
-		log.info('setStock', stock);
+		log.debug('setStock', stock);
 		return this.dispatch(this.createAction(ProductsApi.SET_STOCK)(stock));
 	}
 
 	mayToggleStock(product) {
 		log.trace('mayToggleStock', product);
-		if (this.getSession().user) {
-			for (let i=0, role; role=this.getSession().user.roles[i]; i++) {
-				if (role.equals(Role.STORE_USER) ||
-					role.equals(Role.STORE_MANAGER)) {
-					log.trace('mayToggleStock => true');
-					return true;
-				}
-			}
-		}
-		log.trace('mayToggleStock => false');
-		return false;
+		const result = !!(this.getSession().user && this.getParent().stores.managedStore);
+		log.trace('mayToggleStock => ' + result);
+		return result;
 	}
 
 	isStocked(product) {
@@ -193,37 +158,50 @@ export class ProductsApi extends PublicationApi {
 
 	toggleStock(product) {
 		const pid = product.id.toString();
+		const store = this.getParent().stores.managedStore;
+		if (!store) {return Promise.reject(new Error('No managed store selected'));}
+
 		const isStocked = this.isStocked(product);
-		log.info('toggleStock', !isStocked, pid);
+		log.debug('toggleStock', !isStocked, pid, store);
+
+		// optimistically set new stock before making the server call, giving
+		// ultra-fast response time. Save the old state so we can rollback
+		const stockItem = isStocked
+			? this.stockedItems[pid]
+			: new StockItem({id: Suid.next(), storeId:store.id, productId:product.id});
+		log.debug('toggleStock: stockItem=', stockItem);
+		const newStock = { ...this.stockedItems};
+		if (isStocked) {delete newStock[pid];}
+		else {newStock[pid] = stockItem;}
+		this.setStock(newStock);
+		log.debug('toggleStock: OPTIMISTIC: newStock=', newStock);
+		// now make the server call. If it fails, we need to rollback
 		return this.fetch('/stock', {
 			method: isStocked ? 'DELETE' : 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: toJSON(product),
+			body: toJSON(stockItem),
 		})
-		.then(response => {
-			if (response && response.status == 200) {
-				return response.text();
-			}
-			return response.text().then(text => {
-				const error = Error(text);
-				error.status = response.status;
-				error.statusText = response.statusText;
-				throw error;
-			});
-		})
+		.then(response => response && response.status === 200 ? response.text() : toError(response))
 		.then(text => fromJSON(text))
 		.then(stockItem => {
-			log.info('toggleStock => ', isStocked, stockItem)
-			const newStock = { ...this.stockedItems};
-			if (isStocked) {delete newStock[pid];}
-			else {newStock[pid] = stockItem;}
-			this.setStock(newStock);
+			log.info('toggleStock: COMMIT: newStock=', newStock);
+			// commit
+			// in case of DELETE, nothing needs to be done
+			// in case of CREATE, replace the stockItem with the saved one
+			if (! isStocked) {this.setStock({ ...this.stockedItems, [pid]: stockItem });}
 			return stockItem;
 		})
 		.catch(error => {
 			log.error('Unable to toggle stock for product ' + product.id.toString() + ' ' + product.name + ' by ' + product.brandName + '.', error);
+			// rollback
+			// in case of DELETE, replace the stockItem with the original one
+			// in case of CREATE, delete the stockItem again
+			const newStock = { ...this.stockedItems};
+			if (isStocked) {newStock[pid] = stockItem}
+			else {delete newStock[pid];}
+			this.setStock(newStock);
 		});
 	}
 }
