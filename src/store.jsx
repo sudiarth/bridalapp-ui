@@ -48,7 +48,7 @@ let app = new AppApi();
 
 export const store = createStore(
 	createReducer(app),
-	typeof window == 'object' && window.__data && fromJSON(window.__data) || undefined,
+	typeof window == 'object' && window.bridalapp_initial_state && fromJSON(window.bridalapp_initial_state) || undefined,
 	storeEnhancer
 );
 store.app = link(store, app);

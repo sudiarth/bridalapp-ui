@@ -8,15 +8,18 @@ export class TextfieldApi extends Api {
 
 	constructor(state = TextfieldApi.INITIAL_STATE) {
 		super(state);
+
 		this.setHandler(TextfieldApi.SET_VALUE, (state, {payload}) => ({...state, value:payload}));
+
 		Object.defineProperties(this, {
 			value: {enumerable:true, get: () => this.getState().value},
-			onChange: {enumerable:true, value:this.setValue.bind(this)}
 		})
+
+		this.onChange = this.setValue.bind(this);
 	}
 
 	setValue(value) {
-		return this.dispatch(this.createAction(TextfieldApi.SET_VALUE)(value));
+		return this.dispatch(this.createAction(TextfieldApi.SET_VALUE)(value === undefined ? '' : value));
 	}
 }
 
@@ -32,9 +35,9 @@ export class DrawerApi extends Api {
 		this.setHandler(DrawerApi.CLOSE, (state, action) => ({...state, open:false}));
 		Object.defineProperties(this, {
 			open: {enumerable:true, get:() => this.getState().open},
-			onCancel: {enumerable:true, value:this.closeDrawer.bind(this)},
-			onActivate: {enumerable:true, value:this.openDrawer.bind(this)}
 		})
+		this.onCancel = this.closeDrawer.bind(this);
+		this.onActivate = this.openDrawer.bind(this);
 	}
 
 	openDrawer() {

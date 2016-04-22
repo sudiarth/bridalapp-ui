@@ -2,16 +2,92 @@
 import { Api, link } from 'redux-apis';
 import { Async } from 'redux-async-api';
 import { remote } from 'redux-fetch-api';
+import shallowEqual from 'fbjs/lib/shallowEqual';
+
+import { TextfieldApi } from '../Mdl/api';
 
 import { fromJSON, toJSON, indexOf } from '../Entity/Entity';
+
+export class FilterFields extends Api {
+	constructor(state) {
+		super(state);
+		// query field is standard for all entities
+		this.q = link(this, new TextfieldApi());
+		this.q.type = 'text';
+	}
+}
+
+export class FilterApi extends Api {
+	static INITIAL_STATE = {
+		open: false,
+		values: {},
+	}
+
+	static ACTIVATE = 'ACTIVATE';
+	static CANCEL = 'CANCEL';
+	static SET_VALUES = 'SET_VALUES';
+	static APPLY_FIELDS = 'APPLY_FIELDS';
+
+	constructor(state = FilterApi.INITIAL_STATE) {
+		super(state);
+
+		this.setHandler(FilterApi.ACTIVATE, (state) => ({...state, open:true}));
+		this.setHandler(FilterApi.CANCEL, (state) => ({...state, open:false}));
+		this.setHandler(FilterApi.SET_VALUES, (state, {payload}) => ({...state, values:payload}));
+		this.setHandler(FilterApi.APPLY_FIELDS, (state) => {
+			let changed = false;
+			const values = { ...this.values };
+			const keys = Object.keys(this.fields);
+			for (let i=0,key; key=keys[i]; i++) {
+				if (this.fields[key].value !== values[key]) {
+					changed = true;
+					values[key] = this.fields[key].value;
+				}
+			}
+			return changed ? {...state, values} : state;
+		});
+
+		Object.defineProperties(this, {
+			open: {enumerable:true, get:() => this.getState().open},
+			values: {enumerable:true, get:() => this.getState().values},
+		});
+		this.fields = this.createFields();
+
+		this.onActivate = this.activate.bind(this);
+		this.onCancel = this.cancel.bind(this);
+		this.onApplyFields = this.applyFields.bind(this);
+	}
+
+	activate() {
+		this.dispatch(this.createAction(FilterApi.ACTIVATE)());
+	}
+
+	cancel() {
+		this.dispatch(this.createAction(FilterApi.CANCEL)());
+	}
+
+	applyFields() {
+		this.dispatch(this.createAction(FilterApi.APPLY_FIELDS)());
+		return this.values;
+	}
+
+	setValues(values) {
+		this.dispatch(this.createAction(FilterApi.SET_VALUES)(values));
+		Object.keys(this.fields).forEach(key => this.fields[key].setValue(values[key]));
+	}
+
+	createFields() {
+		return link(this, new FilterFields());
+	}
+}
+
 
 @remote
 export class EntityApi extends Async {
 	static INITIAL_STATE = {
 		...Async.INITIAL_STATE,
-		filter: {},
 		items: [],
-		itemStates: {}
+		itemStates: {},
 	}
 
 	static SET_FILTER = 'SET_FILTER';
@@ -20,17 +96,17 @@ export class EntityApi extends Async {
 
 	constructor(state = EntityApi.INITIAL_STATE) {
 		super(state);
+
 		this.setHandler(EntityApi.SET_FILTER, (state, action) => ({...state, filter: action.payload}));
 		this.setHandler(EntityApi.SET_ITEMS, (state, action) => ({...state, items: action.payload}));
 		this.setHandler(EntityApi.SET_PROCESSING, (state, action) => ({...state, processing: action.payload}));
+
 		Object.defineProperties(this, {
-			filter: {enumerable:true, get:() => this.getState().filter},
 			items: {enumerable:true, get:() => this.getState().items},
 			itemStates: {enumerable:true, get:() => this.getState().itemStates}
 		})
 
-		this.onFilterChange = this.setFilter.bind(this);
-		this.onSearch = this.search.bind(this);
+		this.onSearch = () => this.search();
 		this.onItemsChange = this.setItems.bind(this);
 		this.onItemStatesChange = this.setItemStates.bind(this);
 
@@ -39,6 +115,8 @@ export class EntityApi extends Async {
 			onItemStateChange: this.setItemState.bind(this),
 			onItemSave: this.save.bind(this),
 		}
+
+		this.filter = this.createFilter();
 	}
 
 	itemState(item) {
@@ -88,11 +166,6 @@ export class EntityApi extends Async {
 		return result;
 	}
 
-	setFilter(filter) {
-		log.debug('setFilter', filter);
-		return this.dispatch(this.createAction(EntityApi.SET_FILTER)(filter));
-	}
-
 	setItems(items) {
 		log.debug('setItems', items);
 		this.dispatch(this.createAction(EntityApi.SET_ITEMS)(items));
@@ -114,8 +187,9 @@ export class EntityApi extends Async {
 		return result;
 	}
 
-	search() {
-		const url = this.searchUrl(this.filter);
+	search(params) {
+		if (params && !shallowEqual(this.filter.values, params)) {this.filter.setValues(params);}
+		const url = this.searchUrl(this.filter.values);
 		log.log('search', url);
 		this.setBusy();
 		return new Promise((resolve, reject) => {
@@ -146,6 +220,10 @@ export class EntityApi extends Async {
 					reject(error);
 				});
 		});
+	}
+
+	createFilter() {
+		return link(this, new FilterApi());
 	}
 }
 export default EntityApi;

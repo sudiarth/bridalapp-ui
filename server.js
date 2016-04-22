@@ -45,7 +45,7 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(68);
+	module.exports = __webpack_require__(67);
 
 
 /***/ },
@@ -58,31 +58,31 @@
 /* 2 */
 /***/ function(module, exports) {
 
-	module.exports = require("babel-runtime/core-js/object/get-prototype-of");
+	module.exports = require("picolog");
 
 /***/ },
 /* 3 */
 /***/ function(module, exports) {
 
-	module.exports = require("babel-runtime/helpers/inherits");
+	module.exports = require("babel-runtime/core-js/object/get-prototype-of");
 
 /***/ },
 /* 4 */
 /***/ function(module, exports) {
 
-	module.exports = require("babel-runtime/helpers/possibleConstructorReturn");
+	module.exports = require("babel-runtime/helpers/inherits");
 
 /***/ },
 /* 5 */
 /***/ function(module, exports) {
 
-	module.exports = require("babel-runtime/helpers/createClass");
+	module.exports = require("babel-runtime/helpers/possibleConstructorReturn");
 
 /***/ },
 /* 6 */
 /***/ function(module, exports) {
 
-	module.exports = require("picolog");
+	module.exports = require("babel-runtime/helpers/createClass");
 
 /***/ },
 /* 7 */
@@ -92,12 +92,6 @@
 
 /***/ },
 /* 8 */
-/***/ function(module, exports) {
-
-	module.exports = require("react");
-
-/***/ },
-/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -118,7 +112,7 @@
 	
 	var _typeof3 = _interopRequireDefault(_typeof2);
 	
-	var _stringify = __webpack_require__(71);
+	var _stringify = __webpack_require__(44);
 	
 	var _stringify2 = _interopRequireDefault(_stringify);
 	
@@ -126,7 +120,7 @@
 	
 	var _keys2 = _interopRequireDefault(_keys);
 	
-	var _create = __webpack_require__(72);
+	var _create = __webpack_require__(70);
 	
 	var _create2 = _interopRequireDefault(_create);
 	
@@ -141,7 +135,7 @@
 	exports.revive = revive;
 	exports.register = register;
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
@@ -329,6 +323,12 @@
 	}
 
 /***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	module.exports = require("react");
+
+/***/ },
 /* 10 */
 /***/ function(module, exports) {
 
@@ -338,99 +338,10 @@
 /* 11 */
 /***/ function(module, exports) {
 
-	module.exports = require("babel-runtime/helpers/objectWithoutProperties");
-
-/***/ },
-/* 12 */
-/***/ function(module, exports) {
-
-	module.exports = require("redux-apis");
-
-/***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Role = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(1);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _class;
-	
-	var _Entity = __webpack_require__(9);
-	
-	var _Entity2 = _interopRequireDefault(_Entity);
-	
-	var _ws = __webpack_require__(10);
-	
-	var _ws2 = _interopRequireDefault(_ws);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Role = exports.Role = (0, _Entity2.default)(_class = function Role() {
-	  (0, _classCallCheck3.default)(this, Role);
-	}) || _class;
-	
-	Role.GUEST = new Role({ id: 1, name: 'Guest' });
-	Role.USER = new Role({ id: 2, name: 'User' });
-	Role.STORE_USER = new Role({ id: 3, name: 'Store-User' });
-	Role.STORE_MANAGER = new Role({ id: 4, name: 'Store-Manager' });
-	Role.BRAND_USER = new Role({ id: 5, name: 'Brand-User' });
-	Role.BRAND_MANAGER = new Role({ id: 6, name: 'Brand-Manager' });
-	Role.BRAUTSCHLOSS_USER = new Role({ id: 7, name: 'Brautschloss-User' });
-	Role.BRAUTSCHLOSS_MANAGER = new Role({ id: 8, name: 'Brautschloss-Manager' });
-	Role.ADMINISTRATOR = new Role({ id: 9, name: 'Administrator' });
-	
-	Role.BRAUTSCHLOSS_ROLES = [Role.BRAUTSCHLOSS_MANAGER, Role.BRAUTSCHLOSS_USER];
-	Role.STORE_ROLES = [Role.STORE_MANAGER, Role.STORE_USER];
-	Role.BRAND_ROLES = [Role.BRAND_MANAGER, Role.BRAND_USER];
-	
-	exports.default = Role;
-
-/***/ },
-/* 14 */
-/***/ function(module, exports) {
-
-	module.exports = require("babel-runtime/core-js/object/define-properties");
-
-/***/ },
-/* 15 */
-/***/ function(module, exports) {
-
-	module.exports = require("babel-runtime/core-js/promise");
-
-/***/ },
-/* 16 */
-/***/ function(module, exports) {
-
-	module.exports = require("babel-runtime/helpers/typeof");
-
-/***/ },
-/* 17 */
-/***/ function(module, exports) {
-
-	module.exports = require("redux-fetch-api");
-
-/***/ },
-/* 18 */
-/***/ function(module, exports) {
-
-	module.exports = require("classnames");
-
-/***/ },
-/* 19 */
-/***/ function(module, exports) {
-
 	module.exports = require("react-mdl");
 
 /***/ },
-/* 20 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -438,13 +349,13 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.Lightbox = exports.Drawer = exports.Dialog = exports.Modal = exports.SimpleDialog = exports.StatefulFlipCard = exports.FlipCard = exports.BackFace = exports.FrontFace = exports.StatefulTextfield = exports.Textfield = exports.Switch = exports.Sprite = exports.LayoutObfuscator = exports.LayoutTitle = undefined;
+	exports.Lightbox = exports.Drawer = exports.Dialog = exports.Modal = exports.SimpleDialog = exports.StatefulFlipCard = exports.FlipCard = exports.BackFace = exports.FrontFace = exports.StatefulTextfield = exports.Textfield = exports.Switch = exports.Sprite = exports.LayoutObfuscator = exports.LayoutTitle = exports.Badge = undefined;
 	
 	var _typeof2 = __webpack_require__(16);
 	
 	var _typeof3 = _interopRequireDefault(_typeof2);
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -452,15 +363,15 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(5);
+	var _createClass2 = __webpack_require__(6);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
@@ -468,7 +379,7 @@
 	
 	var _extends3 = _interopRequireDefault(_extends2);
 	
-	var _defineProperty2 = __webpack_require__(31);
+	var _defineProperty2 = __webpack_require__(45);
 	
 	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 	
@@ -476,7 +387,7 @@
 	
 	var _keys2 = _interopRequireDefault(_keys);
 	
-	var _objectWithoutProperties2 = __webpack_require__(11);
+	var _objectWithoutProperties2 = __webpack_require__(21);
 	
 	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
 	
@@ -484,21 +395,21 @@
 	
 	exports.component = component;
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _react = __webpack_require__(8);
+	var _react = __webpack_require__(9);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(42);
+	var _reactDom = __webpack_require__(47);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _reactMdl = __webpack_require__(19);
+	var _reactMdl = __webpack_require__(11);
 	
-	var _classnames = __webpack_require__(18);
+	var _classnames = __webpack_require__(17);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -552,12 +463,32 @@
 		return render;
 	}
 	
+	var Badge = exports.Badge = component('Badge', 'mdl-badge', { overlap: 'mld-badge--overlap' }, 'span', { text: string }, { text: '' }, function (elem, props, children) {
+		var text = props.text;
+		var overlap = props.overlap;
+		var others = (0, _objectWithoutProperties3.default)(props, ['text', 'overlap']);
+	
+		return _react2.default.createElement(
+			'span',
+			others,
+			children,
+			_react2.default.createElement(
+				'b',
+				null,
+				text
+			)
+		);
+	});
+	
 	var LayoutTitle = exports.LayoutTitle = component('LayoutTitle', 'mdl-layout__title');
 	var LayoutObfuscator = exports.LayoutObfuscator = component('LayoutObfuscator', 'mdl-layout__obfuscator', { open: 'is-visible' }, 'div', { onCancel: func.isRequired }, {}, function (elem, props, children) {
 		var onCancel = props.onCancel;
 		var others = (0, _objectWithoutProperties3.default)(props, ['onCancel']);
 	
-		return _react2.default.createElement('div', (0, _extends3.default)({ onClick: onCancel, onTouchEnd: onCancel }, others));
+		var cancel = function cancel(event) {
+			event.preventDefault();onCancel();
+		};
+		return _react2.default.createElement('div', (0, _extends3.default)({ onClick: cancel, onTouchEnd: cancel }, others));
 	});
 	
 	var Sprite = exports.Sprite = component('Sprite', 'material-icons-sprite', {}, 'i', { name: string.isRequired }, {}, function (elem, props, children) {
@@ -604,12 +535,6 @@
 			)
 		);
 	});
-	/*
-	<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
-	  <input type="checkbox" id="switch-1" class="mdl-switch__input" checked>
-	  <span class="mdl-switch__label"></span>
-	</label>
-	*/
 	
 	/**
 	 * Controlled version of the MDL TextField component that adds a property `value`.
@@ -660,7 +585,7 @@
 			}
 		}]);
 		return Textfield;
-	}(_react.Component), _class.propTypes = (0, _extends3.default)({}, _reactMdl.Textfield.propTypes), _class.defaultProps = (0, _extends3.default)({}, _reactMdl.Textfield.defaultProps), _temp);
+	}(_react.Component), _class.propTypes = (0, _extends3.default)({}, _reactMdl.Textfield.propTypes), _class.defaultProps = (0, _extends3.default)({}, _reactMdl.Textfield.defaultProps, { label: '' }), _temp);
 	
 	/**
 	 * Stateful version of the MDL TextField component that adds a property `value`.
@@ -864,10 +789,19 @@
 		backLoadDelay: number
 	}, _class3.defaultProps = {
 		flipped: false,
-		frontLoadDelay: 250,
-		backLoadDelay: 2500
+		frontLoadDelay: 0,
+		backLoadDelay: 0
 	}, _temp3);
-	var SimpleDialog = exports.SimpleDialog = component('SimpleDialog', 'mdl-dialog', { visible: 'is-visible' }, 'div');
+	var SimpleDialog = exports.SimpleDialog = component('SimpleDialog', 'mdl-dialog', { visible: 'is-visible' }, 'div', {}, {}, function (elem, props, children) {
+		var visible = props.visible;
+		var others = (0, _objectWithoutProperties3.default)(props, ['visible']);
+	
+		return _react2.default.createElement(
+			'div',
+			(0, _extends3.default)({ className: props.className }, others),
+			visible ? children : undefined
+		);
+	});
 	var Modal = exports.Modal = component('Modal', 'mdl-modal', {}, 'div', { open: bool.isRequired, onCancel: func.isRequired }, {}, function (elem, props, children) {
 		var open = props.open;
 		var onCancel = props.onCancel;
@@ -1242,132 +1176,43 @@
 	;
 
 /***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.store = undefined;
-	
-	var _typeof2 = __webpack_require__(16);
-	
-	var _typeof3 = _interopRequireDefault(_typeof2);
-	
-	var _picolog = __webpack_require__(6);
-	
-	var _picolog2 = _interopRequireDefault(_picolog);
-	
-	var _redux = __webpack_require__(82);
-	
-	var _reduxThunk = __webpack_require__(84);
-	
-	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
-	
-	var _reduxLogger = __webpack_require__(83);
-	
-	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
-	
-	var _reduxApis = __webpack_require__(12);
-	
-	var _Entity = __webpack_require__(9);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function createReducer(app) {
-		var rootReducer = (0, _redux.combineReducers)({
-			/*
-	  browser: createResponsiveStateReducer({
-	  	// Breakpoints for responsive layout. Chosen to group similar devices.
-	  	// Note that these are *CSS pixels* we are talking about, not *physical pixels*.
-	  	// Read more here: http://www.quirksmode.org/blog/archives/2010/04/a_pixel_is_not.html
-	  	// E.G. the iPhone 4 screen has a resolution of 640x960 physical pixels, but only 320x480
-	  	// CSS pixels; manufacturers choose a `devicePixelRatio` suitable for their device, because
-	  	// if we render text at the normal size on these device's high DPI screens, it would become
-	  	// illegibly small. As such, these numbers are unlikely to radically change, even if
-	  	// physical resolutions keep improving, because they are more related to the dimensions of
-	  	// the screen in centimeters than to the resolution in pixels.
-	  	// SEE: http://www.mydevice.io/devices/
-	  				// < 320: unsupported
-	  	xxs: 320,	// < 360: small phones, portrait (e.g. iPhone 4)
-	  	xs: 360,	// < 480: large phones/phablets, portrait (e.g. Samsung Galaxy S5, iPhone 6 Plus)
-	  	sm: 480,	// < 720: small tablets, portrait
-	  	md: 720,	// < 1025: large tablets, portrait
-	  	lg: 1025,	// < 1600: small monitor, landscape (cutoff at 1025 i.s.o 1024 to exclude tablets with 1024x1440 resolution)
-	  	xl: 1600,	// < 2560: HD monitor
-	  	xxl: 2560,	// Projection screens, VR devices?
-	  }),
-	  */
-			app: app.reducer
-		});
-	
-		return function (state, action) {
-			var currentState = action.type === '@@bridalapp/RESET' ? undefined : state;
-			return rootReducer(currentState, action);
-		};
-	}
-	
-	var storeEnhancer = (typeof window === 'undefined' ? 'undefined' : (0, _typeof3.default)(window)) == 'object' ? (0, _redux.compose)((0, _redux.applyMiddleware)(_reduxThunk2.default, (0, _reduxLogger2.default)({ logger: _picolog2.default }))) : (0, _redux.compose)((0, _redux.applyMiddleware)(_reduxThunk2.default));
-	
-	var AppApi = __webpack_require__(26).AppApi;
-	var app = new AppApi();
-	
-	var store = exports.store = (0, _redux.createStore)(createReducer(app), (typeof window === 'undefined' ? 'undefined' : (0, _typeof3.default)(window)) == 'object' && window.__data && (0, _Entity.fromJSON)(window.__data) || undefined, storeEnhancer);
-	store.app = (0, _reduxApis.link)(store, app);
-	exports.default = store;
-	
-	
-	if ((typeof window === 'undefined' ? 'undefined' : (0, _typeof3.default)(window)) == 'object') {
-		window.bridalapp = app;
-	} else if ((typeof global === 'undefined' ? 'undefined' : (0, _typeof3.default)(global)) == 'object') {
-		global.bridalapp = app;
-	}
-	
-	if (false) {
-		module.hot.accept('./components/App/api', function () {
-			var msg = 'Hot-reloading \'./components/App/api\'',
-			    args = (typeof window === 'undefined' ? 'undefined' : (0, _typeof3.default)(window)) == 'object' ? ['%c' + msg, 'color:green'] : [msg];
-	
-			AppApi = require('./components/App/api').AppApi;
-			app = new AppApi();
-			store.replaceReducer(createReducer(app));
-			store.app = (0, _reduxApis.link)(store, app);
-			if ((typeof window === 'undefined' ? 'undefined' : (0, _typeof3.default)(window)) == 'object') {
-				window.bridalapp = app;
-			} else if ((typeof global === 'undefined' ? 'undefined' : (0, _typeof3.default)(global)) == 'object') {
-				global.bridalapp = app;
-			}
-		});
-	}
-
-/***/ },
-/* 22 */
+/* 13 */
 /***/ function(module, exports) {
 
-	module.exports = require("react-redux");
+	module.exports = require("redux-apis");
 
 /***/ },
-/* 23 */
+/* 14 */
 /***/ function(module, exports) {
 
-	module.exports = require("redux-load-api");
+	module.exports = require("babel-runtime/core-js/object/define-properties");
 
 /***/ },
-/* 24 */
+/* 15 */
 /***/ function(module, exports) {
 
-	module.exports = require("babel-runtime/core-js/object/keys");
+	module.exports = require("babel-runtime/core-js/promise");
 
 /***/ },
-/* 25 */
+/* 16 */
 /***/ function(module, exports) {
 
-	module.exports = require("react-router");
+	module.exports = require("babel-runtime/helpers/typeof");
 
 /***/ },
-/* 26 */
+/* 17 */
+/***/ function(module, exports) {
+
+	module.exports = require("classnames");
+
+/***/ },
+/* 18 */
+/***/ function(module, exports) {
+
+	module.exports = require("redux-fetch-api");
+
+/***/ },
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1393,7 +1238,7 @@
 	
 	var _defineProperties2 = _interopRequireDefault(_defineProperties);
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -1401,59 +1246,59 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(5);
+	var _createClass2 = __webpack_require__(6);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
 	var _dec, _dec2, _class, _class2, _temp;
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _reduxApis = __webpack_require__(12);
+	var _reduxApis = __webpack_require__(13);
 	
 	var _reduxApis2 = _interopRequireDefault(_reduxApis);
 	
-	var _reduxFetchApi = __webpack_require__(17);
+	var _reduxFetchApi = __webpack_require__(18);
 	
 	var _ws = __webpack_require__(10);
 	
 	var _ws2 = _interopRequireDefault(_ws);
 	
-	var _Role = __webpack_require__(13);
+	var _Role = __webpack_require__(20);
 	
-	var _Group = __webpack_require__(33);
+	var _Group = __webpack_require__(36);
 	
-	var _Account = __webpack_require__(32);
+	var _Account = __webpack_require__(35);
 	
-	var _api = __webpack_require__(27);
+	var _api = __webpack_require__(28);
 	
-	var _Brand = __webpack_require__(35);
+	var _Brand = __webpack_require__(38);
 	
-	var _api2 = __webpack_require__(52);
+	var _api2 = __webpack_require__(55);
 	
-	var _Product = __webpack_require__(37);
+	var _Product = __webpack_require__(39);
 	
-	var _Rating = __webpack_require__(38);
+	var _Rating = __webpack_require__(40);
 	
-	var _StockItem = __webpack_require__(39);
+	var _StockItem = __webpack_require__(41);
 	
-	var _api3 = __webpack_require__(62);
+	var _api3 = __webpack_require__(61);
 	
-	var _Store = __webpack_require__(40);
+	var _Store = __webpack_require__(42);
 	
-	var _api4 = __webpack_require__(66);
+	var _api4 = __webpack_require__(64);
 	
-	var _api5 = __webpack_require__(36);
+	var _api5 = __webpack_require__(30);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -1541,13 +1386,18 @@
 			var timeout = setTimeout(function () {
 				reject(Error('timed out after 30s.'));
 			}, 30000);
+			_picolog2.default.debug('authenticatedCrossOriginFetchWithTimeout: fetching...');
 			fetch(url, opts).then(function (response) {
 				clearTimeout(timeout);
+				_picolog2.default.debug('authenticatedCrossOriginFetchWithTimeout: got response ', response);
 				if (response.status && response.status === 401) {
 					// auth needed
+					_picolog2.default.debug('authenticatedCrossOriginFetchWithTimeout: auth needed');
 					if ((typeof window === 'undefined' ? 'undefined' : (0, _typeof3.default)(window)) == 'object') {
+						_picolog2.default.debug('authenticatedCrossOriginFetchWithTimeout: client, allow login');
 						// client, allow user to login
 						return response.json().then(function (json) {
+							_picolog2.default.debug('authenticatedCrossOriginFetchWithTimeout: calling auth.challenge...');
 							return _this2.auth.challenge(json.challenge, resolve, reject);
 						}).catch(reject);
 					}
@@ -1577,7 +1427,191 @@
 	}
 
 /***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Role = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(1);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _class;
+	
+	var _Entity = __webpack_require__(8);
+	
+	var _Entity2 = _interopRequireDefault(_Entity);
+	
+	var _ws = __webpack_require__(10);
+	
+	var _ws2 = _interopRequireDefault(_ws);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Role = exports.Role = (0, _Entity2.default)(_class = function Role() {
+	  (0, _classCallCheck3.default)(this, Role);
+	}) || _class;
+	
+	Role.GUEST = new Role({ id: 1, name: 'Guest' });
+	Role.USER = new Role({ id: 2, name: 'User' });
+	Role.STORE_USER = new Role({ id: 3, name: 'Store-User' });
+	Role.STORE_MANAGER = new Role({ id: 4, name: 'Store-Manager' });
+	Role.BRAND_USER = new Role({ id: 5, name: 'Brand-User' });
+	Role.BRAND_MANAGER = new Role({ id: 6, name: 'Brand-Manager' });
+	Role.BRAUTSCHLOSS_USER = new Role({ id: 7, name: 'Brautschloss-User' });
+	Role.BRAUTSCHLOSS_MANAGER = new Role({ id: 8, name: 'Brautschloss-Manager' });
+	Role.ADMINISTRATOR = new Role({ id: 9, name: 'Administrator' });
+	
+	Role.BRAUTSCHLOSS_ROLES = [Role.BRAUTSCHLOSS_MANAGER, Role.BRAUTSCHLOSS_USER];
+	Role.STORE_ROLES = [Role.STORE_MANAGER, Role.STORE_USER];
+	Role.BRAND_ROLES = [Role.BRAND_MANAGER, Role.BRAND_USER];
+	
+	exports.default = Role;
+
+/***/ },
+/* 21 */
+/***/ function(module, exports) {
+
+	module.exports = require("babel-runtime/helpers/objectWithoutProperties");
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.store = undefined;
+	
+	var _typeof2 = __webpack_require__(16);
+	
+	var _typeof3 = _interopRequireDefault(_typeof2);
+	
+	var _picolog = __webpack_require__(2);
+	
+	var _picolog2 = _interopRequireDefault(_picolog);
+	
+	var _redux = __webpack_require__(82);
+	
+	var _reduxThunk = __webpack_require__(84);
+	
+	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+	
+	var _reduxLogger = __webpack_require__(83);
+	
+	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
+	
+	var _reduxApis = __webpack_require__(13);
+	
+	var _Entity = __webpack_require__(8);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function createReducer(app) {
+		var rootReducer = (0, _redux.combineReducers)({
+			/*
+	  browser: createResponsiveStateReducer({
+	  	// Breakpoints for responsive layout. Chosen to group similar devices.
+	  	// Note that these are *CSS pixels* we are talking about, not *physical pixels*.
+	  	// Read more here: http://www.quirksmode.org/blog/archives/2010/04/a_pixel_is_not.html
+	  	// E.G. the iPhone 4 screen has a resolution of 640x960 physical pixels, but only 320x480
+	  	// CSS pixels; manufacturers choose a `devicePixelRatio` suitable for their device, because
+	  	// if we render text at the normal size on these device's high DPI screens, it would become
+	  	// illegibly small. As such, these numbers are unlikely to radically change, even if
+	  	// physical resolutions keep improving, because they are more related to the dimensions of
+	  	// the screen in centimeters than to the resolution in pixels.
+	  	// SEE: http://www.mydevice.io/devices/
+	  				// < 320: unsupported
+	  	xxs: 320,	// < 360: small phones, portrait (e.g. iPhone 4)
+	  	xs: 360,	// < 480: large phones/phablets, portrait (e.g. Samsung Galaxy S5, iPhone 6 Plus)
+	  	sm: 480,	// < 720: small tablets, portrait
+	  	md: 720,	// < 1025: large tablets, portrait
+	  	lg: 1025,	// < 1600: small monitor, landscape (cutoff at 1025 i.s.o 1024 to exclude tablets with 1024x1440 resolution)
+	  	xl: 1600,	// < 2560: HD monitor
+	  	xxl: 2560,	// Projection screens, VR devices?
+	  }),
+	  */
+			app: app.reducer
+		});
+	
+		return function (state, action) {
+			var currentState = action.type === '@@bridalapp/RESET' ? undefined : state;
+			return rootReducer(currentState, action);
+		};
+	}
+	
+	var storeEnhancer = (typeof window === 'undefined' ? 'undefined' : (0, _typeof3.default)(window)) == 'object' ? (0, _redux.compose)((0, _redux.applyMiddleware)(_reduxThunk2.default, (0, _reduxLogger2.default)({ logger: _picolog2.default }))) : (0, _redux.compose)((0, _redux.applyMiddleware)(_reduxThunk2.default));
+	
+	var AppApi = __webpack_require__(19).AppApi;
+	var app = new AppApi();
+	
+	var store = exports.store = (0, _redux.createStore)(createReducer(app), (typeof window === 'undefined' ? 'undefined' : (0, _typeof3.default)(window)) == 'object' && window.bridalapp_initial_state && (0, _Entity.fromJSON)(window.bridalapp_initial_state) || undefined, storeEnhancer);
+	store.app = (0, _reduxApis.link)(store, app);
+	exports.default = store;
+	
+	
+	if ((typeof window === 'undefined' ? 'undefined' : (0, _typeof3.default)(window)) == 'object') {
+		window.bridalapp = app;
+	} else if ((typeof global === 'undefined' ? 'undefined' : (0, _typeof3.default)(global)) == 'object') {
+		global.bridalapp = app;
+	}
+	
+	if (false) {
+		module.hot.accept('./components/App/api', function () {
+			var msg = 'Hot-reloading \'./components/App/api\'',
+			    args = (typeof window === 'undefined' ? 'undefined' : (0, _typeof3.default)(window)) == 'object' ? ['%c' + msg, 'color:green'] : [msg];
+	
+			AppApi = require('./components/App/api').AppApi;
+			app = new AppApi();
+			store.replaceReducer(createReducer(app));
+			store.app = (0, _reduxApis.link)(store, app);
+			if ((typeof window === 'undefined' ? 'undefined' : (0, _typeof3.default)(window)) == 'object') {
+				window.bridalapp = app;
+			} else if ((typeof global === 'undefined' ? 'undefined' : (0, _typeof3.default)(global)) == 'object') {
+				global.bridalapp = app;
+			}
+		});
+	}
+
+/***/ },
+/* 23 */
+/***/ function(module, exports) {
+
+	module.exports = require("react-redux");
+
+/***/ },
+/* 24 */
+/***/ function(module, exports) {
+
+	module.exports = require("babel-runtime/core-js/object/keys");
+
+/***/ },
+/* 25 */
+/***/ function(module, exports) {
+
+	module.exports = require("fbjs/lib/shallowEqual");
+
+/***/ },
+/* 26 */
+/***/ function(module, exports) {
+
+	module.exports = require("react-router");
+
+/***/ },
 /* 27 */
+/***/ function(module, exports) {
+
+	module.exports = require("redux-load-api");
+
+/***/ },
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1587,10 +1621,6 @@
 	});
 	exports.AuthApi = exports.RegisterDialogApi = exports.LoginDialogApi = undefined;
 	
-	var _defineProperties = __webpack_require__(14);
-	
-	var _defineProperties2 = _interopRequireDefault(_defineProperties);
-	
 	var _typeof2 = __webpack_require__(16);
 	
 	var _typeof3 = _interopRequireDefault(_typeof2);
@@ -1599,15 +1629,19 @@
 	
 	var _promise2 = _interopRequireDefault(_promise);
 	
+	var _defineProperties = __webpack_require__(14);
+	
+	var _defineProperties2 = _interopRequireDefault(_defineProperties);
+	
 	var _extends2 = __webpack_require__(7);
 	
 	var _extends3 = _interopRequireDefault(_extends2);
 	
-	var _createClass2 = __webpack_require__(5);
+	var _createClass2 = __webpack_require__(6);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -1615,11 +1649,11 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
@@ -1627,37 +1661,37 @@
 	
 	exports.authenticated = authenticated;
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _reduxApis = __webpack_require__(12);
+	var _reduxApis = __webpack_require__(13);
 	
 	var _reduxApis2 = _interopRequireDefault(_reduxApis);
 	
-	var _reduxAsyncApi = __webpack_require__(44);
+	var _reduxAsyncApi = __webpack_require__(48);
 	
 	var _reduxAsyncApi2 = _interopRequireDefault(_reduxAsyncApi);
 	
-	var _reduxFetchApi = __webpack_require__(17);
+	var _reduxFetchApi = __webpack_require__(18);
 	
-	var _api = __webpack_require__(36);
+	var _api = __webpack_require__(30);
 	
-	var _Entity = __webpack_require__(9);
+	var _Entity = __webpack_require__(8);
 	
 	var _ws = __webpack_require__(10);
 	
 	var _ws2 = _interopRequireDefault(_ws);
 	
-	var _PasswordCredential = __webpack_require__(34);
+	var _PasswordCredential = __webpack_require__(37);
 	
 	var _PasswordCredential2 = _interopRequireDefault(_PasswordCredential);
 	
-	var _Account = __webpack_require__(32);
+	var _Account = __webpack_require__(35);
 	
 	var _Account2 = _interopRequireDefault(_Account);
 	
-	var _Role = __webpack_require__(13);
+	var _Role = __webpack_require__(20);
 	
 	var _Role2 = _interopRequireDefault(_Role);
 	
@@ -1744,30 +1778,35 @@
 			_this3.setHandler(AuthApi.CANCEL, function (state, action) {
 				return (0, _extends3.default)({}, state, { challenge: null });
 			});
-			Object.defineProperty(_this3, 'loggedIn', { enumerable: true, get: function get() {
-					return !!(_this3.session && _this3.session.user);
-				} });
-			Object.defineProperty(_this3, 'challenged', { enumerable: true, get: function get() {
-					return !!(_this3.challenge() && _this3.challenge().url && !_this3.challenge().accepted);
-				} });
-			Object.defineProperty(_this3, 'session', { enumerable: true, get: function get() {
-					return _this3.getState().session;
-				} });
-			Object.defineProperty(_this3, 'onProvoke', { enumerable: true, value: function value() {
-					return _this3.provoke();
-				} });
-			Object.defineProperty(_this3, 'onCancel', { enumerable: true, value: function value() {
-					return _this3.cancel();
-				} });
-			Object.defineProperty(_this3, 'onLogin', { enumerable: true, value: function value() {
-					return _this3.login();
-				} });
-			Object.defineProperty(_this3, 'onLogout', { enumerable: true, value: function value() {
-					return _this3.logout();
-				} });
-			Object.defineProperty(_this3, 'onRegister', { enumerable: true, value: function value() {
-					return _this3.register();
-				} });
+	
+			(0, _defineProperties2.default)(_this3, {
+				loggedIn: { enumerable: true, get: function get() {
+						return !!(_this3.session && _this3.session.user);
+					} },
+				challenged: { enumerable: true, get: function get() {
+						return !!(_this3.challenge() && _this3.challenge().url && !_this3.challenge().accepted);
+					} },
+				session: { enumerable: true, get: function get() {
+						return _this3.getState().session;
+					} }
+			});
+	
+			_this3.onProvoke = function () {
+				return _this3.provoke();
+			};
+			_this3.onCancel = function () {
+				return _this3.cancel();
+			};
+			_this3.onLogin = function () {
+				return _this3.login();
+			};
+			_this3.onLogout = function () {
+				return _this3.logout();
+			};
+			_this3.onRegister = function () {
+				return _this3.register();
+			};
+	
 			_this3.loginDialog = (0, _reduxApis.link)(_this3, new LoginDialogApi());
 			_this3.registerDialog = (0, _reduxApis.link)(_this3, new RegisterDialogApi());
 			return _this3;
@@ -1940,7 +1979,9 @@
 					_this9.challenge({}, accept, deny);
 					// this fetch will result in 401 and be intercepted, after which
 					// challenge will be called again with the actual server challenge
+					_picolog2.default.debug('provoke: calling /challenge...');
 					_this9.fetch('/challenge').then(function (response) {
+						_picolog2.default.debug('provoke: got response ', response);
 						if (response && response.status == 200) {
 							return response.text();
 						}
@@ -1955,13 +1996,16 @@
 					}).then(function (session) {
 						return processSession(_this9, session);
 					}).then(function (session) {
+						_picolog2.default.log('provoke: got session ', session);
 						if (resolve) {
+							_picolog2.default.debug('provoke: calling resolve ', resolve);
 							resolve(session);
 						}
 						return session;
 					}).catch(function (error) {
-						_picolog2.default.log('Provoking login challenge failed.', error);
+						_picolog2.default.info('Provoking login challenge failed.', error);
 						if (reject) {
+							_picolog2.default.debug('provoke: calling reject ', reject);
 							reject(error);
 						}
 					});
@@ -1989,23 +2033,25 @@
 					reject(new Error('Unauthorized'));
 				}
 	
-				_picolog2.default.log('challenge', challenge, resolve, reject);
+				_picolog2.default.info('challenge', challenge, resolve, reject);
 	
 				// reject any old login challenge
 				var c = this.getState().challenge;
 				if (c && c.url) {
+					_picolog2.default.info('challenge: rejecting previous challenge...');
 					c.reject(new Error("Login challenge cancelled"));
 				}
 	
 				// dispatch the challenge
 				challenge.resolve = resolve;
 				challenge.reject = reject;
-				_picolog2.default.debug('dispatching challenge', challenge);
+				_picolog2.default.info('dispatching challenge', challenge);
 				this.dispatch(this.createAction(AuthApi.CHALLENGE)(challenge));
 	
-				// If there is an old, forced challenge and new challenge is login challenge
+				// If there is an old challenge which was a provocation, and new challenge is login challenge
 				if (c && !c.url && c.resolve && challenge.url) {
-					// if new challenge is login challenge (does have url), forcing challenge is now resolved
+					// if new challenge is login challenge (does have url), provocation is now resolved
+					_picolog2.default.info('challenge: resolving provocation...', c.resolve);
 					c.resolve(challenge);
 				}
 			})
@@ -2099,12 +2145,12 @@
 	}
 	
 	function processSession(auth, session) {
-		_picolog2.default.debug('processSession', session);
+		_picolog2.default.log('processSession', session);
 		var user = session.user;
 		var sessionId = session.sessionId;
 	
-		_picolog2.default.log('processSession => sessionId=', sessionId);
-		_picolog2.default.log('processSession => user=', user);
+		_picolog2.default.debug('processSession => sessionId=', sessionId);
+		_picolog2.default.debug('processSession => user=', user);
 		if ((typeof document === 'undefined' ? 'undefined' : (0, _typeof3.default)(document)) == 'object') {
 			var maxAge = sessionId ? 10 * 24 * 60 * 60 : 0;
 			document.cookie = 'BASESSION=' + sessionId + '; Max-Age=' + maxAge + '; path=/';
@@ -2137,7 +2183,403 @@
 	}
 
 /***/ },
-/* 28 */
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.FilterPanel = undefined;
+	
+	var _objectWithoutProperties2 = __webpack_require__(21);
+	
+	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+	
+	var _getPrototypeOf = __webpack_require__(3);
+	
+	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+	
+	var _classCallCheck2 = __webpack_require__(1);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(6);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(5);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(4);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _class, _temp;
+	
+	var _picolog = __webpack_require__(2);
+	
+	var _picolog2 = _interopRequireDefault(_picolog);
+	
+	var _react = __webpack_require__(9);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactMdl = __webpack_require__(11);
+	
+	var _classnames = __webpack_require__(17);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
+	var _mdlExtras = __webpack_require__(12);
+	
+	var _Entity = __webpack_require__(8);
+	
+	var _FilterFields = __webpack_require__(56);
+	
+	var _FilterFields2 = _interopRequireDefault(_FilterFields);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var bool = _react.PropTypes.bool;
+	var string = _react.PropTypes.string;
+	var array = _react.PropTypes.array;
+	var object = _react.PropTypes.object;
+	var func = _react.PropTypes.func;
+	var shape = _react.PropTypes.shape;
+	var any = _react.PropTypes.any;
+	var FilterPanel = exports.FilterPanel = (_temp = _class = function (_Component) {
+		(0, _inherits3.default)(FilterPanel, _Component);
+	
+		function FilterPanel() {
+			var _Object$getPrototypeO;
+	
+			(0, _classCallCheck3.default)(this, FilterPanel);
+	
+			for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+				args[_key] = arguments[_key];
+			}
+	
+			return (0, _possibleConstructorReturn3.default)(this, (_Object$getPrototypeO = (0, _getPrototypeOf2.default)(FilterPanel)).call.apply(_Object$getPrototypeO, [this].concat(args)));
+		}
+	
+		(0, _createClass3.default)(FilterPanel, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				_picolog2.default.debug('componentDidMount()');
+			}
+		}, {
+			key: 'searchClicked',
+			value: function searchClicked(event) {
+				var _props = this.props;
+				var location = _props.location;
+				var values = _props.values;
+				var onApplyFields = _props.onApplyFields;
+				var onSearch = _props.onSearch;
+				var onCancel = _props.onCancel;
+				var router = this.context.router;
+	
+				if (event) {
+					event.preventDefault();
+				}
+				var newValues = onApplyFields();
+				onCancel();
+				var pathname = location.pathname;
+				var category = newValues.category;
+				var query = (0, _objectWithoutProperties3.default)(newValues, ['category']);
+	
+				router.push({ pathname: pathname, query: query });
+			}
+		}, {
+			key: 'renderFilterFields',
+			value: function renderFilterFields() {
+				return _react2.default.createElement(_FilterFields2.default, this.props);
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var _props2 = this.props;
+				var open = _props2.open;
+				var fields = _props2.fields;
+				var onCancel = _props2.onCancel;
+				var className = _props2.className;
+				var children = _props2.children;
+	
+				var classes = (0, _classnames2.default)('FilterPanel', className, { 'is-open': open });
+				var filterFields = this.renderFilterFields();
+				return _react2.default.createElement(
+					_mdlExtras.Modal,
+					{ open: open, onCancel: onCancel },
+					_react2.default.createElement(
+						_reactMdl.Card,
+						{ className: classes },
+						open ? _react2.default.createElement(
+							_reactMdl.CardText,
+							null,
+							filterFields,
+							children
+						) : undefined,
+						_react2.default.createElement(
+							_reactMdl.CardActions,
+							null,
+							_react2.default.createElement(
+								_reactMdl.Button,
+								{ colored: true, raised: true, onClick: this.searchClicked.bind(this) },
+								'Search'
+							),
+							_react2.default.createElement(
+								_reactMdl.Button,
+								{ onClick: onCancel },
+								'Cancel'
+							)
+						)
+					)
+				);
+			}
+		}]);
+		return FilterPanel;
+	}(_react.Component), _class.propTypes = {
+		open: bool.isRequired,
+		values: object.isRequired,
+		fields: shape({
+			q: shape({
+				value: string,
+				onChange: func
+			}).isRequired
+		}).isRequired,
+		onApplyFields: func.isRequired,
+		onSearch: func.isRequired,
+		onCancel: func.isRequired,
+		location: shape({
+			pathname: string.isRequired
+		}).isRequired
+	}, _class.contextTypes = {
+		router: object.isRequired
+	}, _temp);
+	exports.default = FilterPanel;
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.LightboxApi = exports.DrawerApi = exports.TextfieldApi = undefined;
+	
+	var _objectWithoutProperties2 = __webpack_require__(21);
+	
+	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+	
+	var _defineProperties = __webpack_require__(14);
+	
+	var _defineProperties2 = _interopRequireDefault(_defineProperties);
+	
+	var _extends2 = __webpack_require__(7);
+	
+	var _extends3 = _interopRequireDefault(_extends2);
+	
+	var _getPrototypeOf = __webpack_require__(3);
+	
+	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+	
+	var _classCallCheck2 = __webpack_require__(1);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(6);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(5);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(4);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _class, _temp, _class2, _temp2, _class3, _temp3;
+	
+	var _picolog = __webpack_require__(2);
+	
+	var _picolog2 = _interopRequireDefault(_picolog);
+	
+	var _reduxApis = __webpack_require__(13);
+	
+	var _reduxApis2 = _interopRequireDefault(_reduxApis);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var TextfieldApi = exports.TextfieldApi = (_temp = _class = function (_Api) {
+		(0, _inherits3.default)(TextfieldApi, _Api);
+	
+		function TextfieldApi() {
+			var state = arguments.length <= 0 || arguments[0] === undefined ? TextfieldApi.INITIAL_STATE : arguments[0];
+			(0, _classCallCheck3.default)(this, TextfieldApi);
+	
+			var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(TextfieldApi).call(this, state));
+	
+			_this.setHandler(TextfieldApi.SET_VALUE, function (state, _ref) {
+				var payload = _ref.payload;
+				return (0, _extends3.default)({}, state, { value: payload });
+			});
+	
+			(0, _defineProperties2.default)(_this, {
+				value: { enumerable: true, get: function get() {
+						return _this.getState().value;
+					} }
+			});
+	
+			_this.onChange = _this.setValue.bind(_this);
+			return _this;
+		}
+	
+		(0, _createClass3.default)(TextfieldApi, [{
+			key: 'setValue',
+			value: function setValue(value) {
+				return this.dispatch(this.createAction(TextfieldApi.SET_VALUE)(value === undefined ? '' : value));
+			}
+		}]);
+		return TextfieldApi;
+	}(_reduxApis2.default), _class.INITIAL_STATE = { value: '' }, _class.SET_VALUE = 'SET_VALUE', _temp);
+	var DrawerApi = exports.DrawerApi = (_temp2 = _class2 = function (_Api2) {
+		(0, _inherits3.default)(DrawerApi, _Api2);
+	
+		function DrawerApi() {
+			var state = arguments.length <= 0 || arguments[0] === undefined ? DrawerApi.INITIAL_STATE : arguments[0];
+			(0, _classCallCheck3.default)(this, DrawerApi);
+	
+			var _this2 = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(DrawerApi).call(this, state));
+	
+			_this2.setHandler(DrawerApi.OPEN, function (state, action) {
+				return (0, _extends3.default)({}, state, { open: true });
+			});
+			_this2.setHandler(DrawerApi.CLOSE, function (state, action) {
+				return (0, _extends3.default)({}, state, { open: false });
+			});
+			(0, _defineProperties2.default)(_this2, {
+				open: { enumerable: true, get: function get() {
+						return _this2.getState().open;
+					} }
+			});
+			_this2.onCancel = _this2.closeDrawer.bind(_this2);
+			_this2.onActivate = _this2.openDrawer.bind(_this2);
+			return _this2;
+		}
+	
+		(0, _createClass3.default)(DrawerApi, [{
+			key: 'openDrawer',
+			value: function openDrawer() {
+				_picolog2.default.debug('openDrawer');
+				return this.dispatch(this.createAction(DrawerApi.OPEN)());
+			}
+		}, {
+			key: 'closeDrawer',
+			value: function closeDrawer() {
+				_picolog2.default.debug('closeDrawer');
+				return this.dispatch(this.createAction(DrawerApi.CLOSE)());
+			}
+		}]);
+		return DrawerApi;
+	}(_reduxApis2.default), _class2.INITIAL_STATE = { open: false }, _class2.OPEN = 'OPEN', _class2.CLOSE = 'CLOSE', _temp2);
+	var LightboxApi = exports.LightboxApi = (_temp3 = _class3 = function (_Api3) {
+		(0, _inherits3.default)(LightboxApi, _Api3);
+	
+		function LightboxApi() {
+			var state = arguments.length <= 0 || arguments[0] === undefined ? LightboxApi.INITIAL_STATE : arguments[0];
+			(0, _classCallCheck3.default)(this, LightboxApi);
+	
+			var _this3 = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(LightboxApi).call(this, state));
+	
+			_this3.setHandler(LightboxApi.OPEN, function (state, _ref2) {
+				var _ref2$payload = _ref2.payload;
+				var images = _ref2$payload.images;
+				var index = _ref2$payload.index;
+				return (0, _extends3.default)({}, state, { open: true, images: images, index: index });
+			});
+			_this3.setHandler(LightboxApi.NEXT, function (_ref3) {
+				var images = _ref3.images;
+				var index = _ref3.index;
+				var state = (0, _objectWithoutProperties3.default)(_ref3, ['images', 'index']);
+				return (0, _extends3.default)({}, state, { images: images, index: index < images.length - 1 ? index + 1 : index });
+			});
+			_this3.setHandler(LightboxApi.PREV, function (_ref4) {
+				var index = _ref4.index;
+				var state = (0, _objectWithoutProperties3.default)(_ref4, ['index']);
+				return (0, _extends3.default)({}, state, { index: index > 0 ? index - 1 : index });
+			});
+			_this3.setHandler(LightboxApi.NAV, function (_ref5, _ref6) {
+				var index = _ref5.index;
+				var state = (0, _objectWithoutProperties3.default)(_ref5, ['index']);
+				var payload = _ref6.payload;
+				return (0, _extends3.default)({}, state, { index: payload });
+			});
+			_this3.setHandler(LightboxApi.CANCEL, function (state, action) {
+				return (0, _extends3.default)({}, state, { open: false, images: [], index: 0 });
+			});
+			(0, _defineProperties2.default)(_this3, {
+				open: { enumerable: true, get: function get() {
+						return _this3.getState() && _this3.getState().open;
+					} },
+				index: { enumerable: true, get: function get() {
+						return _this3.getState() && _this3.getState().index;
+					} },
+				images: { enumerable: true, get: function get() {
+						return _this3.getState() && _this3.getState().images;
+					} },
+				onOpenLightbox: { enumerable: true, value: _this3.openLightbox.bind(_this3) },
+				onCancel: { enumerable: true, value: _this3.cancel.bind(_this3) },
+				onNext: { enumerable: true, value: _this3.next.bind(_this3) },
+				onPrev: { enumerable: true, value: _this3.prev.bind(_this3) },
+				onNav: { enumerable: true, value: _this3.nav.bind(_this3) }
+			});
+			return _this3;
+		}
+	
+		(0, _createClass3.default)(LightboxApi, [{
+			key: 'openLightbox',
+			value: function openLightbox() {
+				var images = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+				var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+	
+				_picolog2.default.log('openLightbox', images, index);
+				return this.dispatch(this.createAction(LightboxApi.OPEN)({ images: images, index: index }));
+			}
+		}, {
+			key: 'next',
+			value: function next() {
+				_picolog2.default.log('next');
+				this.dispatch(this.createAction(LightboxApi.NEXT)());
+			}
+		}, {
+			key: 'prev',
+			value: function prev() {
+				_picolog2.default.log('prev');
+				this.dispatch(this.createAction(LightboxApi.PREV)());
+			}
+		}, {
+			key: 'nav',
+			value: function nav(idx) {
+				_picolog2.default.log('nav', idx);
+				this.dispatch(this.createAction(LightboxApi.NAV)(idx));
+			}
+		}, {
+			key: 'cancel',
+			value: function cancel() {
+				_picolog2.default.log('cancel');
+				this.dispatch(this.createAction(LightboxApi.CANCEL)());
+			}
+		}]);
+		return LightboxApi;
+	}(_reduxApis2.default), _class3.INITIAL_STATE = { open: false, images: [], index: 0 }, _class3.OPEN = 'OPEN', _class3.NEXT = 'NEXT', _class3.PREV = 'PREV', _class3.NAV = 'NAV', _class3.CANCEL = 'CANCEL', _temp3);
+
+/***/ },
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2147,7 +2589,7 @@
 	});
 	exports.Publication = undefined;
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -2155,25 +2597,25 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(5);
+	var _createClass2 = __webpack_require__(6);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
 	var _class, _temp;
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _react = __webpack_require__(8);
+	var _react = __webpack_require__(9);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -2225,7 +2667,7 @@
 	exports.default = Publication;
 
 /***/ },
-/* 29 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2239,11 +2681,11 @@
 	
 	var _extends3 = _interopRequireDefault(_extends2);
 	
-	var _toConsumableArray2 = __webpack_require__(41);
+	var _toConsumableArray2 = __webpack_require__(46);
 	
 	var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -2251,35 +2693,35 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(5);
+	var _createClass2 = __webpack_require__(6);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
 	var _class, _class2, _temp;
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _reduxApis = __webpack_require__(12);
+	var _reduxApis = __webpack_require__(13);
 	
-	var _reduxFetchApi = __webpack_require__(17);
+	var _reduxFetchApi = __webpack_require__(18);
 	
-	var _Entity = __webpack_require__(9);
+	var _Entity = __webpack_require__(8);
 	
-	var _api = __webpack_require__(54);
+	var _api = __webpack_require__(57);
 	
-	var _api2 = __webpack_require__(27);
+	var _api2 = __webpack_require__(28);
 	
-	var _Role = __webpack_require__(13);
+	var _Role = __webpack_require__(20);
 	
 	var _Role2 = _interopRequireDefault(_Role);
 	
@@ -2353,7 +2795,7 @@
 	exports.default = PublicationApi;
 
 /***/ },
-/* 30 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2367,7 +2809,7 @@
 	
 	var _typeof3 = _interopRequireDefault(_typeof2);
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -2375,29 +2817,29 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(5);
+	var _createClass2 = __webpack_require__(6);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
 	var _class, _temp;
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _react = __webpack_require__(8);
+	var _react = __webpack_require__(9);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(42);
+	var _reactDom = __webpack_require__(47);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
@@ -2844,13 +3286,267 @@
 	}
 
 /***/ },
-/* 31 */
-/***/ function(module, exports) {
+/* 34 */
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = require("babel-runtime/helpers/defineProperty");
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.App = undefined;
+	
+	var _extends2 = __webpack_require__(7);
+	
+	var _extends3 = _interopRequireDefault(_extends2);
+	
+	var _getPrototypeOf = __webpack_require__(3);
+	
+	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+	
+	var _classCallCheck2 = __webpack_require__(1);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(6);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(5);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(4);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _dec, _class, _class2, _temp;
+	
+	var _picolog = __webpack_require__(2);
+	
+	var _picolog2 = _interopRequireDefault(_picolog);
+	
+	var _react = __webpack_require__(9);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(23);
+	
+	var _reactRouter = __webpack_require__(26);
+	
+	var _reactMdl = __webpack_require__(11);
+	
+	var _mdlExtras = __webpack_require__(12);
+	
+	var _SessionPanel = __webpack_require__(52);
+	
+	var _SessionPanel2 = _interopRequireDefault(_SessionPanel);
+	
+	var _AuthDialog = __webpack_require__(50);
+	
+	var _AuthDialog2 = _interopRequireDefault(_AuthDialog);
+	
+	var _store = __webpack_require__(22);
+	
+	var _store2 = _interopRequireDefault(_store);
+	
+	var _api = __webpack_require__(19);
+	
+	var _api2 = _interopRequireDefault(_api);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var bool = _react.PropTypes.bool;
+	var number = _react.PropTypes.number;
+	var string = _react.PropTypes.string;
+	var object = _react.PropTypes.object;
+	var func = _react.PropTypes.func;
+	var array = _react.PropTypes.array;
+	var shape = _react.PropTypes.shape;
+	var any = _react.PropTypes.any;
+	var App = exports.App = (_dec = (0, _reactRedux.connect)(bridalapp.connector), _dec(_class = (_temp = _class2 = function (_Component) {
+		(0, _inherits3.default)(App, _Component);
+	
+		function App() {
+			(0, _classCallCheck3.default)(this, App);
+			return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(App).apply(this, arguments));
+		}
+	
+		(0, _createClass3.default)(App, [{
+			key: 'getChildContext',
+			value: function getChildContext() {
+				return { lightbox: bridalapp.lightbox };
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				_picolog2.default.debug('render', this.props);
+				var _props = this.props;
+				var auth = _props.auth;
+				var managedStore = _props.stores.managedStore;
+				var managedBrand = _props.brands.managedBrand;
+				var leftDrawer = _props.leftDrawer;
+				var rightDrawer = _props.rightDrawer;
+				var lightbox = _props.lightbox;
+				var className = _props.className;
+				var appbarComponent = _props.appbarComponent;
+				var mainComponent = _props.mainComponent;
+	
+				_picolog2.default.log('render: appbarComponent=', appbarComponent);
+	
+				var logo = 'https://cdn.rawgit.com/download/bridalapp-static/1.0.0/bridalapp/logo-bridalapp.png';
+				return _react2.default.createElement(
+					'div',
+					{ className: 'mdl-layout mdl-layout--fixed-header' },
+					_react2.default.createElement(
+						'div',
+						{ className: 'mdl-layout__inner-container' },
+						_react2.default.createElement(
+							'header',
+							{ className: 'AppBar mdl-layout__header is-casting-shadow' },
+							_react2.default.createElement(
+								'div',
+								{ tabIndex: '0', className: 'mdl-layout__drawer-button', onClick: leftDrawer.onActivate },
+								_react2.default.createElement(_reactMdl.Icon, { name: 'menu' })
+							),
+							_react2.default.createElement(
+								'div',
+								{ className: 'mdl-layout__header-row' },
+								_react2.default.createElement('img', { className: 'logo', src: 'https://cdn.rawgit.com/download/bridalapp-static/1.0.0/bridalapp/logo-bridalapp.png' }),
+								_react2.default.createElement('div', { className: 'mdl-layout-spacer' }),
+								_react2.default.createElement(
+									_reactMdl.Navigation,
+									{ className: 'ContextActions' },
+									appbarComponent
+								),
+								_react2.default.createElement(
+									_reactMdl.Navigation,
+									{ className: 'RightDrawer' },
+									_react2.default.createElement(_reactMdl.Icon, { name: 'account_circle', onClick: rightDrawer.onActivate })
+								)
+							)
+						),
+						_react2.default.createElement(
+							_mdlExtras.Drawer,
+							(0, _extends3.default)({ modal: true, autoClose: true }, leftDrawer),
+							_react2.default.createElement(
+								_mdlExtras.LayoutTitle,
+								null,
+								_react2.default.createElement('img', { className: 'logo', src: logo, alt: 'BridalApp' })
+							),
+							_react2.default.createElement(
+								_reactMdl.Navigation,
+								null,
+								_react2.default.createElement(
+									_reactRouter.Link,
+									{ to: '/Wedding+Dresses' },
+									_react2.default.createElement(_mdlExtras.Sprite, { name: 'bridal-dress' }),
+									' Wedding Dresses'
+								),
+								_react2.default.createElement(
+									_reactRouter.Link,
+									{ to: '/stores' },
+									_react2.default.createElement(_reactMdl.Icon, { name: 'store' }),
+									' Bridal Stores'
+								),
+								_react2.default.createElement(
+									_reactRouter.Link,
+									{ to: '/brands' },
+									_react2.default.createElement(_reactMdl.Icon, { name: 'content_cut' }),
+									' Bridal Brands'
+								)
+							)
+						),
+						_react2.default.createElement(
+							_mdlExtras.Drawer,
+							(0, _extends3.default)({ right: true, modal: true, autoClose: true }, rightDrawer),
+							_react2.default.createElement(
+								_mdlExtras.LayoutTitle,
+								null,
+								_react2.default.createElement(_SessionPanel2.default, auth)
+							),
+							managedStore || managedBrand ? _react2.default.createElement(
+								_reactMdl.Navigation,
+								null,
+								managedStore ? _react2.default.createElement(
+									_reactRouter.Link,
+									{ to: '/store/' + managedStore.city + '/' + managedStore.name },
+									_react2.default.createElement(_reactMdl.Icon, { name: 'store' }),
+									' ',
+									managedStore.name
+								) : _react2.default.createElement('i', null),
+								managedBrand ? _react2.default.createElement(
+									_reactRouter.Link,
+									{ to: '/brand/' + managedBrand.name },
+									_react2.default.createElement(_reactMdl.Icon, { name: 'content_cut' }),
+									' ',
+									managedBrand.name
+								) : _react2.default.createElement('i', null)
+							) : '',
+							auth.loggedIn ? _react2.default.createElement(
+								_reactMdl.Navigation,
+								null,
+								_react2.default.createElement(
+									_reactRouter.Link,
+									{ to: '/loved/Wedding+Dresses' },
+									_react2.default.createElement(_reactMdl.Icon, { name: 'favorite' }),
+									' My Favorites'
+								)
+							) : ''
+						),
+						_react2.default.createElement(
+							_reactMdl.Content,
+							{ className: 'main' },
+							mainComponent
+						),
+						_react2.default.createElement(_AuthDialog2.default, auth),
+						_react2.default.createElement(_mdlExtras.Lightbox, (0, _extends3.default)({ noNextOnClick: true, noImageCount: true }, lightbox))
+					)
+				);
+			}
+		}]);
+		return App;
+	}(_react.Component), _class2.propTypes = {
+		auth: shape({
+			loggedIn: bool.isRequired,
+			challenged: bool.isRequired,
+			onProvoke: func,
+			onLogin: func,
+			onLogout: func,
+			onRegister: func,
+			onCancel: func,
+			user: shape({
+				id: any.isRequired,
+				name: string.isRequired
+			})
+		}).isRequired,
+		stores: shape({
+			managedStore: shape({
+				id: any.isRequired,
+				name: string.isRequired,
+				city: string.isRequired
+			})
+		}).isRequired,
+		brands: shape({
+			managedBrand: shape({
+				id: any.isRequired,
+				name: string.isRequired
+			})
+		}).isRequired,
+		leftDrawer: object,
+		rightDrawer: object,
+		lightbox: object,
+		appbarComponent: any,
+		mainComponent: any
+	}, _class2.childContextTypes = {
+		lightbox: shape({
+			onOpenLightbox: func.isRequired
+		}).isRequired
+	}, _temp)) || _class);
+	exports.default = App;
 
 /***/ },
-/* 32 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2866,19 +3562,19 @@
 	
 	var _class;
 	
-	var _Entity = __webpack_require__(9);
+	var _Entity = __webpack_require__(8);
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
-	var _Role = __webpack_require__(13);
+	var _Role = __webpack_require__(20);
 	
 	var _Role2 = _interopRequireDefault(_Role);
 	
-	var _Group = __webpack_require__(33);
+	var _Group = __webpack_require__(36);
 	
 	var _Group2 = _interopRequireDefault(_Group);
 	
-	var _PasswordCredential = __webpack_require__(34);
+	var _PasswordCredential = __webpack_require__(37);
 	
 	var _PasswordCredential2 = _interopRequireDefault(_PasswordCredential);
 	
@@ -2905,7 +3601,7 @@
 	exports.default = Account;
 
 /***/ },
-/* 33 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2921,7 +3617,7 @@
 	
 	var _class;
 	
-	var _Entity = __webpack_require__(9);
+	var _Entity = __webpack_require__(8);
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
@@ -2937,7 +3633,7 @@
 	exports.default = Group;
 
 /***/ },
-/* 34 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2947,7 +3643,7 @@
 	});
 	exports.PasswordCredential = undefined;
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -2955,21 +3651,21 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
 	var _class;
 	
-	var _Entity = __webpack_require__(9);
+	var _Entity = __webpack_require__(8);
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
-	var _Credential2 = __webpack_require__(48);
+	var _Credential2 = __webpack_require__(51);
 	
 	var _Credential3 = _interopRequireDefault(_Credential2);
 	
@@ -2993,7 +3689,7 @@
 	exports.default = PasswordCredential;
 
 /***/ },
-/* 35 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3009,7 +3705,7 @@
 	
 	var _class;
 	
-	var _Entity = __webpack_require__(9);
+	var _Entity = __webpack_require__(8);
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
@@ -3026,223 +3722,7 @@
 	exports.default = Brand;
 
 /***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.LightboxApi = exports.DrawerApi = exports.TextfieldApi = undefined;
-	
-	var _objectWithoutProperties2 = __webpack_require__(11);
-	
-	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
-	
-	var _defineProperties = __webpack_require__(14);
-	
-	var _defineProperties2 = _interopRequireDefault(_defineProperties);
-	
-	var _extends2 = __webpack_require__(7);
-	
-	var _extends3 = _interopRequireDefault(_extends2);
-	
-	var _getPrototypeOf = __webpack_require__(2);
-	
-	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-	
-	var _classCallCheck2 = __webpack_require__(1);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(5);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(3);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _class, _temp, _class2, _temp2, _class3, _temp3;
-	
-	var _picolog = __webpack_require__(6);
-	
-	var _picolog2 = _interopRequireDefault(_picolog);
-	
-	var _reduxApis = __webpack_require__(12);
-	
-	var _reduxApis2 = _interopRequireDefault(_reduxApis);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var TextfieldApi = exports.TextfieldApi = (_temp = _class = function (_Api) {
-		(0, _inherits3.default)(TextfieldApi, _Api);
-	
-		function TextfieldApi() {
-			var state = arguments.length <= 0 || arguments[0] === undefined ? TextfieldApi.INITIAL_STATE : arguments[0];
-			(0, _classCallCheck3.default)(this, TextfieldApi);
-	
-			var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(TextfieldApi).call(this, state));
-	
-			_this.setHandler(TextfieldApi.SET_VALUE, function (state, _ref) {
-				var payload = _ref.payload;
-				return (0, _extends3.default)({}, state, { value: payload });
-			});
-			(0, _defineProperties2.default)(_this, {
-				value: { enumerable: true, get: function get() {
-						return _this.getState().value;
-					} },
-				onChange: { enumerable: true, value: _this.setValue.bind(_this) }
-			});
-			return _this;
-		}
-	
-		(0, _createClass3.default)(TextfieldApi, [{
-			key: 'setValue',
-			value: function setValue(value) {
-				return this.dispatch(this.createAction(TextfieldApi.SET_VALUE)(value));
-			}
-		}]);
-		return TextfieldApi;
-	}(_reduxApis2.default), _class.INITIAL_STATE = { value: '' }, _class.SET_VALUE = 'SET_VALUE', _temp);
-	var DrawerApi = exports.DrawerApi = (_temp2 = _class2 = function (_Api2) {
-		(0, _inherits3.default)(DrawerApi, _Api2);
-	
-		function DrawerApi() {
-			var state = arguments.length <= 0 || arguments[0] === undefined ? DrawerApi.INITIAL_STATE : arguments[0];
-			(0, _classCallCheck3.default)(this, DrawerApi);
-	
-			var _this2 = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(DrawerApi).call(this, state));
-	
-			_this2.setHandler(DrawerApi.OPEN, function (state, action) {
-				return (0, _extends3.default)({}, state, { open: true });
-			});
-			_this2.setHandler(DrawerApi.CLOSE, function (state, action) {
-				return (0, _extends3.default)({}, state, { open: false });
-			});
-			(0, _defineProperties2.default)(_this2, {
-				open: { enumerable: true, get: function get() {
-						return _this2.getState().open;
-					} },
-				onCancel: { enumerable: true, value: _this2.closeDrawer.bind(_this2) },
-				onActivate: { enumerable: true, value: _this2.openDrawer.bind(_this2) }
-			});
-			return _this2;
-		}
-	
-		(0, _createClass3.default)(DrawerApi, [{
-			key: 'openDrawer',
-			value: function openDrawer() {
-				_picolog2.default.debug('openDrawer');
-				return this.dispatch(this.createAction(DrawerApi.OPEN)());
-			}
-		}, {
-			key: 'closeDrawer',
-			value: function closeDrawer() {
-				_picolog2.default.debug('closeDrawer');
-				return this.dispatch(this.createAction(DrawerApi.CLOSE)());
-			}
-		}]);
-		return DrawerApi;
-	}(_reduxApis2.default), _class2.INITIAL_STATE = { open: false }, _class2.OPEN = 'OPEN', _class2.CLOSE = 'CLOSE', _temp2);
-	var LightboxApi = exports.LightboxApi = (_temp3 = _class3 = function (_Api3) {
-		(0, _inherits3.default)(LightboxApi, _Api3);
-	
-		function LightboxApi() {
-			var state = arguments.length <= 0 || arguments[0] === undefined ? LightboxApi.INITIAL_STATE : arguments[0];
-			(0, _classCallCheck3.default)(this, LightboxApi);
-	
-			var _this3 = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(LightboxApi).call(this, state));
-	
-			_this3.setHandler(LightboxApi.OPEN, function (state, _ref2) {
-				var _ref2$payload = _ref2.payload;
-				var images = _ref2$payload.images;
-				var index = _ref2$payload.index;
-				return (0, _extends3.default)({}, state, { open: true, images: images, index: index });
-			});
-			_this3.setHandler(LightboxApi.NEXT, function (_ref3) {
-				var images = _ref3.images;
-				var index = _ref3.index;
-				var state = (0, _objectWithoutProperties3.default)(_ref3, ['images', 'index']);
-				return (0, _extends3.default)({}, state, { images: images, index: index < images.length - 1 ? index + 1 : index });
-			});
-			_this3.setHandler(LightboxApi.PREV, function (_ref4) {
-				var index = _ref4.index;
-				var state = (0, _objectWithoutProperties3.default)(_ref4, ['index']);
-				return (0, _extends3.default)({}, state, { index: index > 0 ? index - 1 : index });
-			});
-			_this3.setHandler(LightboxApi.NAV, function (_ref5, _ref6) {
-				var index = _ref5.index;
-				var state = (0, _objectWithoutProperties3.default)(_ref5, ['index']);
-				var payload = _ref6.payload;
-				return (0, _extends3.default)({}, state, { index: payload });
-			});
-			_this3.setHandler(LightboxApi.CANCEL, function (state, action) {
-				return (0, _extends3.default)({}, state, { open: false, images: [], index: 0 });
-			});
-			(0, _defineProperties2.default)(_this3, {
-				open: { enumerable: true, get: function get() {
-						return _this3.getState() && _this3.getState().open;
-					} },
-				index: { enumerable: true, get: function get() {
-						return _this3.getState() && _this3.getState().index;
-					} },
-				images: { enumerable: true, get: function get() {
-						return _this3.getState() && _this3.getState().images;
-					} },
-				onOpenLightbox: { enumerable: true, value: _this3.openLightbox.bind(_this3) },
-				onCancel: { enumerable: true, value: _this3.cancel.bind(_this3) },
-				onNext: { enumerable: true, value: _this3.next.bind(_this3) },
-				onPrev: { enumerable: true, value: _this3.prev.bind(_this3) },
-				onNav: { enumerable: true, value: _this3.nav.bind(_this3) }
-			});
-			return _this3;
-		}
-	
-		(0, _createClass3.default)(LightboxApi, [{
-			key: 'openLightbox',
-			value: function openLightbox() {
-				var images = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-				var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-	
-				_picolog2.default.log('openLightbox', images, index);
-				return this.dispatch(this.createAction(LightboxApi.OPEN)({ images: images, index: index }));
-			}
-		}, {
-			key: 'next',
-			value: function next() {
-				_picolog2.default.log('next');
-				this.dispatch(this.createAction(LightboxApi.NEXT)());
-			}
-		}, {
-			key: 'prev',
-			value: function prev() {
-				_picolog2.default.log('prev');
-				this.dispatch(this.createAction(LightboxApi.PREV)());
-			}
-		}, {
-			key: 'nav',
-			value: function nav(idx) {
-				_picolog2.default.log('nav', idx);
-				this.dispatch(this.createAction(LightboxApi.NAV)(idx));
-			}
-		}, {
-			key: 'cancel',
-			value: function cancel() {
-				_picolog2.default.log('cancel');
-				this.dispatch(this.createAction(LightboxApi.CANCEL)());
-			}
-		}]);
-		return LightboxApi;
-	}(_reduxApis2.default), _class3.INITIAL_STATE = { open: false, images: [], index: 0 }, _class3.OPEN = 'OPEN', _class3.NEXT = 'NEXT', _class3.PREV = 'PREV', _class3.NAV = 'NAV', _class3.CANCEL = 'CANCEL', _temp3);
-
-/***/ },
-/* 37 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3262,7 +3742,7 @@
 	
 	var _ws2 = _interopRequireDefault(_ws);
 	
-	var _Entity = __webpack_require__(9);
+	var _Entity = __webpack_require__(8);
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
@@ -3275,7 +3755,7 @@
 	exports.default = Product;
 
 /***/ },
-/* 38 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3291,7 +3771,7 @@
 	
 	var _class;
 	
-	var _Entity = __webpack_require__(9);
+	var _Entity = __webpack_require__(8);
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
@@ -3308,7 +3788,7 @@
 	exports.default = Rating;
 
 /***/ },
-/* 39 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3328,7 +3808,7 @@
 	
 	var _ws2 = _interopRequireDefault(_ws);
 	
-	var _Entity = __webpack_require__(9);
+	var _Entity = __webpack_require__(8);
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
@@ -3341,7 +3821,7 @@
 	exports.default = StockItem;
 
 /***/ },
-/* 40 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3357,7 +3837,7 @@
 	
 	var _class;
 	
-	var _Entity = __webpack_require__(9);
+	var _Entity = __webpack_require__(8);
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
@@ -3374,39 +3854,79 @@
 	exports.default = Store;
 
 /***/ },
-/* 41 */
-/***/ function(module, exports) {
-
-	module.exports = require("babel-runtime/helpers/toConsumableArray");
-
-/***/ },
-/* 42 */
-/***/ function(module, exports) {
-
-	module.exports = require("react-dom");
-
-/***/ },
 /* 43 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = require("react-dom/server");
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _stringify = __webpack_require__(44);
+	
+	var _stringify2 = _interopRequireDefault(_stringify);
+	
+	exports.markupBefore = markupBefore;
+	exports.markupAfter = markupAfter;
+	
+	var _serializeJavascript = __webpack_require__(85);
+	
+	var _serializeJavascript2 = _interopRequireDefault(_serializeJavascript);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function markupBefore(version, apiUrl, scripts) {
+		var meta = arguments.length <= 3 || arguments[3] === undefined ? '' : arguments[3];
+		var production = arguments.length <= 4 || arguments[4] === undefined ? ("production") == 'production' : arguments[4];
+	
+		return '<!DOCTYPE html>\n<html>\n\t<head>\n\t\t<meta charset="utf-8" />\n\t\t<meta name="viewport" content="width=device-width, initial-scale=1" />\n\t\t' + meta + '\n\t\t<link rel="shortcut icon" href="/favicon.ico" />\n\t\t<link rel="stylesheet" href="https://cdn.rawgit.com/tleunen/react-mdl/v1.5.3/extra/material.min.css" />\n\t\t<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />\n\t\t<link rel="stylesheet" href="/style.css?v' + version + '" />\n\t\t<script>\n\t\t\twindow.__bridalapp_api_server=\'' + apiUrl + '\';\n\t\t\twindow.mdlSuppressAutoUpgrade = true;\n\t\t</script>\n\t\t<script>(function(){\n\t\t\tvar loadScripts = (function() {return function(stagedScripts) {\n\t\t\t\tfunction loadStage(n) {\n\t\t\t\t\tvar scripts = Object.keys(stagedScripts[n]).map(function(key){return stagedScripts[n][key]});\n\t\t\t\t\tfor (var i=0,script; script=scripts[i]; i++) {loadScript(script);}\n\t\t\t\t\treturn function(){return stageLoaded(n);};\n\t\t\t\t}\n\t\t\t\tfunction loadScript(src) {if (src) {\n\t\t\t\t\tvar s = document.createElement(\'script\');\n\t\t\t\t\ts.async=true;  s.src=src;  s.charSet=\'UTF-8\';\n\t\t\t\t\tdocument.getElementsByTagName(\'head\')[0].appendChild(s);\n\t\t\t\t}}\n\t\t\t\tfunction stageLoaded(n) {\n\t\t\t\t\tvar deps = Object.keys(stagedScripts[n]);\n\t\t\t\t\tfor (var i=0,dep; dep=deps[i]; i++) {if (! window[dep]) {return false;}}\n\t\t\t\t\treturn true;\n\t\t\t\t}\n\t\t\t\tvar poll = (function(){var timeout; return function(check, cb, delay) {\n\t\t\t\t\t(function poller(){\n\t\t\t\t\t\tif (check()) {if (timeout) {clearTimeout(timeout); timeout=null;} cb();}\n\t\t\t\t\t\telse {timeout = setTimeout(poller, delay)}\n\t\t\t\t\t})()\n\t\t\t\t}})();\n\t\t\t\tvar loadNextStage = (function(){var stage=0; return function() {\n\t\t\t\t\tif (stage < stagedScripts.length) {poll(loadStage(stage++), loadNextStage, 50)}\n\t\t\t\t}})()\n\t\t\t\tloadNextStage();\n\t\t\t}})();\n\n\t\t\tloadScripts(' + (0, _stringify2.default)(scripts) + ');\n\t\t})()</script>\n\t</head>\n\t<body>\n\t\t<div id="bridalapp">';
+	}
+	
+	function markupAfter(state) {
+		return '</div>\n\t\t<script>\n\t\t\twindow.bridalapp_initial_state=' + (0, _serializeJavascript2.default)(state) + ';\n\t\t</script>\n\t</body>\n</html>\n';
+	}
 
 /***/ },
 /* 44 */
 /***/ function(module, exports) {
 
-	module.exports = require("redux-async-api");
+	module.exports = require("babel-runtime/core-js/json/stringify");
 
 /***/ },
 /* 45 */
+/***/ function(module, exports) {
+
+	module.exports = require("babel-runtime/helpers/defineProperty");
+
+/***/ },
+/* 46 */
+/***/ function(module, exports) {
+
+	module.exports = require("babel-runtime/helpers/toConsumableArray");
+
+/***/ },
+/* 47 */
+/***/ function(module, exports) {
+
+	module.exports = require("react-dom");
+
+/***/ },
+/* 48 */
+/***/ function(module, exports) {
+
+	module.exports = require("redux-async-api");
+
+/***/ },
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(__dirname) {var path = __webpack_require__(81);
+	/* WEBPACK VAR INJECTION */(function(__dirname) {var path = __webpack_require__(80);
 	
 	var buildPath = path.resolve(__dirname);
 	var publicPath = path.resolve(__dirname, 'public');
 	var testPath = path.resolve(publicPath, 'test');
-	var pkg = __webpack_require__(69);
+	var pkg = __webpack_require__(68);
 	
 	var cfg = {
 		version: pkg.version,
@@ -3464,339 +3984,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, ""))
 
 /***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.App = undefined;
-	
-	var _extends2 = __webpack_require__(7);
-	
-	var _extends3 = _interopRequireDefault(_extends2);
-	
-	var _getPrototypeOf = __webpack_require__(2);
-	
-	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-	
-	var _classCallCheck2 = __webpack_require__(1);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(5);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(3);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _dec, _class, _class2, _temp;
-	
-	var _picolog = __webpack_require__(6);
-	
-	var _picolog2 = _interopRequireDefault(_picolog);
-	
-	var _react = __webpack_require__(8);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRouter = __webpack_require__(25);
-	
-	var _reduxLoadApi = __webpack_require__(23);
-	
-	var _reactRedux = __webpack_require__(22);
-	
-	var _reactMdl = __webpack_require__(19);
-	
-	var _store = __webpack_require__(21);
-	
-	var _store2 = _interopRequireDefault(_store);
-	
-	var _mdlExtras = __webpack_require__(20);
-	
-	var _AuthDialog = __webpack_require__(47);
-	
-	var _AuthDialog2 = _interopRequireDefault(_AuthDialog);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var bool = _react.PropTypes.bool;
-	var number = _react.PropTypes.number;
-	var string = _react.PropTypes.string;
-	var object = _react.PropTypes.object;
-	var func = _react.PropTypes.func;
-	var array = _react.PropTypes.array;
-	var shape = _react.PropTypes.shape;
-	var any = _react.PropTypes.any;
-	
-	var app = _store2.default.app;
-	var App = exports.App = (_dec = (0, _reactRedux.connect)(app.connector), _dec(_class = (_temp = _class2 = function (_Component) {
-		(0, _inherits3.default)(App, _Component);
-	
-		function App(props) {
-			(0, _classCallCheck3.default)(this, App);
-	
-			_picolog2.default.debug('constructor', props);
-			return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(App).call(this, props));
-		}
-	
-		(0, _createClass3.default)(App, [{
-			key: 'getChildContext',
-			value: function getChildContext() {
-				var lightbox = this.props.lightbox;
-	
-				return { lightbox: lightbox };
-			}
-		}, {
-			key: 'render',
-			value: function render() {
-				_picolog2.default.debug('render', this.props);
-				var _props = this.props;
-				var auth = _props.auth;
-				var stores = _props.stores;
-				var brands = _props.brands;
-				var leftDrawer = _props.leftDrawer;
-				var rightDrawer = _props.rightDrawer;
-				var lightbox = _props.lightbox;
-				var children = _props.children;
-				var loggedIn = auth.loggedIn;
-				var session = auth.session;
-				var onProvoke = auth.onProvoke;
-				var onLogout = auth.onLogout;
-	
-				var profile = auth.loggedIn ? '/profile/' + auth.session.user.name + '/' + auth.session.user.id : '';
-				return _react2.default.createElement(
-					'div',
-					{ className: 'mdl-layout mdl-layout--fixed-header' },
-					_react2.default.createElement(
-						'div',
-						{ className: 'mdl-layout__inner-container' },
-						_react2.default.createElement(
-							'header',
-							{ className: 'AppBar mdl-layout__header is-casting-shadow' },
-							_react2.default.createElement(
-								'div',
-								{ tabIndex: '0', className: 'mdl-layout__drawer-button', onClick: leftDrawer.onActivate },
-								_react2.default.createElement(
-									'i',
-									{ className: 'material-icons' },
-									'menu'
-								)
-							),
-							_react2.default.createElement(
-								'div',
-								{ className: 'mdl-layout__header-row' },
-								_react2.default.createElement('img', { className: 'logo', src: 'https://cdn.rawgit.com/download/bridalapp-static/1.0.0/bridalapp/logo-bridalapp.png' }),
-								_react2.default.createElement('div', { className: 'mdl-layout-spacer' }),
-								_react2.default.createElement(
-									_reactMdl.Navigation,
-									{ className: 'RightDrawer' },
-									_react2.default.createElement(_reactMdl.Icon, { name: 'account_circle', onClick: rightDrawer.open ? function () {} : rightDrawer.onActivate })
-								)
-							)
-						),
-						_react2.default.createElement(
-							_mdlExtras.Drawer,
-							(0, _extends3.default)({ modal: true, autoClose: true }, leftDrawer),
-							_react2.default.createElement(
-								_mdlExtras.LayoutTitle,
-								null,
-								_react2.default.createElement('img', { className: 'logo', src: 'https://cdn.rawgit.com/download/bridalapp-static/1.0.0/bridalapp/logo-bridalapp.png' })
-							),
-							_react2.default.createElement(
-								_reactMdl.Navigation,
-								null,
-								_react2.default.createElement(
-									_reactRouter.Link,
-									{ to: '/Wedding+Dresses' },
-									'Wedding Dresses'
-								),
-								_react2.default.createElement(
-									_reactRouter.Link,
-									{ to: '/stores' },
-									'Bridal Stores'
-								),
-								_react2.default.createElement(
-									_reactRouter.Link,
-									{ to: '/brands' },
-									'Bridal Brands'
-								)
-							)
-						),
-						_react2.default.createElement(
-							_mdlExtras.Drawer,
-							(0, _extends3.default)({ right: true, modal: true, autoClose: true }, rightDrawer),
-							_react2.default.createElement(
-								_mdlExtras.LayoutTitle,
-								null,
-								_react2.default.createElement(
-									'h4',
-									null,
-									auth.loggedIn ? _react2.default.createElement(
-										_reactMdl.Button,
-										{ className: 'Logout', colored: true, onClick: auth.onLogout },
-										'Logout'
-									) : _react2.default.createElement(
-										_reactMdl.Button,
-										{ className: 'Login', colored: true, raised: true, onClick: auth.onProvoke },
-										'Login'
-									),
-									_react2.default.createElement(
-										_reactMdl.Navigation,
-										{ className: 'Session' },
-										auth.loggedIn ? _react2.default.createElement(
-											_reactRouter.Link,
-											{ className: 'Profile', onClick: function onClick(e) {
-													return e.preventDefault();
-												}, to: profile },
-											_react2.default.createElement(_reactMdl.Icon, { name: 'account_circle' }),
-											' ',
-											_react2.default.createElement(
-												'span',
-												{ title: session.user.name },
-												session.user.name
-											)
-										) : _react2.default.createElement(
-											'b',
-											null,
-											'Not logged in'
-										)
-									)
-								)
-							),
-							stores.managedStore || brands.managedBrand ? _react2.default.createElement(
-								_reactMdl.Navigation,
-								{ className: 'test' },
-								stores.managedStore ? _react2.default.createElement(
-									_reactRouter.Link,
-									{ to: '/store/' + stores.managedStore.city + '/' + stores.managedStore.name },
-									_react2.default.createElement(_reactMdl.Icon, { name: 'store' }),
-									' ',
-									stores.managedStore.name
-								) : _react2.default.createElement('i', { className: 'dummy' }),
-								brands.managedBrand ? _react2.default.createElement(
-									_reactRouter.Link,
-									{ to: '/brand/' + brands.managedBrand.name },
-									_react2.default.createElement(_reactMdl.Icon, { name: 'content_cut' }),
-									' ',
-									brands.managedBrand.name
-								) : _react2.default.createElement('i', { className: 'dummy' })
-							) : '',
-							auth.loggedIn ? _react2.default.createElement(
-								_reactMdl.Navigation,
-								null,
-								_react2.default.createElement(
-									_reactRouter.Link,
-									{ to: '/loved/Wedding+Dresses' },
-									_react2.default.createElement(_reactMdl.Icon, { name: 'favorite' }),
-									' My Favorites'
-								)
-							) : ''
-						),
-						_react2.default.createElement(
-							_reactMdl.Content,
-							{ className: 'main' },
-							children
-						),
-						_react2.default.createElement(_AuthDialog2.default, auth),
-						_react2.default.createElement(_mdlExtras.Lightbox, (0, _extends3.default)({ noNextOnClick: true, noImageCount: true }, lightbox))
-					)
-				);
-				/*			<Layout fixedHeader>
-	   				<LoginDialog open={!!auth.challenge} api={api.auth}/>
-	   				<Header className="AppBar" title="Title">
-	   					<img className="logo" src="https://cdn.rawgit.com/download/bridalapp-static/1.0.0/bridalapp/logo-bridalapp.png" />
-	   					<Navigation className="ActionBar">
-	   						<p>this.props.appbar</p>
-	   					</Navigation>
-	   					<Navigation className="RightDrawer">
-	   						{!rightDrawer.open ? (
-	   							<i className="material-icons" onClick={()=>api.rightDrawer.open()}>account_circle</i>
-	   						) : ''}
-	   					</Navigation>
-	   				</Header>
-	   				<Drawer api={api.leftDrawer} onClose={()=>api.leftDrawer.close()} open={leftDrawer.open}>
-	   					<LayoutTitle><h2>Title</h2></LayoutTitle>
-	   					<Navigation>
-	   						<Link to="/">Home</Link>
-	   						<Link to="/products">Products</Link>
-	   						<Link to="/stores">Stores</Link>
-	   						<Link to="/brands">Brands</Link>
-	   					</Navigation>
-	   				</Drawer>
-	   				<Drawer align="right" onClose={()=>api.rightDrawer.close()} open={rightDrawer.open}>
-	   					<LayoutTitle>{auth.loggedIn ?
-	   						<h2>{auth.session.user.name}</h2>
-	   						:
-	   						<Button onClick={() => {
-	   							api.rightDrawer.close();
-	   							api.auth.challenge('/challenge')
-	   						}}>Login</Button>
-	   					}</LayoutTitle>
-	   					<Navigation>
-	   						<Link to="/">Home</Link>
-	   						<Link to="/products">Products</Link>
-	   						<Link to="/stores">Stores</Link>
-	   						<Link to="/brands">Brands</Link>
-	   					</Navigation>
-	   				</Drawer>
-	   				<Content className="main">
-	   					<div>{children}</div>
-	   				</Content>
-	   			</Layout>
-	   
-	   		);
-	   */
-			}
-		}]);
-		return App;
-	}(_react.Component), _class2.propTypes = {
-		auth: shape({
-			loggedIn: bool.isRequired,
-			challenged: bool.isRequired,
-			onProvoke: func,
-			onLogin: func,
-			onLogout: func,
-			onRegister: func,
-			onCancel: func,
-			user: shape({
-				id: any.isRequired,
-				name: string.isRequired
-			})
-		}).isRequired,
-		stores: shape({
-			managedStore: shape({
-				id: any.isRequired,
-				name: string.isRequired,
-				city: string.isRequired
-			})
-		}).isRequired,
-		brands: shape({
-			managedBrand: shape({
-				id: any.isRequired,
-				name: string.isRequired
-			})
-		}).isRequired,
-		leftDrawer: object,
-		rightDrawer: object,
-		lightbox: object
-	}, _class2.childContextTypes = {
-		lightbox: shape({
-			onOpenLightbox: func.isRequired
-		}).isRequired
-	}, _temp)) || _class);
-	exports.default = App;
-
-/***/ },
-/* 47 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3810,11 +3998,11 @@
 	
 	var _extends3 = _interopRequireDefault(_extends2);
 	
-	var _objectWithoutProperties2 = __webpack_require__(11);
+	var _objectWithoutProperties2 = __webpack_require__(21);
 	
 	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -3822,35 +4010,35 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(5);
+	var _createClass2 = __webpack_require__(6);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
 	var _class, _temp;
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _react = __webpack_require__(8);
+	var _react = __webpack_require__(9);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactMdl = __webpack_require__(19);
+	var _reactMdl = __webpack_require__(11);
 	
-	var _classnames = __webpack_require__(18);
+	var _classnames = __webpack_require__(17);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _mdlExtras = __webpack_require__(20);
+	var _mdlExtras = __webpack_require__(12);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -4014,7 +4202,7 @@
 	exports.default = AuthDialog;
 
 /***/ },
-/* 48 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4039,7 +4227,7 @@
 	exports.default = Credential;
 
 /***/ },
-/* 49 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4047,13 +4235,9 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.BrandBrowser = undefined;
+	exports.SessionPanel = undefined;
 	
-	var _extends2 = __webpack_require__(7);
-	
-	var _extends3 = _interopRequireDefault(_extends2);
-	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -4061,49 +4245,184 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(5);
+	var _createClass2 = __webpack_require__(6);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
-	var _dec, _dec2, _class, _class2, _temp;
+	var _class, _temp;
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _react = __webpack_require__(8);
+	var _react = __webpack_require__(9);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(22);
+	var _reactRouter = __webpack_require__(26);
 	
-	var _reduxLoadApi = __webpack_require__(23);
+	var _reactMdl = __webpack_require__(11);
 	
-	var _store = __webpack_require__(21);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var bool = _react.PropTypes.bool;
+	var number = _react.PropTypes.number;
+	var string = _react.PropTypes.string;
+	var object = _react.PropTypes.object;
+	var func = _react.PropTypes.func;
+	var array = _react.PropTypes.array;
+	var shape = _react.PropTypes.shape;
+	var any = _react.PropTypes.any;
+	var SessionPanel = exports.SessionPanel = (_temp = _class = function (_Component) {
+		(0, _inherits3.default)(SessionPanel, _Component);
+	
+		function SessionPanel() {
+			(0, _classCallCheck3.default)(this, SessionPanel);
+			return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(SessionPanel).apply(this, arguments));
+		}
+	
+		(0, _createClass3.default)(SessionPanel, [{
+			key: 'render',
+			value: function render() {
+				_picolog2.default.debug('render', this.props);
+				var _props = this.props;
+				var onProvoke = _props.onProvoke;
+				var onLogout = _props.onLogout;
+				var user = _props.session.user;
+				var children = _props.children;
+	
+				var profile = user ? '/profile/' + user.name : '';
+				return _react2.default.createElement(
+					'h4',
+					null,
+					user ? _react2.default.createElement(
+						_reactMdl.Button,
+						{ className: 'Logout', colored: true, onClick: onLogout },
+						'Logout'
+					) : _react2.default.createElement(
+						_reactMdl.Button,
+						{ className: 'Login', colored: true, raised: true, onClick: onProvoke },
+						'Login'
+					),
+					_react2.default.createElement(
+						_reactMdl.Navigation,
+						{ className: 'Session' },
+						user ? _react2.default.createElement(
+							_reactRouter.Link,
+							{ className: 'Profile', onClick: function onClick(e) {
+									return e.preventDefault();
+								}, to: profile },
+							_react2.default.createElement(_reactMdl.Icon, { name: 'account_circle' }),
+							' ',
+							_react2.default.createElement(
+								'span',
+								{ title: user.name },
+								user.name
+							)
+						) : _react2.default.createElement(
+							'b',
+							null,
+							'Not logged in'
+						)
+					)
+				);
+			}
+		}]);
+		return SessionPanel;
+	}(_react.Component), _class.propTypes = {
+		onProvoke: func.isRequired,
+		onLogout: func.isRequired,
+		session: shape({
+			user: shape({
+				id: any.isRequired,
+				name: string.isRequired
+			})
+		}).isRequired
+	}, _temp);
+	exports.default = SessionPanel;
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.BrandBrowserAppBar = exports.BrandBrowser = undefined;
+	
+	var _extends2 = __webpack_require__(7);
+	
+	var _extends3 = _interopRequireDefault(_extends2);
+	
+	var _getPrototypeOf = __webpack_require__(3);
+	
+	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+	
+	var _classCallCheck2 = __webpack_require__(1);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(6);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(5);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(4);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _dec, _dec2, _class, _class2, _temp, _dec3, _class3, _class4, _temp2;
+	
+	var _picolog = __webpack_require__(2);
+	
+	var _picolog2 = _interopRequireDefault(_picolog);
+	
+	var _react = __webpack_require__(9);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _shallowEqual = __webpack_require__(25);
+	
+	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
+	
+	var _reactRedux = __webpack_require__(23);
+	
+	var _reduxLoadApi = __webpack_require__(27);
+	
+	var _reactMdl = __webpack_require__(11);
+	
+	var _store = __webpack_require__(22);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _Role = __webpack_require__(13);
+	var _api = __webpack_require__(19);
 	
-	var _Role2 = _interopRequireDefault(_Role);
+	var _api2 = _interopRequireDefault(_api);
 	
-	var _Scroller = __webpack_require__(30);
+	var _FilterPanel = __webpack_require__(29);
+	
+	var _FilterPanel2 = _interopRequireDefault(_FilterPanel);
+	
+	var _mdlExtras = __webpack_require__(12);
+	
+	var _Scroller = __webpack_require__(33);
 	
 	var _Scroller2 = _interopRequireDefault(_Scroller);
 	
-	var _Card = __webpack_require__(53);
-	
-	var _Card2 = _interopRequireDefault(_Card);
-	
-	var _BrandCard = __webpack_require__(50);
+	var _BrandCard = __webpack_require__(54);
 	
 	var _BrandCard2 = _interopRequireDefault(_BrandCard);
 	
@@ -4114,15 +4433,11 @@
 	var array = _react.PropTypes.array;
 	var func = _react.PropTypes.func;
 	var shape = _react.PropTypes.shape;
-	var any = _react.PropTypes.any;
-	
-	var app = _store2.default.app;
-	
+	var any = _react.PropTypes.any; // explicitly import to facilitate hot-reload
 	
 	function load(params) {
 		_picolog2.default.log('load', params);
-		params && app.brands.setFilter(params);
-		return app.brands.search().then(function (results) {
+		return bridalapp.brands.search(params).then(function (results) {
 			_picolog2.default.log('load: search returned ' + results.length + ' brands.');
 			return results;
 		}).catch(function (error) {
@@ -4131,7 +4446,7 @@
 		});
 	}
 	
-	var BrandBrowser = exports.BrandBrowser = (_dec = (0, _reduxLoadApi.onload)(load), _dec2 = (0, _reactRedux.connect)(app.brands.connector), _dec(_class = _dec2(_class = (_temp = _class2 = function (_React$Component) {
+	var BrandBrowser = exports.BrandBrowser = (_dec = (0, _reduxLoadApi.onload)(load), _dec2 = (0, _reactRedux.connect)(bridalapp.brands.connector), _dec(_class = _dec2(_class = (_temp = _class2 = function (_React$Component) {
 		(0, _inherits3.default)(BrandBrowser, _React$Component);
 	
 		function BrandBrowser() {
@@ -4153,32 +4468,63 @@
 				}
 			}
 		}, {
+			key: 'componentWillReceiveProps',
+			value: function componentWillReceiveProps(nextProps) {
+				_picolog2.default.debug('componentWillReceiveProps', nextProps);
+				var newFilter = (0, _extends3.default)({}, nextProps.location.query, nextProps.params);
+				var pathChanged = nextProps.location.pathname !== this.props.location.pathname;
+				var queryChanged = !(0, _shallowEqual2.default)(nextProps.location.query, this.props.location.query);
+				if (pathChanged || queryChanged || nextProps.pending && !this.props.pending) {
+					load(newFilter);
+				}
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 				_picolog2.default.debug('render', this.props);
 				var _props2 = this.props;
+				var params = _props2.params;
+				var location = _props2.location;
+				var filter = _props2.filter;
+				var onSearch = _props2.onSearch;
+				var pending = _props2.pending;
+				var error = _props2.error;
 				var items = _props2.items;
+				var onItemsChange = _props2.onItemsChange;
+				var stockedItems = _props2.stockedItems;
 				var item = _props2.item;
 	
-				return _react2.default.createElement(_Scroller2.default, {
-					className: 'BrandBrowser ',
-					bufferBefore: 2,
-					items: items,
-					bufferAfter: 4,
-					renderItem: function renderItem(brand, idx) {
-						return _react2.default.createElement(_BrandCard2.default, (0, _extends3.default)({ brand: brand }, item));
-					}
-				});
+				var filterProps = (0, _extends3.default)({ onSearch: onSearch, location: location }, filter);
+	
+				return _react2.default.createElement(
+					'div',
+					{ style: { boxSizing: 'border-box', height: '100%' } },
+					_react2.default.createElement(_FilterPanel2.default, filterProps),
+					_react2.default.createElement(_Scroller2.default, {
+						className: 'BrandBrowser ',
+						bufferBefore: 2,
+						items: items,
+						bufferAfter: 4,
+						renderItem: function renderItem(brand, idx) {
+							var props = (0, _extends3.default)({ brand: brand }, item, { frontLoadDelay: idx < 10 ? 0 : 500, backLoadDelay: idx < 10 ? 0 : 2500 });
+							return _react2.default.createElement(_BrandCard2.default, props);
+						}
+					})
+				);
 			}
 		}]);
 		return BrandBrowser;
 	}(_react2.default.Component), _class2.propTypes = {
 		params: object.isRequired,
-		filter: object.isRequired,
+		location: shape({
+			query: object
+		}).isRequired,
+		filter: shape({
+			values: object.isRequired
+		}).isRequired,
 		items: array.isRequired,
 		pending: bool.isRequired,
 		error: any,
-		onFilterChange: func.isRequired,
 		onSearch: func.isRequired,
 		onItemsChange: func.isRequired,
 		item: shape({
@@ -4188,9 +4534,60 @@
 		}).isRequired
 	}, _temp)) || _class) || _class);
 	exports.default = BrandBrowser;
+	var BrandBrowserAppBar = exports.BrandBrowserAppBar = (_dec3 = (0, _reactRedux.connect)(bridalapp.brands.connector), _dec3(_class3 = (_temp2 = _class4 = function (_Component) {
+		(0, _inherits3.default)(BrandBrowserAppBar, _Component);
+	
+		function BrandBrowserAppBar() {
+			var _Object$getPrototypeO;
+	
+			(0, _classCallCheck3.default)(this, BrandBrowserAppBar);
+	
+			for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+				args[_key] = arguments[_key];
+			}
+	
+			var _this2 = (0, _possibleConstructorReturn3.default)(this, (_Object$getPrototypeO = (0, _getPrototypeOf2.default)(BrandBrowserAppBar)).call.apply(_Object$getPrototypeO, [this].concat(args)));
+	
+			_this2.filterClicked = _this2.filterClicked.bind(_this2);
+			return _this2;
+		}
+	
+		(0, _createClass3.default)(BrandBrowserAppBar, [{
+			key: 'filterClicked',
+			value: function filterClicked(event) {
+				_picolog2.default.log('filterClicked', event);
+				if (event) {
+					event.preventDefault();
+				}
+				var _props$filter = this.props.filter;
+				var open = _props$filter.open;
+				var onActivate = _props$filter.onActivate;
+				var onCancel = _props$filter.onCancel;
+	
+				open ? onCancel() : onActivate();
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					_mdlExtras.Badge,
+					{ className: 'mdl-navigation__link', text: '' + this.props.items.length, onClick: this.filterClicked },
+					_react2.default.createElement(_reactMdl.Icon, { name: 'search' })
+				);
+			}
+		}]);
+		return BrandBrowserAppBar;
+	}(_react.Component), _class4.propTypes = {
+		filter: shape({
+			open: bool.isRequired,
+			onActivate: func.isRequired,
+			onCancel: func.isRequired
+		}).isRequired,
+		items: array.isRequired
+	}, _temp2)) || _class3);
 
 /***/ },
-/* 50 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4204,7 +4601,11 @@
 	
 	var _extends3 = _interopRequireDefault(_extends2);
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _objectWithoutProperties2 = __webpack_require__(21);
+	
+	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+	
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -4212,29 +4613,29 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(5);
+	var _createClass2 = __webpack_require__(6);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
 	var _class, _temp;
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _react = __webpack_require__(8);
+	var _react = __webpack_require__(9);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _classnames = __webpack_require__(18);
+	var _classnames = __webpack_require__(17);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -4242,11 +4643,11 @@
 	
 	var _ws2 = _interopRequireDefault(_ws);
 	
-	var _reactMdl = __webpack_require__(19);
+	var _reactMdl = __webpack_require__(11);
 	
-	var _mdlExtras = __webpack_require__(20);
+	var _mdlExtras = __webpack_require__(12);
 	
-	var _Publication2 = __webpack_require__(28);
+	var _Publication2 = __webpack_require__(31);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -4294,7 +4695,9 @@
 			value: function render() {
 				var _this2 = this;
 	
-				var brand = this.props.brand;
+				var _props = this.props;
+				var brand = _props.brand;
+				var others = (0, _objectWithoutProperties3.default)(_props, ['brand']);
 				var id = brand.id;
 				var name = brand.name;
 				var published = brand.published;
@@ -4302,8 +4705,8 @@
 	
 				var bid = id.toString();
 				var img = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
-				var prdUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.14/products/' + bid + '/Brand';
-				var brandUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.14/brands/' + bid + '/logo-brand-name.png';
+				var prdUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.15/products/' + bid + '/Brand';
+				var brandUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.15/brands/' + bid + '/logo-brand-name.png';
 				var thumbs = prdUrl + '/thumbs.jpg';
 				var thumbnail = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
 				var images = [{ src: prdUrl + '/back-large.jpg', className: 'back', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '300%', backgroundPosition: '100% 0' }) } }, { src: prdUrl + '/front-large.jpg', className: 'front', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '150%', backgroundPosition: '0 0' }) } }, { src: prdUrl + '/detail-1-large.jpg', className: 'detail-1', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '600%', backgroundPosition: '200% 200%' }) } }, { src: prdUrl + '/detail-2-large.jpg', className: 'detail-2', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '600%', backgroundPosition: '100% 200%' }) } }, { src: prdUrl + '/detail-3-large.jpg', className: 'detail-3', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '600%', backgroundPosition: '200% 100%' }) } }];
@@ -4311,7 +4714,7 @@
 	
 				return _react2.default.createElement(
 					_mdlExtras.StatefulFlipCard,
-					{ className: classes, key: bid },
+					(0, _extends3.default)({ className: classes, key: bid }, others),
 					_react2.default.createElement(
 						_mdlExtras.FrontFace,
 						null,
@@ -4381,79 +4784,7 @@
 	exports.default = BrandCard;
 
 /***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.default = undefined;
-	
-	var _extends2 = __webpack_require__(7);
-	
-	var _extends3 = _interopRequireDefault(_extends2);
-	
-	var _objectWithoutProperties2 = __webpack_require__(11);
-	
-	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
-	
-	var _getPrototypeOf = __webpack_require__(2);
-	
-	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-	
-	var _classCallCheck2 = __webpack_require__(1);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(5);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(3);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _react = __webpack_require__(8);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Brands = function (_Component) {
-		(0, _inherits3.default)(Brands, _Component);
-	
-		function Brands() {
-			(0, _classCallCheck3.default)(this, Brands);
-			return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Brands).apply(this, arguments));
-		}
-	
-		(0, _createClass3.default)(Brands, [{
-			key: "render",
-			value: function render() {
-				var _props = this.props;
-				var children = _props.children;
-				var others = (0, _objectWithoutProperties3.default)(_props, ["children"]);
-	
-				return _react2.default.createElement(
-					"div",
-					(0, _extends3.default)({ className: "Brands" }, others),
-					children
-				);
-			}
-		}]);
-		return Brands;
-	}(_react.Component);
-
-	exports.default = Brands;
-
-/***/ },
-/* 52 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4471,7 +4802,7 @@
 	
 	var _extends3 = _interopRequireDefault(_extends2);
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -4479,33 +4810,33 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(5);
+	var _createClass2 = __webpack_require__(6);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
 	var _class, _class2, _temp;
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _reduxApis = __webpack_require__(12);
+	var _reduxApis = __webpack_require__(13);
 	
-	var _reduxFetchApi = __webpack_require__(17);
+	var _reduxFetchApi = __webpack_require__(18);
 	
-	var _api = __webpack_require__(29);
+	var _api = __webpack_require__(32);
 	
 	var _api2 = _interopRequireDefault(_api);
 	
-	var _Brand = __webpack_require__(35);
+	var _Brand = __webpack_require__(38);
 	
 	var _Brand2 = _interopRequireDefault(_Brand);
 	
@@ -4563,7 +4894,7 @@
 	exports.default = BrandsApi;
 
 /***/ },
-/* 53 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4571,13 +4902,13 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.FlipCard = exports.Card = exports.Back = exports.Front = exports.CardFace = exports.CardActions = exports.SupportingText = exports.CardMedia = exports.SubtitleText = exports.CardTitle = undefined;
+	exports.FilterFields = undefined;
 	
-	var _defineProperty2 = __webpack_require__(31);
+	var _extends2 = __webpack_require__(7);
 	
-	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+	var _extends3 = _interopRequireDefault(_extends2);
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -4585,177 +4916,95 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(5);
+	var _createClass2 = __webpack_require__(6);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
-	var _extends2 = __webpack_require__(7);
+	var _class, _temp;
 	
-	var _extends3 = _interopRequireDefault(_extends2);
-	
-	var _objectWithoutProperties2 = __webpack_require__(11);
-	
-	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
-	
-	var _class, _temp, _class2, _temp2;
-	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _react = __webpack_require__(8);
+	var _react = __webpack_require__(9);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _classnames = __webpack_require__(18);
+	var _reactMdl = __webpack_require__(11);
+	
+	var _mdlExtras = __webpack_require__(12);
+	
+	var _Entity = __webpack_require__(8);
+	
+	var _classnames = __webpack_require__(17);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var string = _react.PropTypes.string;
-	var node = _react.PropTypes.node;
-	var bool = _react.PropTypes.bool;
+	var object = _react.PropTypes.object;
+	var func = _react.PropTypes.func;
+	var shape = _react.PropTypes.shape;
+	var FilterFields = exports.FilterFields = (_temp = _class = function (_Component) {
+		(0, _inherits3.default)(FilterFields, _Component);
 	
-	
-	function simpleComponent(defaultClass) {
-		var result = function result(props) {
-			var className = props.className;
-			var defaultClass = props.defaultClass;
-			var children = props.children;
-			var otherProps = (0, _objectWithoutProperties3.default)(props, ['className', 'defaultClass', 'children']);
-	
-			var classes = (0, _classnames2.default)(className, defaultClass);
-			return _react2.default.createElement(
-				'div',
-				(0, _extends3.default)({ className: classes }, otherProps),
-				children
-			);
-		};
-		result.propTypes = {
-			className: string,
-			defaultClass: string.isRequired,
-			children: node
-		};
-	
-		result.defaultProps = {
-			defaultClass: defaultClass
-		};
-	
-		return result;
-	}
-	
-	var CardTitle = exports.CardTitle = simpleComponent('mdl-card__title');
-	var SubtitleText = exports.SubtitleText = simpleComponent('mdl-card__subtitle-text');
-	var CardMedia = exports.CardMedia = simpleComponent('mdl-card__media');
-	var SupportingText = exports.SupportingText = simpleComponent('mdl-card__supporting-text');
-	var CardActions = exports.CardActions = simpleComponent('mdl-card__actions');
-	var CardFace = exports.CardFace = simpleComponent('mdl-card__face');
-	var Front = exports.Front = simpleComponent(CardFace.defaultProps.defaultClass + ' mdl-card__front');
-	var Back = exports.Back = simpleComponent(CardFace.defaultProps.defaultClass + ' mdl-card__back');
-	
-	var Card = exports.Card = (_temp = _class = function (_Component) {
-		(0, _inherits3.default)(Card, _Component);
-	
-		function Card() {
-			(0, _classCallCheck3.default)(this, Card);
-			return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Card).apply(this, arguments));
+		function FilterFields() {
+			(0, _classCallCheck3.default)(this, FilterFields);
+			return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(FilterFields).apply(this, arguments));
 		}
 	
-		(0, _createClass3.default)(Card, [{
+		(0, _createClass3.default)(FilterFields, [{
+			key: 'clearField',
+			value: function clearField(field, event) {
+				_picolog2.default.info('clearField', field, event);
+				event.preventDefault();
+				var _props = this.props;
+				var onApplyFields = _props.onApplyFields;
+				var onSearch = _props.onSearch;
+	
+				field.onChange('');
+			}
+		}, {
 			key: 'render',
 			value: function render() {
-				var _props = this.props;
-				var className = _props.className;
-				var cardClass = _props.cardClass;
-				var shadowClass = _props.shadowClass;
-				var flippedClass = _props.flippedClass;
-				var flipped = _props.flipped;
-				var children = _props.children;
-				var others = (0, _objectWithoutProperties3.default)(_props, ['className', 'cardClass', 'shadowClass', 'flippedClass', 'flipped', 'children']);
+				var _props2 = this.props;
+				var fields = _props2.fields;
+				var className = _props2.className;
+				var children = _props2.children;
 	
-				var classes = (0, _classnames2.default)(className, cardClass, shadowClass, (0, _defineProperty3.default)({}, flippedClass, flipped));
+				var classes = (0, _classnames2.default)('FilterFields', className);
 				return _react2.default.createElement(
 					'div',
-					(0, _extends3.default)({ className: classes }, others),
-					children
+					{ className: classes },
+					_react2.default.createElement(_mdlExtras.Textfield, (0, _extends3.default)({}, fields.q, { placeholder: 'Type here...' })),
+					_react2.default.createElement(
+						'a',
+						{ className: 'clear-button', href: '#', onClick: this.clearField.bind(this, fields.q) },
+						_react2.default.createElement(_reactMdl.Icon, { name: 'clear' })
+					)
 				);
 			}
 		}]);
-		return Card;
+		return FilterFields;
 	}(_react.Component), _class.propTypes = {
-		className: string,
-		cardClass: string,
-		shadowClass: string,
-		flippedClass: string,
-		flipped: bool,
-		children: node
-	}, _class.defaultProps = {
-		cardClass: 'mdl-card',
-		shadowClass: 'mdl-shadow--2dp',
-		flippedClass: 'is-flipped',
-		flipped: false
+		fields: shape({
+			q: object.isRequired
+		}).isRequired,
+		onApplyFields: func.isRequired,
+		onSearch: func.isRequired
 	}, _temp);
-	exports.default = Card;
-	var FlipCard = exports.FlipCard = (_temp2 = _class2 = function (_Component2) {
-		(0, _inherits3.default)(FlipCard, _Component2);
-	
-		function FlipCard(props) {
-			(0, _classCallCheck3.default)(this, FlipCard);
-	
-			var _this2 = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(FlipCard).call(this, props));
-	
-			_this2.state = _this2.getState(props);
-			_this2.flip = _this2.flip.bind(_this2);
-			return _this2;
-		}
-	
-		(0, _createClass3.default)(FlipCard, [{
-			key: 'getState',
-			value: function getState(props) {
-				return { flipped: this.state && this.state.flipped || props && props.flipped };
-			}
-		}, {
-			key: 'componentWillReceiveProps',
-			value: function componentWillReceiveProps(nextProps) {
-				this.setState(this.getState(nextProps));
-			}
-		}, {
-			key: 'componentDidMount',
-			value: function componentDidMount() {
-				this.setState(this.getState(this.props));
-			}
-		}, {
-			key: 'isFlipped',
-			value: function isFlipped() {
-				return this.state && this.state.flipped;
-			}
-		}, {
-			key: 'flip',
-			value: function flip() {
-				_picolog2.default.debug('Card.flip():', !this.getState().flipped);
-				this.setState((0, _extends3.default)({}, this.state, { flipped: !this.isFlipped() }));
-			}
-		}]);
-		return FlipCard;
-	}(_react.Component), _class2.propTypes = {
-		flipped: bool.isRequired,
-		trigger: string.isRequired
-	}, _class2.defaultProps = {
-		flipped: false,
-		trigger: 'onClick'
-	}, _temp2);
+	exports.default = FilterFields;
 
 /***/ },
-/* 54 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4763,11 +5012,7 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.EntityApi = undefined;
-	
-	var _keys = __webpack_require__(24);
-	
-	var _keys2 = _interopRequireDefault(_keys);
+	exports.EntityApi = exports.FilterApi = exports.FilterFields = undefined;
 	
 	var _promise = __webpack_require__(15);
 	
@@ -4777,11 +5022,19 @@
 	
 	var _defineProperties2 = _interopRequireDefault(_defineProperties);
 	
+	var _keys = __webpack_require__(24);
+	
+	var _keys2 = _interopRequireDefault(_keys);
+	
 	var _extends2 = __webpack_require__(7);
 	
 	var _extends3 = _interopRequireDefault(_extends2);
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _createClass2 = __webpack_require__(6);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -4789,75 +5042,182 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(5);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
-	var _class, _class2, _temp;
+	var _class, _temp, _class2, _class3, _temp2;
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _reduxApis = __webpack_require__(12);
+	var _reduxApis = __webpack_require__(13);
 	
-	var _reduxAsyncApi = __webpack_require__(44);
+	var _reduxAsyncApi = __webpack_require__(48);
 	
-	var _reduxFetchApi = __webpack_require__(17);
+	var _reduxFetchApi = __webpack_require__(18);
 	
-	var _Entity = __webpack_require__(9);
+	var _shallowEqual = __webpack_require__(25);
+	
+	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
+	
+	var _api = __webpack_require__(30);
+	
+	var _Entity = __webpack_require__(8);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var EntityApi = exports.EntityApi = (0, _reduxFetchApi.remote)(_class = (_temp = _class2 = function (_Async) {
+	var FilterFields = exports.FilterFields = function (_Api) {
+		(0, _inherits3.default)(FilterFields, _Api);
+	
+		function FilterFields(state) {
+			(0, _classCallCheck3.default)(this, FilterFields);
+	
+			// query field is standard for all entities
+	
+			var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(FilterFields).call(this, state));
+	
+			_this.q = (0, _reduxApis.link)(_this, new _api.TextfieldApi());
+			_this.q.type = 'text';
+			return _this;
+		}
+	
+		return FilterFields;
+	}(_reduxApis.Api);
+	
+	var FilterApi = exports.FilterApi = (_temp = _class = function (_Api2) {
+		(0, _inherits3.default)(FilterApi, _Api2);
+	
+		function FilterApi() {
+			var state = arguments.length <= 0 || arguments[0] === undefined ? FilterApi.INITIAL_STATE : arguments[0];
+			(0, _classCallCheck3.default)(this, FilterApi);
+	
+			var _this2 = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(FilterApi).call(this, state));
+	
+			_this2.setHandler(FilterApi.ACTIVATE, function (state) {
+				return (0, _extends3.default)({}, state, { open: true });
+			});
+			_this2.setHandler(FilterApi.CANCEL, function (state) {
+				return (0, _extends3.default)({}, state, { open: false });
+			});
+			_this2.setHandler(FilterApi.SET_VALUES, function (state, _ref) {
+				var payload = _ref.payload;
+				return (0, _extends3.default)({}, state, { values: payload });
+			});
+			_this2.setHandler(FilterApi.APPLY_FIELDS, function (state) {
+				var changed = false;
+				var values = (0, _extends3.default)({}, _this2.values);
+				var keys = (0, _keys2.default)(_this2.fields);
+				for (var i = 0, key; key = keys[i]; i++) {
+					if (_this2.fields[key].value !== values[key]) {
+						changed = true;
+						values[key] = _this2.fields[key].value;
+					}
+				}
+				return changed ? (0, _extends3.default)({}, state, { values: values }) : state;
+			});
+	
+			(0, _defineProperties2.default)(_this2, {
+				open: { enumerable: true, get: function get() {
+						return _this2.getState().open;
+					} },
+				values: { enumerable: true, get: function get() {
+						return _this2.getState().values;
+					} }
+			});
+			_this2.fields = _this2.createFields();
+	
+			_this2.onActivate = _this2.activate.bind(_this2);
+			_this2.onCancel = _this2.cancel.bind(_this2);
+			_this2.onApplyFields = _this2.applyFields.bind(_this2);
+			return _this2;
+		}
+	
+		(0, _createClass3.default)(FilterApi, [{
+			key: 'activate',
+			value: function activate() {
+				this.dispatch(this.createAction(FilterApi.ACTIVATE)());
+			}
+		}, {
+			key: 'cancel',
+			value: function cancel() {
+				this.dispatch(this.createAction(FilterApi.CANCEL)());
+			}
+		}, {
+			key: 'applyFields',
+			value: function applyFields() {
+				this.dispatch(this.createAction(FilterApi.APPLY_FIELDS)());
+				return this.values;
+			}
+		}, {
+			key: 'setValues',
+			value: function setValues(values) {
+				var _this3 = this;
+	
+				this.dispatch(this.createAction(FilterApi.SET_VALUES)(values));
+				(0, _keys2.default)(this.fields).forEach(function (key) {
+					return _this3.fields[key].setValue(values[key]);
+				});
+			}
+		}, {
+			key: 'createFields',
+			value: function createFields() {
+				return (0, _reduxApis.link)(this, new FilterFields());
+			}
+		}]);
+		return FilterApi;
+	}(_reduxApis.Api), _class.INITIAL_STATE = {
+		open: false,
+		values: {}
+	}, _class.ACTIVATE = 'ACTIVATE', _class.CANCEL = 'CANCEL', _class.SET_VALUES = 'SET_VALUES', _class.APPLY_FIELDS = 'APPLY_FIELDS', _temp);
+	
+	var EntityApi = exports.EntityApi = (0, _reduxFetchApi.remote)(_class2 = (_temp2 = _class3 = function (_Async) {
 		(0, _inherits3.default)(EntityApi, _Async);
 	
 		function EntityApi() {
 			var state = arguments.length <= 0 || arguments[0] === undefined ? EntityApi.INITIAL_STATE : arguments[0];
 			(0, _classCallCheck3.default)(this, EntityApi);
 	
-			var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(EntityApi).call(this, state));
+			var _this4 = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(EntityApi).call(this, state));
 	
-			_this.setHandler(EntityApi.SET_FILTER, function (state, action) {
+			_this4.setHandler(EntityApi.SET_FILTER, function (state, action) {
 				return (0, _extends3.default)({}, state, { filter: action.payload });
 			});
-			_this.setHandler(EntityApi.SET_ITEMS, function (state, action) {
+			_this4.setHandler(EntityApi.SET_ITEMS, function (state, action) {
 				return (0, _extends3.default)({}, state, { items: action.payload });
 			});
-			_this.setHandler(EntityApi.SET_PROCESSING, function (state, action) {
+			_this4.setHandler(EntityApi.SET_PROCESSING, function (state, action) {
 				return (0, _extends3.default)({}, state, { processing: action.payload });
 			});
-			(0, _defineProperties2.default)(_this, {
-				filter: { enumerable: true, get: function get() {
-						return _this.getState().filter;
-					} },
+	
+			(0, _defineProperties2.default)(_this4, {
 				items: { enumerable: true, get: function get() {
-						return _this.getState().items;
+						return _this4.getState().items;
 					} },
 				itemStates: { enumerable: true, get: function get() {
-						return _this.getState().itemStates;
+						return _this4.getState().itemStates;
 					} }
 			});
 	
-			_this.onFilterChange = _this.setFilter.bind(_this);
-			_this.onSearch = _this.search.bind(_this);
-			_this.onItemsChange = _this.setItems.bind(_this);
-			_this.onItemStatesChange = _this.setItemStates.bind(_this);
-	
-			_this.item = {
-				itemState: _this.itemState.bind(_this),
-				onItemStateChange: _this.setItemState.bind(_this),
-				onItemSave: _this.save.bind(_this)
+			_this4.onSearch = function () {
+				return _this4.search();
 			};
-			return _this;
+			_this4.onItemsChange = _this4.setItems.bind(_this4);
+			_this4.onItemStatesChange = _this4.setItemStates.bind(_this4);
+	
+			_this4.item = {
+				itemState: _this4.itemState.bind(_this4),
+				onItemStateChange: _this4.setItemState.bind(_this4),
+				onItemSave: _this4.save.bind(_this4)
+			};
+	
+			_this4.filter = _this4.createFilter();
+			return _this4;
 		}
 	
 		(0, _createClass3.default)(EntityApi, [{
@@ -4880,7 +5240,7 @@
 		}, {
 			key: 'save',
 			value: function save(item) {
-				var _this2 = this;
+				var _this5 = this;
 	
 				_picolog2.default.log('save', item);
 				var result = _promise2.default.resolve(item);
@@ -4903,20 +5263,14 @@
 							throw error;
 						});
 					}).then(function (text) {
-						_this2.itemState(item, _reduxAsyncApi.Async.DONE);
+						_this5.itemState(item, _reduxAsyncApi.Async.DONE);
 						return (0, _Entity.fromJSON)(text);
 					}).catch(function (error) {
-						_this2.itemState(item, error);
+						_this5.itemState(item, error);
 						throw error;
 					});
 				}
 				return result;
-			}
-		}, {
-			key: 'setFilter',
-			value: function setFilter(filter) {
-				_picolog2.default.debug('setFilter', filter);
-				return this.dispatch(this.createAction(EntityApi.SET_FILTER)(filter));
 			}
 		}, {
 			key: 'setItems',
@@ -4943,14 +5297,17 @@
 			}
 		}, {
 			key: 'search',
-			value: function search() {
-				var _this3 = this;
+			value: function search(params) {
+				var _this6 = this;
 	
-				var url = this.searchUrl(this.filter);
+				if (params && !(0, _shallowEqual2.default)(this.filter.values, params)) {
+					this.filter.setValues(params);
+				}
+				var url = this.searchUrl(this.filter.values);
 				_picolog2.default.log('search', url);
 				this.setBusy();
 				return new _promise2.default(function (resolve, reject) {
-					_this3.fetch(url).then(function (response) {
+					_this6.fetch(url).then(function (response) {
 						return response && response.status === 200 ? response.text() : new _promise2.default(function (ok, err) {
 							response.text().then(function (text) {
 								var error = Error(text);
@@ -4964,28 +5321,32 @@
 						return (0, _Entity.fromJSON)(text);
 					}).then(function (json) {
 						_picolog2.default.debug('search: OK got ' + json.length + ' results');
-						_this3.setItems(json);
-						_this3.setDone();
+						_this6.setItems(json);
+						_this6.setDone();
 						return json;
 					}).then(resolve).catch(function (error) {
 						_picolog2.default.info('search: error=', error);
-						_this3.setError(error);
+						_this6.setError(error);
 						reject(error);
 					});
 				});
 			}
+		}, {
+			key: 'createFilter',
+			value: function createFilter() {
+				return (0, _reduxApis.link)(this, new FilterApi());
+			}
 		}]);
 		return EntityApi;
-	}(_reduxAsyncApi.Async), _class2.INITIAL_STATE = (0, _extends3.default)({}, _reduxAsyncApi.Async.INITIAL_STATE, {
-		filter: {},
+	}(_reduxAsyncApi.Async), _class3.INITIAL_STATE = (0, _extends3.default)({}, _reduxAsyncApi.Async.INITIAL_STATE, {
 		items: [],
 		itemStates: {}
-	}), _class2.SET_FILTER = 'SET_FILTER', _class2.SET_ITEMS = 'SET_ITEMS', _class2.SET_ITEM_STATES = 'SET_ITEM_STATES', _temp)) || _class;
+	}), _class3.SET_FILTER = 'SET_FILTER', _class3.SET_ITEMS = 'SET_ITEMS', _class3.SET_ITEM_STATES = 'SET_ITEM_STATES', _temp2)) || _class2;
 	
 	exports.default = EntityApi;
 
 /***/ },
-/* 55 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4995,7 +5356,7 @@
 	});
 	exports.default = undefined;
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -5003,19 +5364,19 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(5);
+	var _createClass2 = __webpack_require__(6);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
-	var _react = __webpack_require__(8);
+	var _react = __webpack_require__(9);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -5050,7 +5411,7 @@
 	exports.default = Home;
 
 /***/ },
-/* 56 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5058,159 +5419,7 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.Html = undefined;
-	
-	var _objectWithoutProperties2 = __webpack_require__(11);
-	
-	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
-	
-	var _getPrototypeOf = __webpack_require__(2);
-	
-	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-	
-	var _classCallCheck2 = __webpack_require__(1);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(5);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(3);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _class, _temp;
-	
-	var _picolog = __webpack_require__(6);
-	
-	var _picolog2 = _interopRequireDefault(_picolog);
-	
-	var _react = __webpack_require__(8);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _server = __webpack_require__(43);
-	
-	var _server2 = _interopRequireDefault(_server);
-	
-	var _serializeJavascript = __webpack_require__(85);
-	
-	var _serializeJavascript2 = _interopRequireDefault(_serializeJavascript);
-	
-	var _reactRouter = __webpack_require__(25);
-	
-	var _reactRedux = __webpack_require__(22);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var string = _react.PropTypes.string;
-	var object = _react.PropTypes.object;
-	// import DocumentMeta from 'react-document-meta';
-	
-	/**
-	 * Wrapper component containing HTML metadata and boilerplate tags.
-	 * Used in server-side code only to wrap the string output of the
-	 * rendered route component.
-	 *
-	 * The only thing this component doesn't (and can't) include is the
-	 * HTML doctype declaration, which is added to the rendered output
-	 * by the server.jsx file.
-	 */
-	var Html = exports.Html = (_temp = _class = function (_Component) {
-		(0, _inherits3.default)(Html, _Component);
-	
-		function Html() {
-			(0, _classCallCheck3.default)(this, Html);
-			return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Html).apply(this, arguments));
-		}
-	
-		(0, _createClass3.default)(Html, [{
-			key: 'render',
-			value: function render() {
-				var _props = this.props;
-				var store = _props.store;
-				var lang = _props.lang;
-				var version = _props.version;
-				var apiUrl = _props.apiUrl;
-				var renderProps = (0, _objectWithoutProperties3.default)(_props, ['store', 'lang', 'version', 'apiUrl']);
-	
-				var content = _server2.default.renderToString(_react2.default.createElement(
-					_reactRedux.Provider,
-					{ store: store },
-					_react2.default.createElement(_reactRouter.RouterContext, renderProps)
-				));
-				var html = (apiUrl ? 'window.__bridalapp_api_server=\'' + apiUrl + '\';' : '') + ('window.__data=' + (0, _serializeJavascript2.default)(store.getState()) + ';');
-	
-				return _react2.default.createElement(
-					'html',
-					{ lang: this.props.lang },
-					_react2.default.createElement(
-						'head',
-						null,
-						_react2.default.createElement('meta', { name: 'viewport', content: 'width=device-width, initial-scale=1' }),
-						_react2.default.createElement('link', { rel: 'shortcut icon', href: '/favicon.ico' }),
-						_react2.default.createElement('link', { rel: 'stylesheet', href: 'https://cdn.rawgit.com/tleunen/react-mdl/v1.4.0/extra/material.min.css' }),
-						_react2.default.createElement('link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' }),
-						_react2.default.createElement('link', { rel: 'stylesheet', href: '/style.css?v' + version })
-					),
-					_react2.default.createElement(
-						'body',
-						null,
-						_react2.default.createElement('div', { id: 'bridalapp', dangerouslySetInnerHTML: { __html: content } }),
-						 true ? _react2.default.createElement(
-							'div',
-							null,
-							_react2.default.createElement('script', { src: 'https://cdnjs.cloudflare.com/ajax/libs/fetch/0.11.0/fetch.min.js' }),
-							_react2.default.createElement('script', { src: 'https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.min.js' }),
-							_react2.default.createElement('script', { src: 'https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.min.js' }),
-							_react2.default.createElement('script', { src: 'https://cdnjs.cloudflare.com/ajax/libs/react-router/2.0.0-rc5/ReactRouter.min.js' }),
-							_react2.default.createElement('script', { src: 'https://cdn.rawgit.com/tleunen/react-mdl/v1.4.2/extra/material.min.js' }),
-							_react2.default.createElement('script', { src: 'https://npmcdn.com/react-mdl@1.4.2/out/ReactMDL.min.js' })
-						) : _react2.default.createElement(
-							'div',
-							null,
-							_react2.default.createElement('script', { src: 'https://cdnjs.cloudflare.com/ajax/libs/fetch/0.11.0/fetch.js' }),
-							_react2.default.createElement('script', { src: 'https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js' }),
-							_react2.default.createElement('script', { src: 'https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js' }),
-							_react2.default.createElement('script', { src: 'https://cdnjs.cloudflare.com/ajax/libs/react-router/2.0.0-rc5/ReactRouter.js' }),
-							_react2.default.createElement('script', { src: 'https://cdn.rawgit.com/tleunen/react-mdl/v1.4.2/extra/material.min.js' }),
-							_react2.default.createElement('script', { src: 'https://npmcdn.com/react-mdl@1.4.2/out/ReactMDL.min.js' })
-						),
-						_react2.default.createElement('script', { dangerouslySetInnerHTML: { __html: html }, charSet: 'UTF-8' }),
-						this.props.children,
-						_react2.default.createElement('script', { src: '/assets/bridalapp-ui.js?v' + version, charSet: 'UTF-8' })
-					)
-				);
-			}
-		}]);
-		return Html;
-	}(_react.Component), _class.propTypes = {
-		store: object.isRequired,
-		lang: string,
-		version: string,
-		apiUrl: string
-	}, _class.defaultProps = {
-		lang: 'en-US',
-		version: '1.0.0',
-		apiUrl: ''
-	}, _temp);
-	exports.default = Html;
-
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.default = undefined;
+	exports.ProductBrowserAppBar = exports.ProductBrowser = undefined;
 	
 	var _promise = __webpack_require__(15);
 	
@@ -5224,7 +5433,7 @@
 	
 	var _extends3 = _interopRequireDefault(_extends2);
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -5232,45 +5441,59 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(5);
+	var _createClass2 = __webpack_require__(6);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
-	var _dec, _dec2, _class, _class2, _temp;
+	var _dec, _dec2, _class, _class2, _temp, _dec3, _class3, _class4, _temp2;
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _react = __webpack_require__(8);
+	var _react = __webpack_require__(9);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(22);
+	var _shallowEqual = __webpack_require__(25);
 	
-	var _reduxLoadApi = __webpack_require__(23);
+	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 	
-	var _Entity = __webpack_require__(9);
+	var _reactRedux = __webpack_require__(23);
 	
-	var _api = __webpack_require__(26);
+	var _reduxLoadApi = __webpack_require__(27);
 	
-	var _store = __webpack_require__(21);
+	var _reactMdl = __webpack_require__(11);
+	
+	var _store = __webpack_require__(22);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _Scroller = __webpack_require__(30);
+	var _api = __webpack_require__(19);
+	
+	var _api2 = _interopRequireDefault(_api);
+	
+	var _Entity = __webpack_require__(8);
+	
+	var _FilterPanel = __webpack_require__(29);
+	
+	var _FilterPanel2 = _interopRequireDefault(_FilterPanel);
+	
+	var _mdlExtras = __webpack_require__(12);
+	
+	var _Scroller = __webpack_require__(33);
 	
 	var _Scroller2 = _interopRequireDefault(_Scroller);
 	
-	var _ProductCard = __webpack_require__(58);
+	var _ProductCard = __webpack_require__(60);
 	
 	var _ProductCard2 = _interopRequireDefault(_ProductCard);
 	
@@ -5287,8 +5510,7 @@
 	
 	function load(params) {
 		_picolog2.default.log('load', params);
-		bridalapp.products.setFilter(params);
-		return bridalapp.products.search().then(function (results) {
+		return bridalapp.products.search(params).then(function (results) {
 			_picolog2.default.debug('load: search returned ' + results.length + ' products.');
 			return results;
 		}).catch(function (error) {
@@ -5297,7 +5519,7 @@
 		});
 	}
 	
-	var ProductBrowser = (_dec = (0, _reduxLoadApi.onload)(load), _dec2 = (0, _reactRedux.connect)(bridalapp.products.connector), _dec(_class = _dec2(_class = (_temp = _class2 = function (_React$Component) {
+	var ProductBrowser = exports.ProductBrowser = (_dec = (0, _reduxLoadApi.onload)(load), _dec2 = (0, _reactRedux.connect)(bridalapp.products.connector), _dec(_class = _dec2(_class = (_temp = _class2 = function (_React$Component) {
 		(0, _inherits3.default)(ProductBrowser, _React$Component);
 	
 		function ProductBrowser() {
@@ -5311,7 +5533,7 @@
 	
 			var _this = (0, _possibleConstructorReturn3.default)(this, (_Object$getPrototypeO = (0, _getPrototypeOf2.default)(ProductBrowser)).call.apply(_Object$getPrototypeO, [this].concat(args)));
 	
-			_this.state = { removing: {} };
+			_this.state = { removing: {}, filterPanelOpen: false };
 			return _this;
 		}
 	
@@ -5333,11 +5555,14 @@
 			key: 'componentWillReceiveProps',
 			value: function componentWillReceiveProps(nextProps) {
 				_picolog2.default.debug('componentWillReceiveProps', nextProps);
-				if (nextProps.location.pathname !== this.props.location.pathname || nextProps.pending || nextProps.error) {
+				var newFilter = (0, _extends3.default)({}, nextProps.location.query, nextProps.params);
+				var pathChanged = nextProps.location.pathname !== this.props.location.pathname;
+				var queryChanged = !(0, _shallowEqual2.default)(nextProps.location.query, this.props.location.query);
+				if (pathChanged || queryChanged || nextProps.pending && !this.props.pending) {
 					if ((0, _keys2.default)(this.state.removing).length > 0) {
 						this.setState({ removing: {} });
 					}
-					load((0, _extends3.default)({}, nextProps.location.query, nextProps.params));
+					load(newFilter);
 				}
 			}
 		}, {
@@ -5430,10 +5655,16 @@
 				var _this5 = this;
 	
 				var _props5 = this.props;
+				var params = _props5.params;
+				var location = _props5.location;
 				var filter = _props5.filter;
+				var onSearch = _props5.onSearch;
+				var pending = _props5.pending;
+				var error = _props5.error;
 				var items = _props5.items;
+				var onItemsChange = _props5.onItemsChange;
 				var stockedItems = _props5.stockedItems;
-				var onIsStocked = _props5.item.onIsStocked;
+	
 	
 				_picolog2.default.debug('render', (0, _keys2.default)(stockedItems).join(' '));
 				var item = (0, _extends3.default)({}, this.props.item, {
@@ -5442,20 +5673,26 @@
 					onUndoRating: this.undoRating.bind(this)
 				});
 				var state = (0, _keys2.default)(stockedItems).join(' ') + ', ' + (0, _keys2.default)(this.state.removing).join(' ');
-				return _react2.default.createElement(_Scroller2.default, {
-					className: 'ProductBrowser ' + filter.category,
-					bufferBefore: 4,
-					items: items,
-					itemSize: 580,
-					bufferAfter: 16,
-					renderItem: function renderItem(product, idx) {
-						var pid = product.id.toString();
-						var frontLoadDelay = idx < 10 ? 0 : 500;
-						return _react2.default.createElement(_ProductCard2.default, (0, _extends3.default)({ product: product, rating: filter.rating, stocked: !!stockedItems[pid] }, item, {
-							removing: _this5.state.removing[pid], frontLoadDelay: frontLoadDelay }));
-					},
-					state: state
-				});
+				var filterProps = (0, _extends3.default)({ onSearch: onSearch, location: location }, filter);
+				return _react2.default.createElement(
+					'div',
+					{ style: { boxSizing: 'border-box', height: '100%' } },
+					_react2.default.createElement(_FilterPanel2.default, filterProps),
+					_react2.default.createElement(_Scroller2.default, {
+						className: 'ProductBrowser ' + filter.values.category,
+						bufferBefore: 4,
+						items: items,
+						itemSize: 580,
+						bufferAfter: 16,
+						renderItem: function renderItem(product, idx) {
+							var pid = product.id.toString();
+							var props = (0, _extends3.default)({ product: product }, item, { rating: filter.values.rating, stocked: !!stockedItems[pid],
+								removing: _this5.state.removing[pid], frontLoadDelay: idx < 10 ? 0 : 500, backLoadDelay: idx < 10 ? 0 : 2500 });
+							return _react2.default.createElement(_ProductCard2.default, props);
+						},
+						state: state
+					})
+				);
 			}
 		}]);
 		return ProductBrowser;
@@ -5464,12 +5701,13 @@
 		location: shape({
 			query: object
 		}).isRequired,
-		filter: object.isRequired,
+		filter: shape({
+			values: object.isRequired
+		}).isRequired,
 		items: array.isRequired,
 		stockedItems: object.isRequired,
 		pending: bool.isRequired,
 		error: any,
-		onFilterChange: func.isRequired,
 		onSearch: func.isRequired,
 		onItemsChange: func.isRequired,
 		item: shape({
@@ -5485,9 +5723,60 @@
 		}).isRequired
 	}, _temp)) || _class) || _class);
 	exports.default = ProductBrowser;
+	var ProductBrowserAppBar = exports.ProductBrowserAppBar = (_dec3 = (0, _reactRedux.connect)(bridalapp.products.connector), _dec3(_class3 = (_temp2 = _class4 = function (_Component) {
+		(0, _inherits3.default)(ProductBrowserAppBar, _Component);
+	
+		function ProductBrowserAppBar() {
+			var _Object$getPrototypeO2;
+	
+			(0, _classCallCheck3.default)(this, ProductBrowserAppBar);
+	
+			for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+				args[_key2] = arguments[_key2];
+			}
+	
+			var _this6 = (0, _possibleConstructorReturn3.default)(this, (_Object$getPrototypeO2 = (0, _getPrototypeOf2.default)(ProductBrowserAppBar)).call.apply(_Object$getPrototypeO2, [this].concat(args)));
+	
+			_this6.filterClicked = _this6.filterClicked.bind(_this6);
+			return _this6;
+		}
+	
+		(0, _createClass3.default)(ProductBrowserAppBar, [{
+			key: 'filterClicked',
+			value: function filterClicked(event) {
+				_picolog2.default.log('filterClicked', event);
+				if (event) {
+					event.preventDefault();
+				}
+				var _props$filter = this.props.filter;
+				var open = _props$filter.open;
+				var onActivate = _props$filter.onActivate;
+				var onCancel = _props$filter.onCancel;
+	
+				open ? onCancel() : onActivate();
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					_mdlExtras.Badge,
+					{ className: 'mdl-navigation__link', text: '' + this.props.items.length, onClick: this.filterClicked },
+					_react2.default.createElement(_reactMdl.Icon, { name: 'search' })
+				);
+			}
+		}]);
+		return ProductBrowserAppBar;
+	}(_react.Component), _class4.propTypes = {
+		filter: shape({
+			open: bool.isRequired,
+			onActivate: func.isRequired,
+			onCancel: func.isRequired
+		}).isRequired,
+		items: array.isRequired
+	}, _temp2)) || _class3);
 
 /***/ },
-/* 58 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5497,7 +5786,7 @@
 	});
 	exports.ProductCard = undefined;
 	
-	var _objectWithoutProperties2 = __webpack_require__(11);
+	var _objectWithoutProperties2 = __webpack_require__(21);
 	
 	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
 	
@@ -5509,11 +5798,11 @@
 	
 	var _typeof3 = _interopRequireDefault(_typeof2);
 	
-	var _toConsumableArray2 = __webpack_require__(41);
+	var _toConsumableArray2 = __webpack_require__(46);
 	
 	var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -5521,29 +5810,29 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(5);
+	var _createClass2 = __webpack_require__(6);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
 	var _class, _temp;
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _react = __webpack_require__(8);
+	var _react = __webpack_require__(9);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _classnames = __webpack_require__(18);
+	var _classnames = __webpack_require__(17);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -5551,11 +5840,11 @@
 	
 	var _ws2 = _interopRequireDefault(_ws);
 	
-	var _reactMdl = __webpack_require__(19);
+	var _reactMdl = __webpack_require__(11);
 	
-	var _mdlExtras = __webpack_require__(20);
+	var _mdlExtras = __webpack_require__(12);
 	
-	var _Publication2 = __webpack_require__(28);
+	var _Publication2 = __webpack_require__(31);
 	
 	var _Publication3 = _interopRequireDefault(_Publication2);
 	
@@ -5680,7 +5969,7 @@
 				var removing = _props.removing;
 				var others = (0, _objectWithoutProperties3.default)(_props, ['className', 'product', 'rating', 'stocked', 'onLove', 'onDislike', 'onUndoRating', 'removing']);
 	
-				if (stocked) _picolog2.default.info('render: stocked ', product.id.toString());
+				if (stocked) _picolog2.default.debug('render: stocked ', product.id.toString());
 				var id = product.id;
 				var name = product.name;
 				var brandId = product.brandId;
@@ -5697,8 +5986,8 @@
 				var flipCard = this.refs.flipCard;
 	
 				var img = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
-				var prdUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.14/products/' + bid + '/' + encodeURIComponent(name);
-				var brandUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.14/brands/' + bid + '/logo-brand-name.png';
+				var prdUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.15/products/' + bid + '/' + encodeURIComponent(name);
+				var brandUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.15/brands/' + bid + '/logo-brand-name.png';
 				var thumbs = prdUrl + '/thumbs.jpg';
 				var thumbnail = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
 				var images = [{ src: prdUrl + '/back-large.jpg', className: 'back', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '300%', backgroundPosition: '100% 0' }) } }, { src: prdUrl + '/front-large.jpg', className: 'front', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '150%', backgroundPosition: '0 0' }) } }, { src: prdUrl + '/detail-1-large.jpg', className: 'detail-1', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '600%', backgroundPosition: '200% 200%' }) } }, { src: prdUrl + '/detail-2-large.jpg', className: 'detail-2', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '600%', backgroundPosition: '100% 200%' }) } }, { src: prdUrl + '/detail-3-large.jpg', className: 'detail-3', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '600%', backgroundPosition: '200% 100%' }) } }];
@@ -5711,7 +6000,7 @@
 				var style = removing ? { width: width, height: height, transform: transform, WebkitTransform: transform } : {};
 				return _react2.default.createElement(
 					_mdlExtras.StatefulFlipCard,
-					{ className: classes, key: id, style: style },
+					(0, _extends3.default)({ className: classes, key: id, style: style }, others),
 					_react2.default.createElement(
 						_mdlExtras.FrontFace,
 						null,
@@ -5833,199 +6122,7 @@
 	//								<FABButton className="Claim" onClick={this.claimClicked.bind(this, product)}><Sprite name="stock" /></FABButton>
 
 /***/ },
-/* 59 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.default = undefined;
-	
-	var _getPrototypeOf = __webpack_require__(2);
-	
-	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-	
-	var _classCallCheck2 = __webpack_require__(1);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(5);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(3);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _react = __webpack_require__(8);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var ProductDetails = function (_React$Component) {
-		(0, _inherits3.default)(ProductDetails, _React$Component);
-	
-		function ProductDetails() {
-			(0, _classCallCheck3.default)(this, ProductDetails);
-			return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(ProductDetails).apply(this, arguments));
-		}
-	
-		(0, _createClass3.default)(ProductDetails, [{
-			key: "render",
-			value: function render() {
-				return _react2.default.createElement(
-					"div",
-					{ className: "ProductDetails" },
-					this.props.children
-				);
-			}
-		}]);
-		return ProductDetails;
-	}(_react2.default.Component);
-	
-	exports.default = ProductDetails;
-
-/***/ },
-/* 60 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.default = undefined;
-	
-	var _getPrototypeOf = __webpack_require__(2);
-	
-	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-	
-	var _classCallCheck2 = __webpack_require__(1);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(5);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(3);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _react = __webpack_require__(8);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var ProductEdit = function (_React$Component) {
-		(0, _inherits3.default)(ProductEdit, _React$Component);
-	
-		function ProductEdit() {
-			(0, _classCallCheck3.default)(this, ProductEdit);
-			return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(ProductEdit).apply(this, arguments));
-		}
-	
-		(0, _createClass3.default)(ProductEdit, [{
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					'div',
-					{ className: 'ProductEdit', style: { height: '100%', width: '100%', boxSizing: 'border-box' } },
-					this.props.children
-				);
-			}
-		}]);
-		return ProductEdit;
-	}(_react2.default.Component);
-	
-	exports.default = ProductEdit;
-
-/***/ },
 /* 61 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.default = undefined;
-	
-	var _extends2 = __webpack_require__(7);
-	
-	var _extends3 = _interopRequireDefault(_extends2);
-	
-	var _objectWithoutProperties2 = __webpack_require__(11);
-	
-	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
-	
-	var _getPrototypeOf = __webpack_require__(2);
-	
-	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-	
-	var _classCallCheck2 = __webpack_require__(1);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(5);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(3);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _react = __webpack_require__(8);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Products = function (_Component) {
-		(0, _inherits3.default)(Products, _Component);
-	
-		function Products() {
-			(0, _classCallCheck3.default)(this, Products);
-			return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Products).apply(this, arguments));
-		}
-	
-		(0, _createClass3.default)(Products, [{
-			key: "render",
-			value: function render() {
-				var _props = this.props;
-				var children = _props.children;
-				var others = (0, _objectWithoutProperties3.default)(_props, ["children"]);
-	
-				return _react2.default.createElement(
-					"div",
-					(0, _extends3.default)({ className: "Products" }, others),
-					children
-				);
-			}
-		}]);
-		return Products;
-	}(_react.Component);
-
-	exports.default = Products;
-
-/***/ },
-/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6035,7 +6132,7 @@
 	});
 	exports.ProductsApi = undefined;
 	
-	var _defineProperty2 = __webpack_require__(31);
+	var _defineProperty2 = __webpack_require__(45);
 	
 	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 	
@@ -6051,7 +6148,7 @@
 	
 	var _extends4 = _interopRequireDefault(_extends3);
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -6059,47 +6156,47 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(5);
+	var _createClass2 = __webpack_require__(6);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _get2 = __webpack_require__(73);
+	var _get2 = __webpack_require__(72);
 	
 	var _get3 = _interopRequireDefault(_get2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
 	var _class, _class2, _temp;
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _reduxApis = __webpack_require__(12);
+	var _reduxApis = __webpack_require__(13);
 	
-	var _reduxFetchApi = __webpack_require__(17);
+	var _reduxFetchApi = __webpack_require__(18);
 	
 	var _ws = __webpack_require__(10);
 	
 	var _ws2 = _interopRequireDefault(_ws);
 	
-	var _Entity = __webpack_require__(9);
+	var _Entity = __webpack_require__(8);
 	
-	var _Role = __webpack_require__(13);
+	var _Role = __webpack_require__(20);
 	
-	var _api = __webpack_require__(29);
+	var _api = __webpack_require__(32);
 	
-	var _Product = __webpack_require__(37);
+	var _Product = __webpack_require__(39);
 	
-	var _StockItem = __webpack_require__(39);
+	var _StockItem = __webpack_require__(41);
 	
-	var _Rating = __webpack_require__(38);
+	var _Rating = __webpack_require__(40);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -6140,7 +6237,7 @@
 			}
 		}, {
 			key: 'search',
-			value: function search() {
+			value: function search(params) {
 				var _this2 = this;
 	
 				_picolog2.default.log('search');
@@ -6156,7 +6253,7 @@
 	
 				return stockLoaded.then(function (stock) {
 					_picolog2.default.debug('stockLoaded: ', stock);
-					return (0, _get3.default)((0, _getPrototypeOf2.default)(ProductsApi.prototype), 'search', _this2).call(_this2);
+					return (0, _get3.default)((0, _getPrototypeOf2.default)(ProductsApi.prototype), 'search', _this2).call(_this2, params);
 				});
 			}
 		}, {
@@ -6308,7 +6405,7 @@
 				}).then(function (text) {
 					return (0, _Entity.fromJSON)(text);
 				}).then(function (stockItem) {
-					_picolog2.default.info('toggleStock: COMMIT: newStock=', newStock);
+					_picolog2.default.debug('toggleStock: COMMIT: newStock=', newStock);
 					// commit
 					// in case of DELETE, nothing needs to be done
 					// in case of CREATE, replace the stockItem with the saved one
@@ -6339,7 +6436,7 @@
 	exports.default = ProductsApi;
 
 /***/ },
-/* 63 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6347,13 +6444,13 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.default = undefined;
+	exports.StoreBrowserAppBar = exports.StoreBrowser = undefined;
 	
 	var _extends2 = __webpack_require__(7);
 	
 	var _extends3 = _interopRequireDefault(_extends2);
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -6361,43 +6458,57 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(5);
+	var _createClass2 = __webpack_require__(6);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
-	var _dec, _dec2, _class, _class2, _temp;
+	var _dec, _dec2, _class, _class2, _temp, _dec3, _class3, _class4, _temp2;
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _react = __webpack_require__(8);
+	var _react = __webpack_require__(9);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(22);
+	var _shallowEqual = __webpack_require__(25);
 	
-	var _reduxLoadApi = __webpack_require__(23);
+	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 	
-	var _api = __webpack_require__(26);
+	var _reactRedux = __webpack_require__(23);
 	
-	var _store = __webpack_require__(21);
+	var _reduxLoadApi = __webpack_require__(27);
+	
+	var _reactMdl = __webpack_require__(11);
+	
+	var _store = __webpack_require__(22);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _Scroller = __webpack_require__(30);
+	var _api = __webpack_require__(19);
+	
+	var _api2 = _interopRequireDefault(_api);
+	
+	var _FilterPanel = __webpack_require__(29);
+	
+	var _FilterPanel2 = _interopRequireDefault(_FilterPanel);
+	
+	var _mdlExtras = __webpack_require__(12);
+	
+	var _Scroller = __webpack_require__(33);
 	
 	var _Scroller2 = _interopRequireDefault(_Scroller);
 	
-	var _StoreCard = __webpack_require__(64);
+	var _StoreCard = __webpack_require__(63);
 	
 	var _StoreCard2 = _interopRequireDefault(_StoreCard);
 	
@@ -6410,12 +6521,9 @@
 	var shape = _react.PropTypes.shape;
 	var any = _react.PropTypes.any; // explicitly import to facilitate hot-reloading.
 	
-	var app = _store2.default.app;
-	
 	function load(params) {
 		_picolog2.default.log('load', params);
-		params && app.stores.setFilter(params);
-		return app.stores.search().then(function (results) {
+		return bridalapp.stores.search(params).then(function (results) {
 			_picolog2.default.log('load: search returned ' + results.length + ' stores.');
 			return results;
 		}).catch(function (error) {
@@ -6424,7 +6532,7 @@
 		});
 	}
 	
-	var StoreBrowser = (_dec = (0, _reduxLoadApi.onload)(load), _dec2 = (0, _reactRedux.connect)(app.stores.connector), _dec(_class = _dec2(_class = (_temp = _class2 = function (_React$Component) {
+	var StoreBrowser = exports.StoreBrowser = (_dec = (0, _reduxLoadApi.onload)(load), _dec2 = (0, _reactRedux.connect)(bridalapp.stores.connector), _dec(_class = _dec2(_class = (_temp = _class2 = function (_React$Component) {
 		(0, _inherits3.default)(StoreBrowser, _React$Component);
 	
 		function StoreBrowser() {
@@ -6446,32 +6554,62 @@
 				}
 			}
 		}, {
+			key: 'componentWillReceiveProps',
+			value: function componentWillReceiveProps(nextProps) {
+				_picolog2.default.debug('componentWillReceiveProps', nextProps);
+				var newFilter = (0, _extends3.default)({}, nextProps.location.query, nextProps.params);
+				var pathChanged = nextProps.location.pathname !== this.props.location.pathname;
+				var queryChanged = !(0, _shallowEqual2.default)(nextProps.location.query, this.props.location.query);
+				if (pathChanged || queryChanged || nextProps.pending && !this.props.pending) {
+					load(newFilter);
+				}
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 				_picolog2.default.debug('render', this.props);
 				var _props2 = this.props;
+				var params = _props2.params;
+				var location = _props2.location;
+				var filter = _props2.filter;
+				var onSearch = _props2.onSearch;
+				var pending = _props2.pending;
+				var error = _props2.error;
 				var items = _props2.items;
+				var onItemsChange = _props2.onItemsChange;
 				var item = _props2.item;
 	
-				return _react2.default.createElement(_Scroller2.default, {
-					className: 'StoreBrowser',
-					bufferBefore: 4,
-					items: items,
-					bufferAfter: 8,
-					renderItem: function renderItem(store, idx) {
-						return _react2.default.createElement(_StoreCard2.default, (0, _extends3.default)({ store: store }, item));
-					}
-				});
+				var filterProps = (0, _extends3.default)({ onSearch: onSearch, location: location }, filter);
+	
+				return _react2.default.createElement(
+					'div',
+					{ style: { boxSizing: 'border-box', height: '100%' } },
+					_react2.default.createElement(_FilterPanel2.default, filterProps),
+					_react2.default.createElement(_Scroller2.default, {
+						className: 'StoreBrowser',
+						bufferBefore: 4,
+						items: items,
+						bufferAfter: 8,
+						renderItem: function renderItem(store, idx) {
+							var props = (0, _extends3.default)({ store: store }, item, { frontLoadDelay: idx < 10 ? 0 : 500, backLoadDelay: idx < 10 ? 0 : 2500 });
+							return _react2.default.createElement(_StoreCard2.default, props);
+						}
+					})
+				);
 			}
 		}]);
 		return StoreBrowser;
 	}(_react2.default.Component), _class2.propTypes = {
 		params: object.isRequired,
-		filter: object.isRequired,
+		location: shape({
+			query: object
+		}).isRequired,
+		filter: shape({
+			values: object.isRequired
+		}).isRequired,
 		items: array.isRequired,
 		pending: bool.isRequired,
 		error: any,
-		onFilterChange: func.isRequired,
 		onSearch: func.isRequired,
 		onItemsChange: func.isRequired,
 		item: shape({
@@ -6481,9 +6619,60 @@
 		}).isRequired
 	}, _temp)) || _class) || _class);
 	exports.default = StoreBrowser;
+	var StoreBrowserAppBar = exports.StoreBrowserAppBar = (_dec3 = (0, _reactRedux.connect)(bridalapp.stores.connector), _dec3(_class3 = (_temp2 = _class4 = function (_Component) {
+		(0, _inherits3.default)(StoreBrowserAppBar, _Component);
+	
+		function StoreBrowserAppBar() {
+			var _Object$getPrototypeO;
+	
+			(0, _classCallCheck3.default)(this, StoreBrowserAppBar);
+	
+			for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+				args[_key] = arguments[_key];
+			}
+	
+			var _this2 = (0, _possibleConstructorReturn3.default)(this, (_Object$getPrototypeO = (0, _getPrototypeOf2.default)(StoreBrowserAppBar)).call.apply(_Object$getPrototypeO, [this].concat(args)));
+	
+			_this2.filterClicked = _this2.filterClicked.bind(_this2);
+			return _this2;
+		}
+	
+		(0, _createClass3.default)(StoreBrowserAppBar, [{
+			key: 'filterClicked',
+			value: function filterClicked(event) {
+				_picolog2.default.log('filterClicked', event);
+				if (event) {
+					event.preventDefault();
+				}
+				var _props$filter = this.props.filter;
+				var open = _props$filter.open;
+				var onActivate = _props$filter.onActivate;
+				var onCancel = _props$filter.onCancel;
+	
+				open ? onCancel() : onActivate();
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					_mdlExtras.Badge,
+					{ className: 'mdl-navigation__link', text: '' + this.props.items.length, onClick: this.filterClicked },
+					_react2.default.createElement(_reactMdl.Icon, { name: 'search' })
+				);
+			}
+		}]);
+		return StoreBrowserAppBar;
+	}(_react.Component), _class4.propTypes = {
+		filter: shape({
+			open: bool.isRequired,
+			onActivate: func.isRequired,
+			onCancel: func.isRequired
+		}).isRequired,
+		items: array.isRequired
+	}, _temp2)) || _class3);
 
 /***/ },
-/* 64 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6497,7 +6686,7 @@
 	
 	var _extends3 = _interopRequireDefault(_extends2);
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -6505,41 +6694,41 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(5);
+	var _createClass2 = __webpack_require__(6);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
 	var _class, _temp;
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _react = __webpack_require__(8);
+	var _react = __webpack_require__(9);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _classnames = __webpack_require__(18);
+	var _classnames = __webpack_require__(17);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _reactMdl = __webpack_require__(19);
+	var _reactMdl = __webpack_require__(11);
 	
 	var _ws = __webpack_require__(10);
 	
 	var _ws2 = _interopRequireDefault(_ws);
 	
-	var _mdlExtras = __webpack_require__(20);
+	var _mdlExtras = __webpack_require__(12);
 	
-	var _Publication2 = __webpack_require__(28);
+	var _Publication2 = __webpack_require__(31);
 	
 	var _Publication3 = _interopRequireDefault(_Publication2);
 	
@@ -6600,8 +6789,8 @@
 				var published = store.published;
 	
 				var sid = id.toString();
-				var logo = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.14/stores/' + sid + '/logo.png';
-				var thumb = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.14/stores/' + sid + '/thumb.jpg';
+				var logo = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.15/stores/' + sid + '/logo.png';
+				var thumb = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.15/stores/' + sid + '/thumb.jpg';
 				var classes = (0, _classnames2.default)('Store', { 'premium': premium, 'unpublished': !published });
 				var publishButton = this.mayPublish(store) ? published ? _react2.default.createElement(
 					_reactMdl.FABButton,
@@ -6710,79 +6899,7 @@
 	exports.default = StoreCard;
 
 /***/ },
-/* 65 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.default = undefined;
-	
-	var _extends2 = __webpack_require__(7);
-	
-	var _extends3 = _interopRequireDefault(_extends2);
-	
-	var _objectWithoutProperties2 = __webpack_require__(11);
-	
-	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
-	
-	var _getPrototypeOf = __webpack_require__(2);
-	
-	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-	
-	var _classCallCheck2 = __webpack_require__(1);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(5);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(3);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _react = __webpack_require__(8);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Stores = function (_Component) {
-		(0, _inherits3.default)(Stores, _Component);
-	
-		function Stores() {
-			(0, _classCallCheck3.default)(this, Stores);
-			return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Stores).apply(this, arguments));
-		}
-	
-		(0, _createClass3.default)(Stores, [{
-			key: "render",
-			value: function render() {
-				var _props = this.props;
-				var children = _props.children;
-				var others = (0, _objectWithoutProperties3.default)(_props, ["children"]);
-	
-				return _react2.default.createElement(
-					"div",
-					(0, _extends3.default)({ className: "Stores" }, others),
-					children
-				);
-			}
-		}]);
-		return Stores;
-	}(_react.Component);
-
-	exports.default = Stores;
-
-/***/ },
-/* 66 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6800,7 +6917,7 @@
 	
 	var _extends3 = _interopRequireDefault(_extends2);
 	
-	var _getPrototypeOf = __webpack_require__(2);
+	var _getPrototypeOf = __webpack_require__(3);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 	
@@ -6808,37 +6925,37 @@
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 	
-	var _createClass2 = __webpack_require__(5);
+	var _createClass2 = __webpack_require__(6);
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _possibleConstructorReturn2 = __webpack_require__(4);
+	var _possibleConstructorReturn2 = __webpack_require__(5);
 	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 	
-	var _inherits2 = __webpack_require__(3);
+	var _inherits2 = __webpack_require__(4);
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
 	var _class, _class2, _temp;
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _reduxApis = __webpack_require__(12);
+	var _reduxApis = __webpack_require__(13);
 	
-	var _reduxFetchApi = __webpack_require__(17);
+	var _reduxFetchApi = __webpack_require__(18);
 	
-	var _Role = __webpack_require__(13);
+	var _Role = __webpack_require__(20);
 	
-	var _api = __webpack_require__(27);
+	var _api = __webpack_require__(28);
 	
-	var _api2 = __webpack_require__(29);
+	var _api2 = __webpack_require__(32);
 	
-	var _Entity = __webpack_require__(9);
+	var _Entity = __webpack_require__(8);
 	
-	var _Store = __webpack_require__(40);
+	var _Store = __webpack_require__(42);
 	
 	var _Store2 = _interopRequireDefault(_Store);
 	
@@ -6931,7 +7048,106 @@
 	exports.default = StoresApi;
 
 /***/ },
-/* 67 */
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+			value: true
+	});
+	exports.routes = undefined;
+	
+	var _picolog = __webpack_require__(2);
+	
+	var _picolog2 = _interopRequireDefault(_picolog);
+	
+	var _react = __webpack_require__(9);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRouter = __webpack_require__(26);
+	
+	var _App = __webpack_require__(34);
+	
+	var _App2 = _interopRequireDefault(_App);
+	
+	var _Home = __webpack_require__(58);
+	
+	var _Home2 = _interopRequireDefault(_Home);
+	
+	var _ProductBrowser = __webpack_require__(59);
+	
+	var _ProductBrowser2 = _interopRequireDefault(_ProductBrowser);
+	
+	var _BrandBrowser = __webpack_require__(53);
+	
+	var _BrandBrowser2 = _interopRequireDefault(_BrandBrowser);
+	
+	var _StoreBrowser = __webpack_require__(62);
+	
+	var _StoreBrowser2 = _interopRequireDefault(_StoreBrowser);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// import StoreDetails from './components/Stores/StoreDetails';
+	// import { LayoutTest, ComponentA, ComponentB } from './components/Layout/Layout';
+	
+	// import ProductEdit from './components/Products/ProductEdit';
+	// import ProductDetails from './components/Products/ProductDetails';
+	var routes = exports.routes = _react2.default.createElement(
+			_reactRouter.Route,
+			{ path: '/', component: _App2.default },
+			'// redirect to \'Wedding Dresses\' for the time being // until we get a decent homepage',
+			_react2.default.createElement(_reactRouter.IndexRedirect, { to: '/Wedding+Dresses' }),
+			_react2.default.createElement(_reactRouter.Route, { path: '/brands', components: { appbarComponent: _BrandBrowser.BrandBrowserAppBar, mainComponent: _BrandBrowser2.default } }),
+			_react2.default.createElement(_reactRouter.Route, { path: '/stores', components: { appbarComponent: _StoreBrowser.StoreBrowserAppBar, mainComponent: _StoreBrowser2.default } }),
+			'// products are mounted at the root, but you must always specify // a category, so as long as category names do not conflict with // root paths, this will work. // so don\'t create a category \'stores\'  :) // TODO, probably if we hardcode the only two ratings, // \'loved\' and \'disliked\', we will open up more options // for short URLs, such as // \'/:category/:country\' // \'/:category/:country/:city\'',
+			_react2.default.createElement(_reactRouter.Route, { path: '/:rating/:category', components: { appbarComponent: _ProductBrowser.ProductBrowserAppBar, mainComponent: _ProductBrowser2.default } }),
+			_react2.default.createElement(_reactRouter.Route, { path: '/:category', components: { appbarComponent: _ProductBrowser.ProductBrowserAppBar, mainComponent: _ProductBrowser2.default } })
+	);
+	
+	/*
+			<Route path="/layout" component={LayoutTest}>
+				<IndexRedirect to="/layout/a" />
+				<Route path="a" component={ComponentA} />
+				<Route path="b" component={ComponentB} />
+			</Route>
+	
+			// we start with all routes that are not mounted at the root
+			// so they will be matched before the products section,
+			// which is mounted at the root.
+			<Route path="/brands" component={Brands} >
+				<IndexRoute component={BrandBrowser} />
+			</Route>
+	
+			<Route path="/stores" component={Stores} >
+				// not implemented yet
+				<Route path=":city/:name" component={ProductDetails} />
+	
+				<IndexRoute component={StoreBrowser} />
+			</Route>
+	
+			// products are mounted at the root, but you must always specify
+			// a category, so as long as category names do not conflict with
+			// root paths, this will work.
+			// so don't create a category 'stores'  :)
+			<Route component={Products} >
+				// TODO, probably if we hardcode the only two ratings,
+				// 'loved' and 'disliked', we will open up more options
+				// for short URLs, such as
+				// '/:category/:country'
+				// '/:category/:country/:city'
+				<Route path="/:rating/:category" component={ProductBrowser} />
+				<Route path="/:category" component={ProductBrowser} />
+			</Route>
+	*/
+	
+	// import Stores from './components/Stores/Stores';
+	exports.default = routes;
+
+/***/ },
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6939,89 +7155,49 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.routes = undefined;
-	
-	var _picolog = __webpack_require__(6);
-	
-	var _picolog2 = _interopRequireDefault(_picolog);
-	
-	var _react = __webpack_require__(8);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRouter = __webpack_require__(25);
-	
-	var _App = __webpack_require__(46);
-	
-	var _App2 = _interopRequireDefault(_App);
-	
-	var _Home = __webpack_require__(55);
-	
-	var _Home2 = _interopRequireDefault(_Home);
-	
-	var _Products = __webpack_require__(61);
-	
-	var _Products2 = _interopRequireDefault(_Products);
-	
-	var _ProductBrowser = __webpack_require__(57);
-	
-	var _ProductBrowser2 = _interopRequireDefault(_ProductBrowser);
-	
-	var _ProductEdit = __webpack_require__(60);
-	
-	var _ProductEdit2 = _interopRequireDefault(_ProductEdit);
-	
-	var _ProductDetails = __webpack_require__(59);
-	
-	var _ProductDetails2 = _interopRequireDefault(_ProductDetails);
-	
-	var _Brands = __webpack_require__(51);
-	
-	var _Brands2 = _interopRequireDefault(_Brands);
-	
-	var _BrandBrowser = __webpack_require__(49);
-	
-	var _BrandBrowser2 = _interopRequireDefault(_BrandBrowser);
-	
-	var _Stores = __webpack_require__(65);
-	
-	var _Stores2 = _interopRequireDefault(_Stores);
-	
-	var _StoreBrowser = __webpack_require__(63);
-	
-	var _StoreBrowser2 = _interopRequireDefault(_StoreBrowser);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var routes = exports.routes = _react2.default.createElement(
-		_reactRouter.Route,
-		{ path: '/', component: _App2.default },
-		_react2.default.createElement(_reactRouter.IndexRedirect, { to: '/Wedding+Dresses' }),
-		_react2.default.createElement(
-			_reactRouter.Route,
-			{ path: '/brands', component: _Brands2.default },
-			_react2.default.createElement(_reactRouter.IndexRoute, { component: _BrandBrowser2.default })
-		),
-		_react2.default.createElement(
-			_reactRouter.Route,
-			{ path: '/stores', component: _Stores2.default },
-			_react2.default.createElement(_reactRouter.IndexRoute, { component: _StoreBrowser2.default })
-		),
-		_react2.default.createElement(
-			_reactRouter.Route,
-			{ component: _Products2.default },
-			_react2.default.createElement(_reactRouter.Route, { path: '/:rating/:category', component: _ProductBrowser2.default }),
-			_react2.default.createElement(_reactRouter.Route, { path: '/:category', component: _ProductBrowser2.default })
-		)
-	);
-	
-	exports.default = routes;
+	exports.scripts = scripts;
+	// client scripts, will be loaded async from the head of the document
+	// each stage will only start loading once the previous stage has completed
+	function scripts(version) {
+		return  true ? [// PRODUCTION
+		{ // stage 0, no dependencies
+			React: 'https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.min.js',
+			fetch: 'https://cdnjs.cloudflare.com/ajax/libs/fetch/0.11.0/fetch.min.js',
+			componentHandler: 'https://cdn.rawgit.com/tleunen/react-mdl/v1.5.2/extra/material.min.js'
+		}, { // stage 1, depends on stage 0
+			ReactDOM: 'https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.min.js'
+		}, { // stage 2, depends on stage 1
+			ReactRouter: 'https://cdnjs.cloudflare.com/ajax/libs/react-router/2.3.0/ReactRouter.min.js',
+			ReactMDL: 'https://npmcdn.com/react-mdl@1.5.2/out/ReactMDL.min.js',
+			bridalapp_initial_state: '' }, // make sure store state is loaded
+		{ // stage 3, depends on stage 2
+			bridalapp: '/assets/bridalapp-ui.js?v' + version
+		}] : [// DEVELOPMENT
+		{ // stage 0, no dependencies
+			React: 'https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.js',
+			fetch: 'https://cdnjs.cloudflare.com/ajax/libs/fetch/0.11.0/fetch.js',
+			componentHandler: '/material.js'
+		}, { // stage 1, depends on stage 0
+			ReactDOM: 'https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js'
+		}, { // stage 2, depends on stage 1
+			ReactRouter: 'https://cdnjs.cloudflare.com/ajax/libs/react-router/2.3.0/ReactRouter.js',
+			ReactMDL: 'https://npmcdn.com/react-mdl@1.5.2/out/ReactMDL.min.js',
+			bridalapp_initial_state: '' }, // make sure store state is loaded
+		{ // stage 3, depends on stage 2
+			bridalapp: '/assets/bridalapp-ui.js?v' + version
+		}];
+	}
+	exports.default = scripts;
 
 /***/ },
-/* 68 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+	
+	var _values = __webpack_require__(71);
+	
+	var _values2 = _interopRequireDefault(_values);
 	
 	var _extends2 = __webpack_require__(7);
 	
@@ -7031,59 +7207,60 @@
 	
 	var _promise2 = _interopRequireDefault(_promise);
 	
-	var _chalk = __webpack_require__(74);
+	var _chalk = __webpack_require__(73);
 	
 	var _chalk2 = _interopRequireDefault(_chalk);
 	
-	var _express = __webpack_require__(77);
+	var _express = __webpack_require__(76);
 	
 	var _express2 = _interopRequireDefault(_express);
 	
-	var _compression = __webpack_require__(75);
+	var _compression = __webpack_require__(74);
 	
 	var _compression2 = _interopRequireDefault(_compression);
 	
-	var _cookieParser = __webpack_require__(76);
+	var _cookieParser = __webpack_require__(75);
 	
 	var _cookieParser2 = _interopRequireDefault(_cookieParser);
 	
-	var _http = __webpack_require__(78);
+	var _http = __webpack_require__(77);
 	
 	var _http2 = _interopRequireDefault(_http);
 	
-	var _httpProxy = __webpack_require__(79);
+	var _httpProxy = __webpack_require__(78);
 	
 	var _httpProxy2 = _interopRequireDefault(_httpProxy);
 	
-	var _picolog = __webpack_require__(6);
+	var _picolog = __webpack_require__(2);
 	
 	var _picolog2 = _interopRequireDefault(_picolog);
 	
-	var _react = __webpack_require__(8);
+	var _react = __webpack_require__(9);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _server = __webpack_require__(43);
+	var _server = __webpack_require__(81);
 	
 	var _server2 = _interopRequireDefault(_server);
 	
-	var _reactRouter = __webpack_require__(25);
+	var _reactRouter = __webpack_require__(26);
 	
-	var _reduxLoadApi = __webpack_require__(23);
+	var _reactRedux = __webpack_require__(23);
 	
-	var _config = __webpack_require__(45);
+	var _reduxLoadApi = __webpack_require__(27);
+	
+	var _config = __webpack_require__(49);
 	
 	var _config2 = _interopRequireDefault(_config);
 	
-	var _store = __webpack_require__(21);
+	var _store = __webpack_require__(22);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	__webpack_require__(70);
-	global.fetch = __webpack_require__(80);
-	
+	__webpack_require__(69);
+	global.fetch = __webpack_require__(79);
 	
 	var express = new _express2.default();
 	var httpServer = new _http2.default.Server(express);
@@ -7100,7 +7277,7 @@
 	    rb = _chalk2.default.red.bold;
 	
 	// Enable gzip compresion
-	express.use((0, _compression2.default)());
+	// express.use(compress());
 	
 	// parses request cookies
 	express.use((0, _cookieParser2.default)());
@@ -7129,13 +7306,18 @@
 		res.end('<!DOCTYPE html>\n<html>\n<head>\n\t<title>Status</title>\n</head>\n<body>\n\t<h1 style="color:green">ONLINE</h1>\n\t<p>' + _config2.default.server.name + ' is ONLINE</p>\n</body>\n</html>');
 	});
 	
-	express.get(/\/.*/, function (req, res) {
+	express.get(/\/.*/, function (req, res, next) {
 		// Reset the store prior to each request
 		_store2.default.dispatch({ type: '@@bridalapp/RESET' });
 		// require again on each request, to enable hot-reload in development mode.
 		// In production, this will just grab the module from require.cache.
-		var routes = __webpack_require__(67).routes;
-		var Html = __webpack_require__(56).Html;
+		var scripts = __webpack_require__(66).scripts;
+		var routes = __webpack_require__(65).routes;
+		var markupBefore = __webpack_require__(43).markupBefore;
+		var markupAfter = __webpack_require__(43).markupAfter;
+		var AppApi = __webpack_require__(19).AppApi;
+		var App = __webpack_require__(34).App;
+	
 		// match the current URL against defined routes
 		(0, _reactRouter.match)({ routes: routes, location: req.originalUrl }, function (error, redirectLocation, renderProps) {
 			if (redirectLocation) {
@@ -7153,27 +7335,50 @@
 			} else {
 				_picolog2.default.debug(_chalk2.default.styles.gray.open, 'Rendering using props: ', renderProps, _chalk2.default.styles.gray.close);
 	
+				// RENDER MARKUP BEFORE
+				// eagerly send 200 status and the head of the document to improve first render speed
+				// this will start off script loading on the client asap.
+				res.status(200);
+				res.write(markupBefore(_config2.default.version, _config2.default.apiServer.url, scripts(_config2.default.version)));
+	
+				// LOAD SESSION
 				// Store session cookie so we can attach it to fetch calls
 				global.session = req.cookies && req.cookies.BASESSION;
 				global.session && _picolog2.default.log('stored session cookie: ' + global.session);
 				_promise2.default.resolve(global.session ? _store2.default.app.auth.loadSession() : { sessionId: null, user: null }).then(function (session) {
 					_picolog2.default.debug('loaded session: ', session);
-					_picolog2.default.debug('store.app.auth.loggedIn=', _store2.default.app.auth.loggedIn);
+	
+					// LOAD DATA
 					// pre-load onload actions
 					var routes = renderProps.routes;
 					var params = renderProps.params;
 					var query = renderProps.location.query;
 	
 					var loadParams = (0, _extends3.default)({}, query, params);
-					_picolog2.default.debug('LOAD params=', loadParams);
-					return (0, _reduxLoadApi.load)(routes.map(function (x) {
-						return x.component;
-					}), loadParams);
+					var components = routes.reduce(function (r, x) {
+						r.push.apply(r, x.component && [x.component] || (0, _values2.default)(x.components));return r;
+					}, []).filter(function (component) {
+						return component && typeof component.onload == 'function';
+					});
+					_picolog2.default.log('pre-loading data for ', components);
+					return (0, _reduxLoadApi.load)(components, loadParams);
 				}).then(function () {
 					// do awesome stuff knowing all promises (if any) are resolved
 					_picolog2.default.debug('pre-load complete, rendering markup');
-					res.status(200);
-					res.send('<!DOCTYPE html>\n' + _server2.default.renderToString(_react2.default.createElement(Html, (0, _extends3.default)({ store: _store2.default, apiUrl: _config2.default.apiServer.url, version: _config2.default.version }, renderProps))));
+	
+					// RENDER REACT APP
+					// Render the fully hydrated React app and send it to the client
+					res.write(_server2.default.renderToString(_react2.default.createElement(
+						_reactRedux.Provider,
+						{ store: _store2.default },
+						_react2.default.createElement(_reactRouter.RouterContext, renderProps)
+					)));
+	
+					// RENDER MARKUP AFTER
+					// Send the current store state along with the ending markup
+					res.write(markupAfter(_store2.default.getState()));
+	
+					// FINISH RENDERING
 					res.end();
 					_picolog2.default.debug('rendering complete');
 					return true;
@@ -7223,14 +7428,23 @@
 	});
 	
 	if (false) {
+		module.hot.accept('./scripts', function () {
+			_picolog2.default.warn(yb('Hot reloading ') + g('\'./scripts\'...'));
+		});
 		module.hot.accept('./store', function () {
 			_picolog2.default.warn(yb('Hot reloading ') + g('\'./store\'...'));
 		});
 		module.hot.accept('./routes', function () {
 			_picolog2.default.warn(yb('Hot reloading ') + g('\'./routes\'...'));
 		});
-		module.hot.accept('./components/Html/Html', function () {
-			_picolog2.default.warn(yb('Hot reloading ') + g('\'./components/Html/Html\'...'));
+		module.hot.accept('./markup', function () {
+			_picolog2.default.warn(yb('Hot reloading ') + g('\'./markup\'...'));
+		});
+		module.hot.accept('./components/App/api', function () {
+			_picolog2.default.warn(yb('Hot reloading ') + g('\'./components/App/api\'...'));
+		});
+		module.hot.accept('./components/App/App', function () {
+			_picolog2.default.warn(yb('Hot reloading ') + g('\'./components/App/App\'...'));
 		});
 	
 		/*  SHOULD BE POSSIBLE BUT CAN'T GET IT TO WORK RELIABLY
@@ -7247,12 +7461,12 @@
 	}
 
 /***/ },
-/* 69 */
+/* 68 */
 /***/ function(module, exports) {
 
 	module.exports = {
 		"name": "bridalapp-ui",
-		"version": "1.0.8",
+		"version": "1.0.9",
 		"description": "User Interface for BridalApp",
 		"keywords": [
 			"OpenShift",
@@ -7289,7 +7503,9 @@
 			"release-client": "npm run clean-client && npm run build-client",
 			"release": "npm run clean && npm run build",
 			"watch": "webpack --inline --watch --hide-modules --config webpack/development.server.config.js",
-			"dev": "npm run -s clean && parallelshell \"npm run -s watch\" \"npm run -s start-dev\"",
+			"run-dev": "npm run -s clean && parallelshell \"npm run -s watch\" \"npm run -s start-dev\"",
+			"dev": "cross-env PICOLOG_LEVEL=info npm run -s run-dev",
+			"debug": "cross-env PICOLOG_LEVEL=log npm run -s run-dev",
 			"test": "mocha --require babel-register \"src/bridalapp-ui.spec.jsx\"",
 			"--test-dev": "webpack-dev-server --inline --hot --config webpack/test.config.js --port 8081",
 			"test-dev": "webpack-dev-server --output-path test --output-filename bridalapp-ui.spec.js \"mocha!./bridalapp-ui.spec.jsx\" --content-base test --port 8888 --config webpack/test.config.js"
@@ -7299,60 +7515,60 @@
 			"npm": ">= 1.0.0"
 		},
 		"dependencies": {
-			"babel-polyfill": "^6.6.1",
+			"babel-polyfill": "^6.7.4",
 			"babel-preset-es2015": "^6.5.0",
 			"babel-preset-react": "^6.5.0",
 			"babel-preset-stage-0": "^6.5.0",
 			"babel-runtime": "^6.3.19",
 			"babylon": "^6.5.2",
-			"chalk": "^1.1.1",
+			"chalk": "^1.1.3",
 			"classnames": "^2.2.3",
 			"compression": "^1.6.1",
 			"cookie-parser": "^1.4.1",
-			"express": "^4.0.0",
+			"express": "^4.13.4",
 			"http-proxy": "^1.12.0",
-			"node-fetch": "^1.3.3",
+			"node-fetch": "^1.5.1",
 			"picolog": "^1.0.4",
-			"react": "^0.14.7",
-			"react-dom": "^0.14.7",
-			"react-mdl": "^1.4.0",
-			"react-redux": "^4.0.6",
-			"react-router": "^2.0.0",
-			"redux": "^3.0.5",
+			"react": "^15.0.1",
+			"react-dom": "^15.0.1",
+			"react-mdl": "^1.5.3",
+			"react-redux": "^4.4.5",
+			"react-router": "^2.3.0",
+			"redux": "^3.4.0",
 			"redux-apis": ">=2.0.0-alpha.1",
 			"redux-async-api": "^2.0.1",
 			"redux-fetch-api": "^1.0.1",
 			"redux-load-api": "^2.0.1",
 			"redux-logger": "^2.5.2",
-			"redux-thunk": "^1.0.3",
+			"redux-thunk": "^2.0.1",
 			"serialize-javascript": "^1.1.2",
 			"ws.suid": "^0.10.1"
 		},
 		"devDependencies": {
-			"babel-core": "^6.6.5",
+			"babel-core": "^6.7.6",
 			"babel-loader": "^6.2.4",
 			"babel-plugin-react-transform": "^2.0.2",
 			"babel-plugin-transform-class-properties": "^6.4.0",
 			"babel-plugin-transform-decorators-legacy": "^1.3.4",
-			"babel-plugin-transform-runtime": "^6.6.0",
+			"babel-plugin-transform-runtime": "^6.7.5",
 			"babel-preset-es2015": "^6.5.0",
 			"babel-preset-react": "^6.3.13",
 			"babel-preset-stage-0": "^6.3.13",
 			"babel-register": "^6.6.5",
 			"chai": "^3.5.0",
+			"cross-env": "^1.0.7",
 			"eventsource-polyfill": "^0.9.6",
 			"json-loader": "^0.5.4",
 			"just-wait": "^1.0.5",
 			"mocha": "^2.4.5",
 			"mocha-loader": "^0.7.1",
 			"parallelshell": "^2.0.0",
-			"react-addons-test-utils": "^0.14.7",
+			"react-addons-test-utils": "^15.0.1",
 			"react-mdl": "^1.0.4",
-			"react-shallow-testutils": "^1.0.0",
 			"react-transform-hmr": "^1.0.4",
 			"rimraf": "^2.5.2",
-			"webpack": "^1.12.14",
-			"webpack-dev-middleware": "^1.5.1",
+			"webpack": "^1.13.0",
+			"webpack-dev-middleware": "^1.6.1",
 			"webpack-dev-server": "^1.14.1",
 			"webpack-hot-middleware": "^2.9.1"
 		},
@@ -7367,76 +7583,82 @@
 	};
 
 /***/ },
-/* 70 */
+/* 69 */
 /***/ function(module, exports) {
 
 	module.exports = require("babel-polyfill");
 
 /***/ },
-/* 71 */
-/***/ function(module, exports) {
-
-	module.exports = require("babel-runtime/core-js/json/stringify");
-
-/***/ },
-/* 72 */
+/* 70 */
 /***/ function(module, exports) {
 
 	module.exports = require("babel-runtime/core-js/object/create");
 
 /***/ },
-/* 73 */
+/* 71 */
+/***/ function(module, exports) {
+
+	module.exports = require("babel-runtime/core-js/object/values");
+
+/***/ },
+/* 72 */
 /***/ function(module, exports) {
 
 	module.exports = require("babel-runtime/helpers/get");
 
 /***/ },
-/* 74 */
+/* 73 */
 /***/ function(module, exports) {
 
 	module.exports = require("chalk");
 
 /***/ },
-/* 75 */
+/* 74 */
 /***/ function(module, exports) {
 
 	module.exports = require("compression");
 
 /***/ },
-/* 76 */
+/* 75 */
 /***/ function(module, exports) {
 
 	module.exports = require("cookie-parser");
 
 /***/ },
-/* 77 */
+/* 76 */
 /***/ function(module, exports) {
 
 	module.exports = require("express");
 
 /***/ },
-/* 78 */
+/* 77 */
 /***/ function(module, exports) {
 
 	module.exports = require("http");
 
 /***/ },
-/* 79 */
+/* 78 */
 /***/ function(module, exports) {
 
 	module.exports = require("http-proxy");
 
 /***/ },
-/* 80 */
+/* 79 */
 /***/ function(module, exports) {
 
 	module.exports = require("node-fetch");
 
 /***/ },
-/* 81 */
+/* 80 */
 /***/ function(module, exports) {
 
 	module.exports = require("path");
+
+/***/ },
+/* 81 */
+/***/ function(module, exports) {
+
+	module.exports = require("react-dom/server");
 
 /***/ },
 /* 82 */

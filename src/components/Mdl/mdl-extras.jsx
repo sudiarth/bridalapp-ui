@@ -33,12 +33,25 @@ export function component(displayName, defaultClass, conditionals={}, elem='div'
 	return render;
 }
 
+export const Badge = component('Badge', 'mdl-badge', {overlap:'mld-badge--overlap'}, 'span', {text:string}, {text:''},
+	(elem, props, children) => {
+		const { text, overlap, ...others } = props;
+		return (
+			<span {...others}>
+				{children}
+				<b>{text}</b>
+			</span>
+		)
+	}
+);
+
 export const LayoutTitle = component('LayoutTitle', 'mdl-layout__title')
 export const LayoutObfuscator = component('LayoutObfuscator', 'mdl-layout__obfuscator', {open:'is-visible'}, 'div', {onCancel: func.isRequired}, {},
 	(elem, props, children) => {
 		const { onCancel, ...others } = props;
+		const cancel = event => {event.preventDefault(); onCancel();}
 		return (
-			<div onClick={onCancel} onTouchEnd={onCancel} {...others} />
+			<div onClick={cancel} onTouchEnd={cancel} {...others} />
 		)
 	}
 )
@@ -82,20 +95,13 @@ export const Switch = component('Switch', 'mdl-switch', {ripple:'mdl-js-ripple-e
 		)
 	}
 )
-/*
-<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
-  <input type="checkbox" id="switch-1" class="mdl-switch__input" checked>
-  <span class="mdl-switch__label"></span>
-</label>
-*/
-
 
 /**
  * Controlled version of the MDL TextField component that adds a property `value`.
  */
 export class Textfield extends Component {
 	static propTypes = {...MdlTextfield.propTypes}
-	static defaultProps = {...MdlTextfield.defaultProps}
+	static defaultProps = {...MdlTextfield.defaultProps, label:''}
 
 	constructor(...props) {
 		super(...props);
@@ -154,7 +160,6 @@ export const FrontFace = component('FrontFace', 'mdl-card__face mdl-card__front'
 /** The back face of a flippable Card */
 export const BackFace = component('BackFace', 'mdl-card__face mdl-card__back');
 
-
 export const FlipCard = component('FlipCard', 'mdl-card is-flippable', {flipped: 'is-flipped'});
 
 /**
@@ -174,8 +179,8 @@ export class StatefulFlipCard extends Component {
 	}
 	static defaultProps = {
 		flipped: false,
-		frontLoadDelay: 250,
-		backLoadDelay: 2500,
+		frontLoadDelay: 0,
+		backLoadDelay: 0,
 	}
 	constructor(...props) {
 		super(...props);
@@ -241,7 +246,16 @@ export class StatefulFlipCard extends Component {
 	}
 }
 
-export const SimpleDialog = component('SimpleDialog', 'mdl-dialog', {visible:'is-visible'}, 'div')
+export const SimpleDialog = component('SimpleDialog', 'mdl-dialog', {visible:'is-visible'}, 'div', {}, {},
+	(elem, props, children) => {
+		const { visible, ...others } = props;
+		return (
+			<div className={props.className} {...others}>
+				{visible ? children : undefined}
+			</div>
+		)
+	}
+)
 export const Modal = component('Modal', 'mdl-modal', {}, 'div', {open:bool.isRequired, onCancel: func.isRequired}, {},
 	(elem, props, children) => {
 		const { open, onCancel, ...others } = props;

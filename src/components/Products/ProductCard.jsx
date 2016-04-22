@@ -104,15 +104,15 @@ export class ProductCard extends Publication {
 	render() {
 		log.debug('render', this.props);
 		const { className, product, rating, stocked, onLove, onDislike, onUndoRating, removing, ...others } = this.props;
-		if (stocked) log.info('render: stocked ', product.id.toString());
+		if (stocked) log.debug('render: stocked ', product.id.toString());
 		const { id, name, brandId, brandName, description, published } = product;
 		const { size, rect, win } = this.state;
 		const pid = Suid(id).toString();
 		const bid = Suid(brandId).toString();
 		const { flipCard } = this.refs;
 		const img = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
-		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.14/products/${bid}/${encodeURIComponent(name)}`;
-		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.14/brands/${bid}/logo-brand-name.png`;
+		const prdUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.15/products/${bid}/${encodeURIComponent(name)}`;
+		const brandUrl = `https://cdn.rawgit.com/Download/bridalapp-static/1.0.15/brands/${bid}/logo-brand-name.png`;
 		const thumbs = `${prdUrl}/thumbs.jpg`;
 		const thumbnail = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
 		const images = [
@@ -131,7 +131,7 @@ export class ProductCard extends Publication {
 		const transform = `translate3d(${trans}px, 0, 10px) scale3d(0.2, 0.2, 0.2)`
 		const style = removing ? {width:width, height:height, transform:transform, WebkitTransform:transform} : {};
 		return (
-			<StatefulFlipCard className={classes} key={id} style={style}>
+			<StatefulFlipCard className={classes} key={id} style={style} {...others}>
 				<FrontFace>
 					<div className="content">
 						<img className="ProductImage" src={img} style={{backgroundImage: `url(${thumbs})`, height:'100%'}} />

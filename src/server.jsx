@@ -10,11 +10,12 @@ import log from 'picolog';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import { match } from 'react-router';
+import { RouterContext } from 'react-router';
+import { Provider } from 'react-redux';
 import { load } from 'redux-load-api';
 
 import cfg from '../config';
 import store from './store';
-
 const express = new Express();
 const httpServer = new http.Server(express);
 
@@ -23,7 +24,7 @@ const g=chalk.green, gb=chalk.green.bold,  y=chalk.yellow, yb=chalk.yellow.bold,
 	r=chalk.red, rb=chalk.red.bold;
 
 // Enable gzip compresion
-express.use(compress());
+// express.use(compress());
 
 // parses request cookies
 express.use(cookieParser());
@@ -62,13 +63,19 @@ express.get('/status', (req, res) => {
 </html>`);
 });
 
-express.get(/\/.*/, (req, res) => {
+express.get(/\/.*/, (req, res, next) => {
 	// Reset the store prior to each request
 	store.dispatch({type:'@@bridalapp/RESET'});
 	// require again on each request, to enable hot-reload in development mode.
 	// In production, this will just grab the module from require.cache.
+	const scripts = require('./scripts').scripts;
 	const routes = require('./routes').routes;
-	const Html = require('./components/Html/Html').Html;
+	const markupBefore = require('./markup').markupBefore;
+	const markupAfter = require('./markup').markupAfter;
+	const AppApi = require('./components/App/api').AppApi;
+	const App = require('./components/App/App').App;
+
+
 	// match the current URL against defined routes
 	match({routes:routes, location:req.originalUrl}, (error, redirectLocation, renderProps) => {
 		if (redirectLocation) {
@@ -89,28 +96,46 @@ express.get(/\/.*/, (req, res) => {
 		else {
 			log.debug(chalk.styles.gray.open, 'Rendering using props: ', renderProps, chalk.styles.gray.close);
 
+			// RENDER MARKUP BEFORE
+			// eagerly send 200 status and the head of the document to improve first render speed
+			// this will start off script loading on the client asap.
+			res.status(200);
+			res.write(markupBefore(cfg.version, cfg.apiServer.url, scripts(cfg.version)));
+
+			// LOAD SESSION
 			// Store session cookie so we can attach it to fetch calls
 			global.session = req.cookies && req.cookies.BASESSION;
 			global.session && log.log('stored session cookie: ' + global.session);
-			Promise.resolve(global.session ? store.app.auth.loadSession() : {sessionId:null, user:null})
-			.then(session => {
+			Promise.resolve(global.session ? store.app.auth.loadSession() : {sessionId:null, user:null}).then(session => {
 				log.debug('loaded session: ', session);
-				log.debug('store.app.auth.loggedIn=', store.app.auth.loggedIn);
+
+				// LOAD DATA
 				// pre-load onload actions
 				const { routes, params, location: { query } } = renderProps;
 				const loadParams = {...query, ...params};
-				log.debug('LOAD params=', loadParams);
-				return load(routes.map(x => x.component), loadParams);
+				const components = routes
+					.reduce((r,x) => {r.push.apply(r, x.component && [x.component] || Object.values(x.components)); return r;}, [])
+					.filter(component => component && (typeof component.onload == 'function'));
+				log.log('pre-loading data for ', components);
+				return load(components, loadParams);
 			})
 			.then(() => {
 				// do awesome stuff knowing all promises (if any) are resolved
 				log.debug('pre-load complete, rendering markup');
-				res.status(200);
-				res.send('<!DOCTYPE html>\n' +
-					ReactDOM.renderToString(
-						<Html store={store} apiUrl={cfg.apiServer.url} version={cfg.version} {...renderProps} />
-					)
-				);
+
+				// RENDER REACT APP
+				// Render the fully hydrated React app and send it to the client
+				res.write(ReactDOM.renderToString(
+					<Provider store={store}>
+						<RouterContext {...renderProps} />
+					</Provider>
+				));
+
+				// RENDER MARKUP AFTER
+				// Send the current store state along with the ending markup
+				res.write(markupAfter(store.getState()));
+
+				// FINISH RENDERING
 				res.end();
 				log.debug('rendering complete');
 				return true;
@@ -158,14 +183,24 @@ process.on('uncaughtException', function(error){
 process.on('exit', function() {log.warn(msg = (gb(' √  ') + g('Stopped ') + gb(cfg.server.name) + g(' on ' + Date(Date.now()) + '.\r\n')));});
 
 if (module.hot) {
+	module.hot.accept('./scripts', function(){
+        log.warn(yb('Hot reloading ') + g('\'./scripts\'...'));
+
+	});
 	module.hot.accept('./store', function(){
         log.warn(yb('Hot reloading ') + g('\'./store\'...'));
 	});
 	module.hot.accept('./routes', function(){
         log.warn(yb('Hot reloading ') + g('\'./routes\'...'));
 	});
-	module.hot.accept('./components/Html/Html', function(){
-        log.warn(yb('Hot reloading ') + g('\'./components/Html/Html\'...'));
+	module.hot.accept('./markup', function(){
+        log.warn(yb('Hot reloading ') + g('\'./markup\'...'));
+	});
+	module.hot.accept('./components/App/api', function(){
+        log.warn(yb('Hot reloading ') + g('\'./components/App/api\'...'));
+	});
+	module.hot.accept('./components/App/App', function(){
+        log.warn(yb('Hot reloading ') + g('\'./components/App/App\'...'));
 	});
 
 /*  SHOULD BE POSSIBLE BUT CAN'T GET IT TO WORK RELIABLY

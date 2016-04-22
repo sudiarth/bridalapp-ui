@@ -56,18 +56,24 @@ export class AuthApi extends Async {
 
 	constructor(state = AuthApi.INITIAL_STATE) {
 		super(state);
+
 		this.setHandler(AuthApi.CHALLENGE, (state, {payload}) => ({...state, challenge:payload}));
 		this.setHandler(AuthApi.LOGGED_IN,	(state, {payload}) => ({...state, session:payload, challenge:null}));
 		this.setHandler(AuthApi.LOGGED_OUT, (state, {payload}) => ({...state, session:payload, challenge:null}));
 		this.setHandler(AuthApi.CANCEL, (state, action) => ({...state, challenge:null}));
-		Object.defineProperty(this, 'loggedIn', {enumerable:true, get: () => !!(this.session && this.session.user)});
-		Object.defineProperty(this, 'challenged', {enumerable:true, get: () => !!(this.challenge() && this.challenge().url && !this.challenge().accepted)});
-		Object.defineProperty(this, 'session', {enumerable:true, get: () => this.getState().session});
-		Object.defineProperty(this, 'onProvoke', {enumerable:true, value: () => this.provoke()});
-		Object.defineProperty(this, 'onCancel', {enumerable:true, value: () => this.cancel()});
-		Object.defineProperty(this, 'onLogin', {enumerable:true, value: () => this.login()});
-		Object.defineProperty(this, 'onLogout', {enumerable:true, value: () => this.logout()});
-		Object.defineProperty(this, 'onRegister', {enumerable:true, value: () => this.register()});
+
+		Object.defineProperties(this, {
+			loggedIn: {enumerable:true, get: () => !!(this.session && this.session.user)},
+			challenged: {enumerable:true, get: () => !!(this.challenge() && this.challenge().url && !this.challenge().accepted)},
+			session: {enumerable:true, get: () => this.getState().session},
+		});
+
+		this.onProvoke = () => this.provoke();
+		this.onCancel = () => this.cancel();
+		this.onLogin = () => this.login();
+		this.onLogout = () => this.logout();
+		this.onRegister = () => this.register();
+
 		this.loginDialog = link(this, new LoginDialogApi())
 		this.registerDialog = link(this, new RegisterDialogApi())
 	}
@@ -213,7 +219,7 @@ export class AuthApi extends Async {
 	}
 
 	provoke(resolve, reject) {
-		log.log('provoke', resolve, reject);
+		log.log('provoke',resolve, reject);
 		// provoke a login challenge, async
 		// provoke a challenge by fetching url
 		return new Promise((accept, deny) => {
@@ -221,8 +227,10 @@ export class AuthApi extends Async {
 			this.challenge({}, accept, deny);
 			// this fetch will result in 401 and be intercepted, after which
 			// challenge will be called again with the actual server challenge
+			log.debug('provoke: calling /challenge...');
 			this.fetch('/challenge')
 				.then(response => {
+					log.debug('provoke: got response ', response);
 					if (response && response.status == 200) {
 						return response.text();
 					}
@@ -236,12 +244,19 @@ export class AuthApi extends Async {
 				.then(text => fromJSON(text))
 				.then(session => processSession(this, session))
 				.then(session => {
-					if (resolve) {resolve(session);}
+					log.log('provoke: got session ', session);
+					if (resolve) {
+						log.debug('provoke: calling resolve ', resolve);
+						resolve(session);
+					}
 					return session;
 				})
 				.catch(error => {
-					log.log('Provoking login challenge failed.', error);
-					if (reject) {reject(error);}
+					log.info('Provoking login challenge failed.', error);
+					if (reject) {
+						log.debug('provoke: calling reject ', reject);
+						reject(error);
+					}
 				})
 		});
 	}
@@ -252,21 +267,25 @@ export class AuthApi extends Async {
 		// only accept challenges on the client side
 		if (typeof window != 'object') {reject(new Error('Unauthorized'));}
 
-		log.log('challenge', challenge, resolve, reject);
+		log.info('challenge', challenge, resolve, reject);
 
 		// reject any old login challenge
 		const c = this.getState().challenge;
-		if (c && c.url) {c.reject(new Error("Login challenge cancelled"));}
+		if (c && c.url) {
+			log.info('challenge: rejecting previous challenge...');
+			c.reject(new Error("Login challenge cancelled"));
+		}
 
 		// dispatch the challenge
 		challenge.resolve = resolve;
 		challenge.reject = reject;
-		log.debug('dispatching challenge', challenge);
+		log.info('dispatching challenge', challenge);
 		this.dispatch(this.createAction(AuthApi.CHALLENGE)(challenge));
 
-		// If there is an old, forced challenge and new challenge is login challenge
+		// If there is an old challenge which was a provocation, and new challenge is login challenge
 		if (c && !c.url && c.resolve && challenge.url) {
-			// if new challenge is login challenge (does have url), forcing challenge is now resolved
+			// if new challenge is login challenge (does have url), provocation is now resolved
+			log.info('challenge: resolving provocation...', c.resolve);
 			c.resolve(challenge);
 		}
 	}
@@ -353,10 +372,10 @@ function fetchSessionInfo(auth) {
 }
 
 function processSession(auth, session) {
-	log.debug('processSession', session);
+	log.log('processSession', session);
 	const { user, sessionId } = session;
-	log.log('processSession => sessionId=', sessionId);
-	log.log('processSession => user=', user);
+	log.debug('processSession => sessionId=', sessionId);
+	log.debug('processSession => user=', user);
 	if (typeof document == 'object') {
 		const maxAge = sessionId ? 10 * 24 * 60 * 60 : 0;
 		document.cookie = `BASESSION=${sessionId}; Max-Age=${maxAge}; path=/`;

@@ -41,7 +41,7 @@ export class ProductsApi extends PublicationApi {
 		return result + super.searchUrl(clone);
 	}
 
-	search() {
+	search(params) {
 		log.log('search');
 		const store = this.getParent().stores.managedStore;
 		const storeLoaded = (store
@@ -61,7 +61,7 @@ export class ProductsApi extends PublicationApi {
 
 		return stockLoaded.then(stock => {
 			log.debug('stockLoaded: ', stock);
-			return super.search()
+			return super.search(params)
 		})
 	}
 
@@ -186,7 +186,7 @@ export class ProductsApi extends PublicationApi {
 		.then(response => response && response.status === 200 ? response.text() : toError(response))
 		.then(text => fromJSON(text))
 		.then(stockItem => {
-			log.info('toggleStock: COMMIT: newStock=', newStock);
+			log.debug('toggleStock: COMMIT: newStock=', newStock);
 			// commit
 			// in case of DELETE, nothing needs to be done
 			// in case of CREATE, replace the stockItem with the saved one

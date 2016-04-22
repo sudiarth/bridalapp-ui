@@ -39,7 +39,7 @@ img {
 	-webkit-transform-style: preserve-3d;
 	transform-style: preserve-3d;
 	-webkit-backface-visibility: hidden;
-	backface-visibility: hidden;
+	/* backface-visibility: hidden; */
 	transition: transform 0.5s;
 	box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
 	background: white;
@@ -64,6 +64,14 @@ img {
 .mdl-card.is-flipped>.mdl-card__face.mdl-card__back {
 	-webkit-transform: rotateY(0deg) translateZ(1px);
 	transform: rotateY(0deg) translateZ(1px);
+}
+
+.mdl-card .mdl-card__actions {
+	padding: 16px;
+}
+
+.mdl-card .mdl-card__actions .mdl-button {
+	margin-right: 12px;
 }
 
 .react-mdl-header-tabs-hack {
@@ -109,6 +117,7 @@ img {
 
 .mdl-layout__header {
 	background-color: white;
+	box-shadow: none;
 }
 
 .mdl-layout__header-row {
@@ -154,6 +163,20 @@ img {
 	font-size: 24px;
 	margin: 0;
 	cursor: pointer;
+}
+
+.mdl-layout .mdl-navigation .mdl-badge b {
+	position: absolute;
+	line-height: 1.5;
+	vertical-align: top;
+	border-radius: 12px;
+	padding: 1px 2px 1px 1px;
+	font-size: 10px;
+	margin: 6px 0px 0 -10px;
+	font-weight: normal;
+	text-shadow: 0px 1px 1px rgba(0,0,0,0.12);
+	min-width: 14px;
+	text-align: center;
 }
 
 .mdl-layout__drawer>.mdl-layout__title {
@@ -320,6 +343,9 @@ fieldset[disabled] .mdl-textfield .mdl-textfield__label {
 input.mdl-textfield__input:focus {
 	outline: none;
 }
+.is-focused ::-webkit-input-placeholder {
+	color: white;
+}
 
 .mdl-switch.sprite,
 .mdl-switch.icon {
@@ -398,6 +424,37 @@ div.mdl-dialog .mdl-dialog__content {
 
 div.mdl-dialog .mdl-dialog__actions {
 	padding: 8px 24px;
+}
+
+
+/* FilterPanel */
+
+.FilterPanel {
+	position: absolute;
+	z-index: 6;
+	background-color: white;
+	width: 100%;
+	padding: 10px;
+	box-shadow: 0px -4px 2px 2px rgba(255,255,255,1), 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+	margin: 0;
+	-webkit-transition: transform .2s;
+	transition: transform .2s;
+	-webkit-transform: translateY(-100%);
+	transform: translateY(-100%);
+}
+
+.FilterPanel.is-open {
+	-webkit-transform: translateY(0);
+	transform: translateY(0);
+}
+
+.FilterFields .clear-button {
+	position: absolute;
+	margin: 20px 0 0 -20px;
+}
+
+.FilterFields i.material-icons {
+	vertical-align: middle;
 }
 
 /* Scroller */
@@ -918,14 +975,10 @@ div.mdl-dialog .mdl-dialog__actions {
 /* Sprite */
 i.material-icons-sprite {
 	background: url('https://cdn.rawgit.com/download/bridalapp-static/1.0.14/bridalapp/sprite.png');
-	display: block;
+	display: inline-block;
+	vertical-align: middle;
 	width: 24px;
 	height: 24px;
-	position: absolute;
-	left: 50%;
-	margin-left: -12px;
-	top: 50%;
-	margin-top: -12px;
 	background-size: cover;
 }
 
@@ -934,6 +987,12 @@ i.material-icons-sprite.shoe {background-position: -100% 0%;}
 i.material-icons-sprite.stock {background-position: -200% 0%;}
 i.material-icons-sprite.bridal-dress {background-position: -300% 0%;}
 i.material-icons-sprite.disable-stock {background-position: -400% 0%;}
+
+.mdl-navigation i.material-icons-sprite.bridal-dress {
+	-webkit-filter: invert() hue-rotate(160deg);
+	filter: invert() hue-rotate(160deg);
+	opacity: 0.65;
+}
 
 .mdl-button i.material-icons-sprite {
 	position: initial;
@@ -960,6 +1019,9 @@ i.material-icons-sprite.disable-stock {background-position: -400% 0%;}
 
 
 /* Theme */
+a {color:#ec80ae;}
+a:hover, a:active {color:#ec6fa4;}
+
 .mdl-card>.mdl-card__face {
 	border-radius: 6px;
 	background: white url('https://cdn.rawgit.com/download/bridalapp-static/1.0.0/bridalapp/paper.jpg');
@@ -982,14 +1044,19 @@ i.material-icons-sprite.disable-stock {background-position: -400% 0%;}
 	color: #9E6A81;
 }
 .mdl-button.mdl-button--colored {color:#ec80ae;}
+.mdl-button.mdl-button--colored:hover,
+.mdl-button.mdl-button--colored:active,
+.mdl-button.mdl-button--colored:focus:not(:active) {background-color: #ec6fa4;}
 .mdl-button.mdl-button--primary {color:#ec80ae;}
 .mdl-button--fab.mdl-button--colored,
 .mdl-button--fab.mdl-button--colored.mdl-button--primary {color:white; background-color:#ec80ae;}
 .mdl-button--fab.mdl-button--colored:hover,
-.mdl-button--fab.mdl-button--colored:active {background-color: #ec6fa4;}
+.mdl-button--fab.mdl-button--colored:active,
+.mdl-button--fab.mdl-button--colored:focus:not(:active) {background-color: #ec6fa4;}
 .mdl-button--fab.mdl-button--colored.danger {background-color:#847d7d;}
 .mdl-button--fab.mdl-button--colored.danger:hover,
-.mdl-button--fab.mdl-button--colored.danger:active {background-color:#756f6f;}
+.mdl-button--fab.mdl-button--colored.danger:active,
+.mdl-button--fab.mdl-button--colored.danger:focus:not(:active) {background-color:#756f6f;}
 .mdl-button--fab.mdl-button--colored.success {background-color:#83cc48;}
 
 .mdl-button--raised.mdl-button--colored {
@@ -1012,4 +1079,8 @@ i.material-icons-sprite.disable-stock {background-position: -400% 0%;}
 
 .mdl-switch.is-checked .mdl-switch__thumb {
     background: white;
+}
+
+.mdl-badge b {
+	background-color: #ec80ae;
 }

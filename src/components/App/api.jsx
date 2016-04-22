@@ -99,15 +99,22 @@ function authenticatedCrossOriginFetchWithTimeout(url, opts) {
 	}
 	const result = new Promise((resolve, reject)=>{
 		const timeout = setTimeout(() => {reject(Error(`timed out after 30s.`))}, 30000);
+		log.debug('authenticatedCrossOriginFetchWithTimeout: fetching...');
 		fetch(url, opts)
 			.then(response => {
 				clearTimeout(timeout);
+				log.debug('authenticatedCrossOriginFetchWithTimeout: got response ', response);
 				if (response.status && response.status === 401) {
 					// auth needed
+					log.debug('authenticatedCrossOriginFetchWithTimeout: auth needed');
 					if (typeof window == 'object') {
+						log.debug('authenticatedCrossOriginFetchWithTimeout: client, allow login');
 						// client, allow user to login
 						return response.json()
-							.then(json => this.auth.challenge(json.challenge, resolve, reject))
+							.then(json => {
+								log.debug('authenticatedCrossOriginFetchWithTimeout: calling auth.challenge...');
+								return this.auth.challenge(json.challenge, resolve, reject)
+							})
 							.catch(reject);
 					}
 					// server, reject with error
