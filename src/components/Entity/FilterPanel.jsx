@@ -60,15 +60,12 @@ export class FilterPanel extends Component {
 		return (
 			<Modal open={open} onCancel={onCancel}>
 				<Card className={classes}>
-					{open ?
-						<CardText>
-							{filterFields}
-							{children}
-						</CardText>
-					:undefined}
+					{open ? filterFields :undefined}
 					<CardActions>
-						<Button colored raised onClick={this.searchClicked.bind(this)}>Search</Button>
-						<Button onClick={onCancel}>Cancel</Button>
+						<div className="FilterActions">
+							<Button colored raised onClick={this.searchClicked.bind(this)}>Search</Button>
+							<Button onClick={onCancel}>Cancel</Button>
+						</div>
 					</CardActions>
 				</Card>
 			</Modal>

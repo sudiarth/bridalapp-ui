@@ -1,10 +1,11 @@
 ﻿import log from 'picolog';
 import React, { Component, PropTypes } from 'react';
 const { object, func, shape } = PropTypes;
-import { Icon } from 'react-mdl';
+import classNames from 'classnames';
+import { Icon, CardText } from 'react-mdl';
+
 import { Textfield } from '../Mdl/mdl-extras';
 import { fromJSON, toJSON, indexOf } from '../Entity/Entity';
-import classNames from 'classnames';
 
 export class FilterFields extends Component {
 	static propTypes = {
@@ -26,9 +27,13 @@ export class FilterFields extends Component {
 		const { fields, className, children } = this.props;
 		const classes = classNames('FilterFields', className);
 		return (
-			<div className={classes}>
-				<Textfield {...fields.q} placeholder="Type here..." /><a className="clear-button" href="#" onClick={this.clearField.bind(this, fields.q)}><Icon name="clear" /></a>
-			</div>
+			<CardText className={classes}>
+				<div className="FilterField q">
+					<Textfield {...fields.q} placeholder="Type here..." />
+					<a className="clear-button" href="#" onClick={this.clearField.bind(this, fields.q)}><Icon name="clear" /></a>
+				</div>
+				{children}
+			</CardText>
 		)
 	}
 }

@@ -441,6 +441,7 @@ div.mdl-dialog .mdl-dialog__actions {
 	transition: transform .2s;
 	-webkit-transform: translateY(-100%);
 	transform: translateY(-100%);
+	min-height: 170px;
 }
 
 .FilterPanel.is-open {
@@ -448,13 +449,39 @@ div.mdl-dialog .mdl-dialog__actions {
 	transform: translateY(0);
 }
 
-.FilterFields .clear-button {
+.FilterPanel .FilterFields {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+.FilterPanel .FilterFields .FilterField {
+	width: 280px;
+	float: right;
+}
+
+.FilterPanel .FilterFields .clear-button {
 	position: absolute;
 	margin: 20px 0 0 -20px;
 }
 
-.FilterFields i.material-icons {
+.FilterPanel .FilterFields i.material-icons {
 	vertical-align: middle;
+}
+
+.FilterPanel .mdl-card__actions {
+    padding: 10px;
+}
+
+.FilterPanel .FilterActions {
+	width: 280px;
+	float: right;
+}
+
+.FilterPanel .FilterActions .mdl-button {
+	float: right;
+	margin-right: 0;
+	margin-left: 12px;
 }
 
 /* Scroller */
