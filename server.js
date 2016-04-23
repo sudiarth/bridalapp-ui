@@ -2315,24 +2315,23 @@
 					_react2.default.createElement(
 						_reactMdl.Card,
 						{ className: classes },
-						open ? _react2.default.createElement(
-							_reactMdl.CardText,
-							null,
-							filterFields,
-							children
-						) : undefined,
+						open ? filterFields : undefined,
 						_react2.default.createElement(
 							_reactMdl.CardActions,
 							null,
 							_react2.default.createElement(
-								_reactMdl.Button,
-								{ colored: true, raised: true, onClick: this.searchClicked.bind(this) },
-								'Search'
-							),
-							_react2.default.createElement(
-								_reactMdl.Button,
-								{ onClick: onCancel },
-								'Cancel'
+								'div',
+								{ className: 'FilterActions' },
+								_react2.default.createElement(
+									_reactMdl.Button,
+									{ colored: true, raised: true, onClick: this.searchClicked.bind(this) },
+									'Search'
+								),
+								_react2.default.createElement(
+									_reactMdl.Button,
+									{ onClick: onCancel },
+									'Cancel'
+								)
 							)
 						)
 					)
@@ -4705,8 +4704,8 @@
 	
 				var bid = id.toString();
 				var img = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
-				var prdUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.15/products/' + bid + '/Brand';
-				var brandUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.15/brands/' + bid + '/logo-brand-name.png';
+				var prdUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.16/products/' + bid + '/Brand';
+				var brandUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.16/brands/' + bid + '/logo-brand-name.png';
 				var thumbs = prdUrl + '/thumbs.jpg';
 				var thumbnail = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
 				var images = [{ src: prdUrl + '/back-large.jpg', className: 'back', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '300%', backgroundPosition: '100% 0' }) } }, { src: prdUrl + '/front-large.jpg', className: 'front', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '150%', backgroundPosition: '0 0' }) } }, { src: prdUrl + '/detail-1-large.jpg', className: 'detail-1', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '600%', backgroundPosition: '200% 200%' }) } }, { src: prdUrl + '/detail-2-large.jpg', className: 'detail-2', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '600%', backgroundPosition: '100% 200%' }) } }, { src: prdUrl + '/detail-3-large.jpg', className: 'detail-3', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '600%', backgroundPosition: '200% 100%' }) } }];
@@ -4938,15 +4937,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _classnames = __webpack_require__(17);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
 	var _reactMdl = __webpack_require__(11);
 	
 	var _mdlExtras = __webpack_require__(12);
 	
 	var _Entity = __webpack_require__(8);
-	
-	var _classnames = __webpack_require__(17);
-	
-	var _classnames2 = _interopRequireDefault(_classnames);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -4982,14 +4981,19 @@
 	
 				var classes = (0, _classnames2.default)('FilterFields', className);
 				return _react2.default.createElement(
-					'div',
+					_reactMdl.CardText,
 					{ className: classes },
-					_react2.default.createElement(_mdlExtras.Textfield, (0, _extends3.default)({}, fields.q, { placeholder: 'Type here...' })),
 					_react2.default.createElement(
-						'a',
-						{ className: 'clear-button', href: '#', onClick: this.clearField.bind(this, fields.q) },
-						_react2.default.createElement(_reactMdl.Icon, { name: 'clear' })
-					)
+						'div',
+						{ className: 'FilterField q' },
+						_react2.default.createElement(_mdlExtras.Textfield, (0, _extends3.default)({}, fields.q, { placeholder: 'Type here...' })),
+						_react2.default.createElement(
+							'a',
+							{ className: 'clear-button', href: '#', onClick: this.clearField.bind(this, fields.q) },
+							_react2.default.createElement(_reactMdl.Icon, { name: 'clear' })
+						)
+					),
+					children
 				);
 			}
 		}]);
@@ -5986,8 +5990,8 @@
 				var flipCard = this.refs.flipCard;
 	
 				var img = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
-				var prdUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.15/products/' + bid + '/' + encodeURIComponent(name);
-				var brandUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.15/brands/' + bid + '/logo-brand-name.png';
+				var prdUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.16/products/' + bid + '/' + encodeURIComponent(name);
+				var brandUrl = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.16/brands/' + bid + '/logo-brand-name.png';
 				var thumbs = prdUrl + '/thumbs.jpg';
 				var thumbnail = 'data:image/gif;base64,R0lGODlhAgADAIAAAP///////yH5BAEKAAEALAAAAAACAAMAAAICjF8AOw==';
 				var images = [{ src: prdUrl + '/back-large.jpg', className: 'back', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '300%', backgroundPosition: '100% 0' }) } }, { src: prdUrl + '/front-large.jpg', className: 'front', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '150%', backgroundPosition: '0 0' }) } }, { src: prdUrl + '/detail-1-large.jpg', className: 'detail-1', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '600%', backgroundPosition: '200% 200%' }) } }, { src: prdUrl + '/detail-2-large.jpg', className: 'detail-2', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '600%', backgroundPosition: '100% 200%' }) } }, { src: prdUrl + '/detail-3-large.jpg', className: 'detail-3', alt: { src: img, style: (0, _extends3.default)({}, size, { backgroundImage: 'url(' + thumbs + ')', backgroundSize: '600%', backgroundPosition: '200% 100%' }) } }];
@@ -6789,8 +6793,8 @@
 				var published = store.published;
 	
 				var sid = id.toString();
-				var logo = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.15/stores/' + sid + '/logo.png';
-				var thumb = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.15/stores/' + sid + '/thumb.jpg';
+				var logo = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.16/stores/' + sid + '/logo.png';
+				var thumb = 'https://cdn.rawgit.com/Download/bridalapp-static/1.0.16/stores/' + sid + '/thumb.jpg';
 				var classes = (0, _classnames2.default)('Store', { 'premium': premium, 'unpublished': !published });
 				var publishButton = this.mayPublish(store) ? published ? _react2.default.createElement(
 					_reactMdl.FABButton,
@@ -7466,7 +7470,7 @@
 
 	module.exports = {
 		"name": "bridalapp-ui",
-		"version": "1.0.9",
+		"version": "1.0.10",
 		"description": "User Interface for BridalApp",
 		"keywords": [
 			"OpenShift",
