@@ -12,7 +12,7 @@ export function scripts(version) {return process.env.NODE_ENV == 'production'
 		},
 		{	// stage 2, depends on stage 1
 			ReactRouter: 'https://cdnjs.cloudflare.com/ajax/libs/react-router/2.3.0/ReactRouter.min.js',
-			ReactMDL: 'https://npmcdn.com/react-mdl@1.5.2/out/ReactMDL.min.js',
+			ReactMDL: 'https://unpkg.com/react-mdl@1.5.2/out/ReactMDL.min.js',
 			bridalapp_initial_state: '', // make sure store state is loaded
 		},
 		{	// stage 3, depends on stage 2
@@ -30,7 +30,7 @@ export function scripts(version) {return process.env.NODE_ENV == 'production'
 		},
 		{	// stage 2, depends on stage 1
 			ReactRouter: 'https://cdnjs.cloudflare.com/ajax/libs/react-router/2.3.0/ReactRouter.js',
-			ReactMDL: 'https://npmcdn.com/react-mdl@1.5.2/out/ReactMDL.min.js',
+			ReactMDL: 'https://unpkg.com/react-mdl@1.5.2/out/ReactMDL.min.js',
 			bridalapp_initial_state: '', // make sure store state is loaded
 		},
 		{	// stage 3, depends on stage 2
