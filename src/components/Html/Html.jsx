@@ -59,7 +59,7 @@ export class Html extends Component {
 						<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.min.js" />
 						<script src="https://cdnjs.cloudflare.com/ajax/libs/react-router/2.0.0-rc5/ReactRouter.min.js" />
 						<script src="https://cdn.rawgit.com/tleunen/react-mdl/v1.4.2/extra/material.min.js" />
-						<script src="https://npmcdn.com/react-mdl@1.4.2/out/ReactMDL.min.js" />
+						<script src="https://unpkg.com/react-mdl@1.4.2/out/ReactMDL.min.js" />
 					</div>	:
 					<div>
 						<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/0.11.0/fetch.js" />
@@ -67,7 +67,7 @@ export class Html extends Component {
 						<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js" />
 						<script src="https://cdnjs.cloudflare.com/ajax/libs/react-router/2.0.0-rc5/ReactRouter.js" />
 						<script src="https://cdn.rawgit.com/tleunen/react-mdl/v1.4.2/extra/material.min.js" />
-						<script src="https://npmcdn.com/react-mdl@1.4.2/out/ReactMDL.min.js" />
+						<script src="https://unpkg.com/react-mdl@1.4.2/out/ReactMDL.min.js" />
 					</div>
 					}
 					<script dangerouslySetInnerHTML={{__html: html}} charSet="UTF-8"/>
